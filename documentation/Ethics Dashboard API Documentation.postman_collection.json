@@ -1,0 +1,1074 @@
+{
+	"info": {
+		"_postman_id": "5764d51a-c83a-406c-89e0-abb79ce4e8f8",
+		"name": "Ethics Dashboard API Documentation",
+		"description": "# What API routes do we have?\n\nAssignments routes\n\nAuthorization routes\n\nStudents routes\n\nQuestion routes\n\nFeedback routes\n\nGrade routes\n\nEnrollment routes\n\nCase Study routes\n\nForm Description routes\n\nSlider Question routes\n\nGuest routes\n\n## **Getting started guide**\n\nTo start using the APIs, you need to know:\n\n- The API returns request responses in JSON format. When an API request returns an error, it is sent in the JSON response as an error key. Some APIs return message keys rather than error keys which will be highlighted in the individual route details.\n    \n- The frontend uses axios to make requests to the API.\n    \n\n### **Need some help?**\n\nIncase you have questions, contact [kohorstkeona@outlook.com](https://mailto:kohorstkeona@outlook.com)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39425129",
+		"_collection_link": "https://restless-robot-70850.postman.co/workspace/My-Workspace~a6c42954-0266-45ad-8e38-7752bda16afa/collection/39425129-5764d51a-c83a-406c-89e0-abb79ce4e8f8?action=share&source=collection_link&creator=39425129"
+	},
+	"item": [
+		{
+			"name": "Student",
+			"item": [
+				{
+					"name": "Get all students",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/flask/students",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"flask",
+								"students"
+							]
+						},
+						"description": "Returns a JSON list full of all student data (passwords are hashed)."
+					},
+					"response": []
+				},
+				{
+					"name": "Update consent",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"consent\": \"no\",\r\n    \"id\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/flask/student/consent",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"flask",
+								"student",
+								"consent"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get consent",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/flask/student/consent?user_id=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"flask",
+								"student",
+								"consent"
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get email",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/flask/student/email?student_id=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"flask",
+								"student",
+								"email"
+							],
+							"query": [
+								{
+									"key": "student_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "The following endpoints let you manage and retrieve information about student users."
+		},
+		{
+			"name": "Authorization",
+			"item": [
+				{
+					"name": "Register student",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"StudentName\",\r\n    \"email\":\"test@mail.com\",\r\n    \"password\":\"Password1\",\r\n    \"consent\":\"false\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/flask/auth/register-student",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"flask",
+								"auth",
+								"register-student"
+							]
+						},
+						"description": "Student users need to be invited to create an account, so in order to test this API you must first add the email for the student you want to register into the backend database in the students table.\n\nA student is \"invited\" if their email is in the students table. However, if a student's email is in the database AND they already have a password/name set up, their account has already been created."
+					},
+					"response": []
+				},
+				{
+					"name": "Login student",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"uniquetest@mail.com\",\r\n    \"password\":\"Password1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/flask/auth/login-student",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"flask",
+								"auth",
+								"login-student"
+							]
+						},
+						"description": "This will return a JSON object containing the token, with the key \"token\"\n\nAlso returns \"id\" for student ID, and \"name\" for the students name."
+					},
+					"response": []
+				},
+				{
+					"name": "Validate token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"token\":\"insert token here\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/flask/auth/validate-token",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"flask",
+								"auth",
+								"validate-token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change student password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":\"1\",\r\n    \"oldPassword\":\"Password1\",\r\n    \"newPassword\":\"Password1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/flask/auth/change-student-password?oldPassword=old&newPassword=new&id=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"flask",
+								"auth",
+								"change-student-password"
+							],
+							"query": [
+								{
+									"key": "oldPassword",
+									"value": "old"
+								},
+								{
+									"key": "newPassword",
+									"value": "new"
+								},
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login professor",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"test@test.com\",\r\n    \"password\":\"Password1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/flask/auth/login-professor",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"flask",
+								"auth",
+								"login-professor"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register professor",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \r\n    \"name\":\"ProfessorName\",\r\n    \"email\":\"uniqueprof@mail.com\",\r\n    \"password\":\"Password1\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/flask/auth/register-professor",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"flask",
+								"auth",
+								"register-professor"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register TA",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \r\n    \"name\":\"TAName\",\r\n    \"email\":\"uniqueta@mail.com\",\r\n    \"password\":\"Password1\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/flask/auth/register-ta",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"flask",
+								"auth",
+								"register-ta"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register as Guest",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/flask/auth/register-guest",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"flask",
+								"auth",
+								"register-guest"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change student email",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"student_id\":\"2\",\r\n    \"new_email\":\"stu@email.com\",\r\n    \"password\":\"Password1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/flask/auth/change-student-email",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"flask",
+								"auth",
+								"change-student-email"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete student",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"student_id\":\"17\",\r\n    \"password\":\"Password1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/flask/auth/student",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"flask",
+								"auth",
+								"student"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "The following endpoints perform authentication, user registration and session handling."
+		},
+		{
+			"name": "Assignments",
+			"item": [
+				{
+					"name": "Save answers",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"student_id\": \"1\",\r\n  \"assignment_id\": \"1\",\r\n  \"case_study_id\": \"1\",\r\n  \"form_name\": \"dilemma\",\r\n  \"answers\": {\r\n    \"dilemma-0\": \"conflict_of_interest\",\r\n    \"dilemma-1\": \"false\",\r\n    \"dilemma-2\": \"false\",\r\n    \"state-the-problem\": \"test\",\r\n    \"gather-facts-1\": \"i dont know!\\n\",\r\n    \"gather-facts-2\": \"somewhere really cool\",\r\n    \"gather-facts-3\": \"like yesterday?\",\r\n    \"stakeholder-name-0\": \"?!\",\r\n    \"stakeholder-directly-0\": \"directly\",\r\n    \"stakeholder-indirectly-0\": \"false\",\r\n    \"stakeholder-name-1\": \"test!\",\r\n    \"stakeholder-directly-1\": \"false\",\r\n    \"stakeholder-indirectly-1\": \"indirectly\",\r\n    \"stakeholder-name-2\": \"test!\",\r\n    \"stakeholder-directly-2\": \"directly\",\r\n    \"stakeholder-indirectly-2\": \"false\",\r\n    \"stakeholder-name-3\": \"test!\",\r\n    \"stakeholder-directly-3\": \"false\",\r\n    \"stakeholder-indirectly-3\": \"indirectly\",\r\n    \"stakeholder-name-4\": \"test!\",\r\n    \"stakeholder-directly-4\": \"directly\",\r\n    \"stakeholder-indirectly-4\": \"false\",\r\n    \"stakeholder-name-5\": \"test!\",\r\n    \"stakeholder-directly-5\": \"false\",\r\n    \"stakeholder-indirectly-5\": \"indirectly\",\r\n    \"stakeholder-name-6\": \"test!\",\r\n    \"stakeholder-directly-6\": \"directly\",\r\n    \"stakeholder-indirectly-6\": \"false\",\r\n    \"option-title-0\": \"my option 1\",\r\n    \"option-description-0\": \"my description 1\",\r\n    \"option-title-1\": \"my cooler option 2\",\r\n    \"option-description-1\": \"my cooler description 2\",\r\n    \"option-title-2\": \"coolness option\",\r\n    \"option-description-2\": \"coolness description\",\r\n    \"option-title-3\": \"cute option\",\r\n    \"option-description-3\": \"cute description\",\r\n    \"option-title-4\": \"silly option :P\",\r\n    \"option-description-4\": \"silly description\",\r\n    \"harm-yes-0\": \"yes\",\r\n    \"harm-no-0\": \"false\",\r\n    \"publicity-yes-0\": \"yes\",\r\n    \"publicity-no-0\": \"false\",\r\n    \"reversible-yes-0\": \"yes\",\r\n    \"reversible-no-0\": \"false\",\r\n    \"harm-yes-1\": \"false\",\r\n    \"harm-no-1\": \"no\",\r\n    \"publicity-yes-1\": \"false\",\r\n    \"publicity-no-1\": \"no\",\r\n    \"reversible-yes-1\": \"false\",\r\n    \"reversible-no-1\": \"no\",\r\n    \"harm-yes-2\": \"yes\",\r\n    \"harm-no-2\": \"false\",\r\n    \"publicity-yes-2\": \"yes\",\r\n    \"publicity-no-2\": \"false\",\r\n    \"reversible-yes-2\": \"yes\",\r\n    \"reversible-no-2\": \"false\",\r\n    \"harm-yes-3\": \"false\",\r\n    \"harm-no-3\": \"no\",\r\n    \"publicity-yes-3\": \"false\",\r\n    \"publicity-no-3\": \"no\",\r\n    \"reversible-yes-3\": \"false\",\r\n    \"reversible-no-3\": \"no\",\r\n    \"harm-yes-4\": \"yes\",\r\n    \"harm-no-4\": \"false\",\r\n    \"publicity-yes-4\": \"yes\",\r\n    \"publicity-no-4\": \"false\",\r\n    \"reversible-yes-4\": \"yes\",\r\n    \"reversible-no-4\": \"false\",\r\n    \"tentative-choice-0\": \"false\",\r\n    \"tentative-choice-1\": \"false\",\r\n    \"tentative-choice-2\": \"false\",\r\n    \"tentative-choice-3\": \"false\",\r\n    \"tentative-choice-4\": \"silly option :P\",\r\n    \"num_stakeholders\": \"7\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/flask/assignment/save-form",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"flask",
+								"assignment",
+								"save-form"
+							]
+						},
+						"description": "Answers are stored as a JSON object in the database."
+					},
+					"response": []
+				},
+				{
+					"name": "Submit answers",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"student_id\": \"1\",\r\n    \"assignment_id\": \"2\",\r\n    \"case_study_id\": \"2\",\r\n    \"form_name\": \"dilemma\",\r\n    \"answers\": {\r\n        \"dilemma-0\": \"false\",\r\n        \"dilemma-1\": \"false\",\r\n        \"dilemma-2\": \"false\",\r\n        \"state-the-problem\": \"explosions!\",\r\n        \"gather-facts-1\": \"it did!\",\r\n        \"gather-facts-2\": \"my house!\",\r\n        \"gather-facts-3\": \"fuck you!\",\r\n        \"stakeholder-name-0\": \"a\",\r\n        \"stakeholder-directly-0\": \"false\",\r\n        \"stakeholder-indirectly-0\": \"false\",\r\n        \"stakeholder-name-1\": \"b\",\r\n        \"stakeholder-directly-1\": \"false\",\r\n        \"stakeholder-indirectly-1\": \"false\",\r\n        \"stakeholder-name-2\": \"c\",\r\n        \"stakeholder-directly-2\": \"false\",\r\n        \"stakeholder-indirectly-2\": \"false\",\r\n        \"stakeholder-name-3\": \"d\",\r\n        \"stakeholder-directly-3\": \"false\",\r\n        \"stakeholder-indirectly-3\": \"false\",\r\n        \"stakeholder-name-4\": \"e\",\r\n        \"stakeholder-directly-4\": \"false\",\r\n        \"stakeholder-indirectly-4\": \"false\",\r\n        \"stakeholder-name-5\": \"\",\r\n        \"stakeholder-directly-5\": \"false\",\r\n        \"stakeholder-indirectly-5\": \"false\",\r\n        \"stakeholder-name-6\": \"\",\r\n        \"stakeholder-directly-6\": \"false\",\r\n        \"stakeholder-indirectly-6\": \"false\",\r\n        \"option-title-0\": \"\",\r\n        \"option-description-0\": \"\",\r\n        \"option-title-1\": \"\",\r\n        \"option-description-1\": \"\",\r\n        \"option-title-2\": \"\",\r\n        \"option-description-2\": \"\",\r\n        \"option-title-3\": \"\",\r\n        \"option-description-3\": \"\",\r\n        \"option-title-4\": \"\",\r\n        \"option-description-4\": \"\",\r\n        \"harm-yes-0\": \"false\",\r\n        \"harm-no-0\": \"false\",\r\n        \"publicity-yes-0\": \"false\",\r\n        \"publicity-no-0\": \"false\",\r\n        \"reversible-yes-0\": \"false\",\r\n        \"reversible-no-0\": \"false\",\r\n        \"harm-yes-1\": \"false\",\r\n        \"harm-no-1\": \"false\",\r\n        \"publicity-yes-1\": \"false\",\r\n        \"publicity-no-1\": \"false\",\r\n        \"reversible-yes-1\": \"false\",\r\n        \"reversible-no-1\": \"false\",\r\n        \"harm-yes-2\": \"false\",\r\n        \"harm-no-2\": \"false\",\r\n        \"publicity-yes-2\": \"false\",\r\n        \"publicity-no-2\": \"false\",\r\n        \"reversible-yes-2\": \"false\",\r\n        \"reversible-no-2\": \"false\",\r\n        \"harm-yes-3\": \"false\",\r\n        \"harm-no-3\": \"false\",\r\n        \"publicity-yes-3\": \"false\",\r\n        \"publicity-no-3\": \"false\",\r\n        \"reversible-yes-3\": \"false\",\r\n        \"reversible-no-3\": \"false\",\r\n        \"harm-yes-4\": \"false\",\r\n        \"harm-no-4\": \"false\",\r\n        \"publicity-yes-4\": \"false\",\r\n        \"publicity-no-4\": \"false\",\r\n        \"reversible-yes-4\": \"false\",\r\n        \"reversible-no-4\": \"false\",\r\n        \"tentative-choice-0\": \"false\",\r\n        \"tentative-choice-1\": \"false\",\r\n        \"tentative-choice-2\": \"false\",\r\n        \"tentative-choice-3\": \"false\",\r\n        \"tentative-choice-4\": \"false\",\r\n        \"num_stakeholders\": \"7\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/flask/assignment/submit-form",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"flask",
+								"assignment",
+								"submit-form"
+							]
+						},
+						"description": "Answers are stored as a JSON object in the database."
+					},
+					"response": []
+				},
+				{
+					"name": "Get answers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/flask/assignment/get-answers?user_id=1&form_name=personal-sacrifices&assignment_id=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"flask",
+								"assignment",
+								"get-answers"
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "1"
+								},
+								{
+									"key": "form_name",
+									"value": "personal-sacrifices"
+								},
+								{
+									"key": "assignment_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Is form submitted",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/flask/assignment/is-form-submitted?form_name=dilemma&assignment_id=1&student_id=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"flask",
+								"assignment",
+								"is-form-submitted"
+							],
+							"query": [
+								{
+									"key": "form_name",
+									"value": "dilemma"
+								},
+								{
+									"key": "assignment_id",
+									"value": "1"
+								},
+								{
+									"key": "student_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get assignments for student",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/flask/assignments?user_id=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"flask",
+								"assignments"
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Returns a JSON array with assignment details for the student."
+					},
+					"response": []
+				},
+				{
+					"name": "Get assignments for student class",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/flask/assignments?user_id=1&class_id=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"flask",
+								"assignments"
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "1"
+								},
+								{
+									"key": "class_id",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Returns a JSON array with assignment details for the student."
+					},
+					"response": []
+				},
+				{
+					"name": "Set case study options",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"assignment_id\": 1,\r\n    \"case_study_option\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/flask/assignment/set-case-study-option",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"flask",
+								"assignment",
+								"set-case-study-option"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "These endpoints support assignment data saving and retrieval. Also support retrieving assignments for a particular user."
+		},
+		{
+			"name": "Questions",
+			"item": [
+				{
+					"name": "Get questions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/flask/questions?form_name=life-path&case_study_id=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"flask",
+								"questions"
+							],
+							"query": [
+								{
+									"key": "form_name",
+									"value": "life-path"
+								},
+								{
+									"key": "case_study_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get total questions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/flask/questions/total?form_name=generations-form&case_study_id=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"flask",
+								"questions",
+								"total"
+							],
+							"query": [
+								{
+									"key": "form_name",
+									"value": "generations-form"
+								},
+								{
+									"key": "case_study_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "API routes related to the custom/dynamic questions that professors can add to case studies"
+		},
+		{
+			"name": "Feedback",
+			"item": [
+				{
+					"name": "Get feedback for form",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/flask/feedback?form_name=life-path&assignment_id=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"flask",
+								"feedback"
+							],
+							"query": [
+								{
+									"key": "form_name",
+									"value": "life-path"
+								},
+								{
+									"key": "assignment_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "API routes related to professor comments/feedback that show up on the forms after they have been submitted"
+		},
+		{
+			"name": "Grade",
+			"item": [
+				{
+					"name": "Get grade",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/flask/grade?form_group=Consequences&assignment_id=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"flask",
+								"grade"
+							],
+							"query": [
+								{
+									"key": "form_group",
+									"value": "Consequences"
+								},
+								{
+									"key": "assignment_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get grades",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/flask/grades?assignment_id=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"flask",
+								"grades"
+							],
+							"query": [
+								{
+									"key": "assignment_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "API routes related to student grades"
+		},
+		{
+			"name": "Enrollment",
+			"item": [
+				{
+					"name": "Get enrollments",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/flask/enrollments?student_id=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"flask",
+								"enrollments"
+							],
+							"query": [
+								{
+									"key": "student_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Enroll student",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"student_id\":\"1\",\r\n    \"class_id\":\"1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/flask/enrollment",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"flask",
+								"enrollment"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "API routes used to get information about enrollments."
+		},
+		{
+			"name": "Case Studies",
+			"item": [
+				{
+					"name": "Get options",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/flask/case-study/options?case_study_id=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"flask",
+								"case-study",
+								"options"
+							],
+							"query": [
+								{
+									"key": "case_study_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "API routes used to get information about case studies."
+		},
+		{
+			"name": "Form Description",
+			"item": [
+				{
+					"name": "Get description",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/flask/form-description?assignment_id=1&form_name=cons-util-bentham",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"flask",
+								"form-description"
+							],
+							"query": [
+								{
+									"key": "assignment_id",
+									"value": "1"
+								},
+								{
+									"key": "form_name",
+									"value": "cons-util-bentham"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "API routes used to manage form descriptions.\n\nForm descriptions are the introductory blurbs of text that exist before some forms, professors can edit these descriptions and add links to them."
+		},
+		{
+			"name": "Slider Questions",
+			"item": [
+				{
+					"name": "Get Slider Questions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/flask/slider-questions?case_study_id=1&form_name=generations-form",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"flask",
+								"slider-questions"
+							],
+							"query": [
+								{
+									"key": "case_study_id",
+									"value": "1"
+								},
+								{
+									"key": "form_name",
+									"value": "generations-form"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "API routes used for managing slider questions.\n\nThese refer to the types of questions which use sliders/range inputs. They consist of the question, and the labels for either end of the slider."
+		},
+		{
+			"name": "Guest",
+			"item": [
+				{
+					"name": "Set up guest",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/flask/guest/setup",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"flask",
+								"guest",
+								"setup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete all guests",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/flask/guest/delete-guests",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"flask",
+								"guest",
+								"delete-guests"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "API routes for handling guests."
+		}
+	]
+}

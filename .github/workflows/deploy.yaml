@@ -1,0 +1,145 @@
+name: deploy
+on:
+  push:
+    branches:
+    - main
+    - deployment_test
+
+  pull_request:
+    branches:
+    - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v1
+        with:
+          host: "4.206.215.51"
+          username: "cody"
+          key: "MIIG4wIBAAKCAYEA0DMhaM+xsMG5aVDzbdum5CMZXrQboqVrTNFenRPQROkSPR4j
+            oLySOudxIEbZ2JQRDHY4G+imh4/VLb1P3pU+EZMXG1qaUj0P4ripVgPxG+mSsNxi
+            TcglVX5wd1vyxbPivC1WChNAGvlSKRdWfAKEIOf5+WdC2U7XtoUkqFN5FEds1A7r
+            ZGhDtalxptKMvImQ4JIYmaO0l4lDAJ5PWt7jLWNBNzFJO0k534jMoEeu+sD6neWC
+            G8nEJn8XROMDTRzQ2+2riN7ectZXn3M6BOflsXuVrSs3qb2xDUT8qJvBPRexzERU
+            Wfw7ms59CusemDSEgTrvph1UDwXY5sIFgkSwjVWfaCastFukALMruiWEWbGRi1eG
+            bYUXwB3Jh8Ebl5aJO6Dk14+7Rd1qQU/vEm/nhcnsUj8m57Y0HS1OutaGlzaEOYfl
+            OvUdZO33JfRW0F3KCHkMT5cEcJwM84LVheo4eba0VUFQVxJw39R7P9cOEw854PGw
+            eQhNMWyACt6Ozxi9AgMBAAECggGBALJAdIQ1/h4lXkcK5b/S5WpBmsD4VwjDs8BL
+            KUQ26IN3QQROv5YonNINwU8vGehRrN8MgDF02M8LmCrXAIDDKicF1iy3P5TVbrpf
+            +6sHKPEK42rE5O1PRJeT71phwNL/lkoiTp3FqYbumydPMd5ukQ1TTzP28sb2t70u
+            9RmgjfOMy2Ire+G1WvM3pXR8o73v0bhTnPg9rqpm/JSU9cAJQFtltTo52kcGBKSb
+            jQZVGTza6DczfleoQWXsPdHewr7MwYEhvwXNC1po8AnmV8cOUGwY2g2iWqx9tIy9
+            RZlgSE0jhtpdMK5PXC95lYC7+LZepatRNW1WznP+PYy68QeRcP9vAdJ3EBJJbbA/
+            71mcohczIH3z1naD+mjDlO9WO2hrzp36GFK7ybM2RSuBEIbf3v46TTODS4X0I+LZ
+            D4cypzvmVtjKczpesFnyvwc1Zuh5T/mdgKn9Hda7+3eTgkAPgvGmzWhabV6gn77u
+            CIne3d8V6XaWVC1VXbv2RPPlVzItiQKBwQDb+GECdoIwx3zUoNrYVfhbck2puoXe
+            mBin7b0La6ilBTF3PCDWbzAMbCWKkT43E8H+ecC4yirTgwixpTef6raITYYAdyaw
+            ZKX48dgM6NIyICyHWwQdVddA84EAupbFRqpvOqicVxA5+a4QYOS9Vwk1hZnNn4X/
+            KQQsXlBKuehKHV4hFS9nyABqV7swvGkWW+lD0qGMcS3n09o7Dd1dRHxDQF6U2i2A
+            zhDMPWsRbUxTpYLi9Yvx0A1ftmyBUWcgCasCgcEA8k0zNCoRfabRujZv8HkJYl4K
+            yG1q0OJ8XK6b6zvlZYxdZK5cira+a1hv0V+utfl6DxeTJMj+BbK2UMuaQMPXbqJs
+            ar0LUMM1WzH+hl/Dry+vq7zVVuFZIXO/4JvV+cfpxtbKOtHBUzEj406PXXZ//Rip
+            gcPi5Ovb80Sae3QIg0sMtsJ/oyburRDHEVSW6ZxxdT9N1FcWCQ+nkTvGa7Um2bxf
+            hOQMbjJ/czhr/NlkdrcxLox8jIFRH4T/jY5PFA83AoHARke+XvYUNJeYF6tpIJOf
+            LUCA9cilevAneIfpzZtRH6BgJJNufnS56k4nVHWBZkGGytKFs8TMGBYWkgOSmSJ5
+            vWTfeoiXMOaHbNmASOeeOOu0rm5zCxhhFNx4DA6Rm2gvjig0tPbQNWXDqnH6w0/q
+            nlIYSO09979YGQDtMGLjh8KIT5OgOM1a7J8pLLIV9VHaXpQOj3udyiMS56lPX7xA
+            44/OaEqpHS05irfY3JGKQHNyNSd01ga+LyVu14Z1p3PPAoHAf52Da2UAw1IaQd4s
+            BNZqx+FKApgGWy/+Wf4o5rMsNdjA06c13GU1U2pHslmXtgZIcCx1djlZ+PxQI6uo
+            eZXsIDvxqCIbFJVLw9VH/dPwR5NxDZ2uK00S2ZiSJaVOBHlzOiOkbWhOTxehlDWr
+            MomYDWBw3oSiOvmyZaTrTDwnw6bCcntsKCz4JjSg9BK+TRn1c9A8mKqpU2poUgjO
+            j6ngZWteT6qglWWJVNERpyGEVTZU8/RQINx3Moek5RRft+vvAoHASXWJFRPjCeGr
+            Z9I140TZDLERLN7IBfCKd40Dkiac5jv0hNa74BUhOqXLWaYJNSJ449T+D1+HSsuN
+            OTwpveTGvwr2zcD4sIeUixuw5GYwOjqBOov15tAD63bR0VcS7iBe2S68Oah6nyae
+            ZbqQeumaLVlxAEGMKZttL5/bMUlAyT4FAJcK0vMndN5EyQ34uExEmruJAw8jXNAE
+            di2s6352C78rbVbaGzHDIjU42ZVUAzFXYujfMQWm0tEQL+eaPw8g"
+          source: "."
+          target: "/home/COSC470-project"
+
+      - name: build
+        run: sudo docker compose build
+        with:
+          host: "4.206.215.51"
+          username: "cody"
+          key: "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"
+
+      - name: start
+        run: sudo docker compose up
+        with:
+          host: "4.206.215.51"
+          username: "cody"
+          key: "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"

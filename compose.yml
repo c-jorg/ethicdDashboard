@@ -1,0 +1,74 @@
+
+services:
+
+  nextapp:
+    container_name: nextapp
+    image: nextapp:1.0.0
+    build:
+      context: ./frontend
+      dockerfile: next.dockerfile
+      args:
+       NEXT_PUBLIC_API_URL: http://213.255.209.162:4000
+    ports:
+      - 3000:3000
+    environment:
+    - NEXT_PUBLIC_API_URL=http://213.255.209.162:4000
+    - DEBUG=true
+    depends_on:
+      - flaskapp
+    networks:
+      - shared_network
+    # volumes: # trying this out
+    #   - ./frontend:/app
+    #   - ./frontend/node_modules:/app/node_modules
+    # command: pnpm dev
+
+  # Flask backend service
+  flaskapp:
+    container_name: flaskapp
+    image: flaskapp:1.0.0
+    build:
+      context: ./backend
+      dockerfile: flask.dockerfile
+    ports:
+      - "4000:4000"
+    environment:
+      - DATABASE_URL=postgresql://ethics_dashboard:Letmein1!@db:5432/ethics_dashboard
+    depends_on:
+      - db
+    networks:
+      - shared_network
+
+  # Cron job service
+  cron:
+    container_name: cron
+    image: cron:1.0.0
+    build:
+      context: ./cron
+      dockerfile: cron.dockerfile 
+    depends_on:
+      - flaskapp
+    networks:
+      - shared_network
+
+  # PostgreSQL database service
+  db:
+    container_name: db
+    image: postgres:13
+    environment:
+      POSTGRES_USER: ethics_dashboard
+      POSTGRES_PASSWORD: Letmein1!
+      POSTGRES_DB: ethics_dashboard
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - shared_network
+
+volumes:
+  pgdata: {}
+
+networks:
+  shared_network:
+    driver: bridge

@@ -1,0 +1,21 @@
+*node_modules
+
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+
+
+# debug
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/.next/
+myenv/
+backend/models/__pycache__/
+tests/__pycache__/
+backend/controllers/__pycache__/
+backend/__pycache__/
+backend/utils/__pycache__/
+
+venv/
+.vscode.
+the-project-team-1/

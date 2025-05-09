@@ -1,0 +1,14 @@
+making it
+sudo apt update
+sudo apt upgrade
+
+sudo apt install python3-venv
+
+python3 -m venv  myenv
+
+
+turning it on
+source myenv/bin/activate
+
+turning it off 
+deactivate

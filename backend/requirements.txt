@@ -1,0 +1,10 @@
+flask
+psycopg2-binary
+Flask-SQLAlchemy
+flask-jwt-extended
+Flask-CORS
+flask_marshmallow
+marshmallow-sqlalchemy
+bcrypt
+pytz
+pytest

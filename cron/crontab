@@ -1,0 +1,4 @@
+#0 2 1,15 * * root /hom/venv/bin/python /home/delete_guests.py
+#* * * * * root /home/venv/bin/python /home/delete_guests.py
+#* * * * * root curl -X DELETE "http://flaskapp:4000/api/flask/guest/delete-guests"
+0 2 1,15 * * root curl -X DELETE "http://flaskapp:4000/api/flask/guest/delete-guests"
