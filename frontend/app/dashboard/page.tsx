@@ -31,6 +31,7 @@ export default function Page() {
   const [isClient, setIsClient] = useState(false);
   const [isMessageVisible, setIsMessageVisible] = useState(true);
   const [dilemmaSubmitted, setDilemmaSubmitted] = useState(false);
+  const [isGuest, setIsGuest] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
@@ -43,8 +44,6 @@ export default function Page() {
       }
     }
   }, []);
-
-
 
   //When the user loads the dashboard page, check and see which forms have been submitted
   useEffect(() => {
@@ -73,6 +72,20 @@ export default function Page() {
             //dilemmaSubmitted = false;
         }
       }
+      try{
+        //checking to see if the logged in student is a guest or not
+        const guest = await axios.get(`${apiUrl}/api/flask/guest/is-guest?student_id=${localStorage.getItem('id')}`);
+        if(guest){
+          setIsGuest(true);
+          localStorage.setItem('guest', 'true');
+          console.log("student is guest");
+        }else{
+          localStorage.setItem('guest','false');
+          console.log("student is not a guest")
+        }
+      }catch(error){
+        console.log("Error checking if student is guest");
+      }
     };
 
     fetchData();
@@ -84,6 +97,13 @@ export default function Page() {
     const currentTime = new Date().getTime();
     localStorage.setItem(HIDE_MESSAGE_KEY, currentTime.toString()); // Store the timestamp when the message is hidden
   };
+
+  // const useEffect = async () => {
+  //   const guest = await axios.get(`${apiUrl}/api/flask/guest/is-guest?student_id=${localStorage.getItem('id')}`);
+  //   if(guest){
+  //     setIsGuest(true);
+  //   }
+  // };
 
   if (!isClient) {
     return null;
@@ -122,6 +142,20 @@ export default function Page() {
           <MoralMeter />
         </div>
       </div>
+
+      {/* conditional rendering for the guest message*/}
+      {isGuest && (
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
+          <div>
+            <h2 className={`${lusitana.className} text-xl md:text-5xl`}>
+              This is Guest Mode
+            </h2>
+            <p className="text-gray-500 text-sm md:text-lg">
+              You can test the website here without permanently saving your inputs. Once you logout you will not be able to see your answers.
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Conditional rendering for the dilemma form submission message */}
       {!dilemmaSubmitted && (

@@ -251,3 +251,13 @@ def populate_guest_assignments(guest_id):
         
     except Exception as e:
         print(e, flush=True)
+        
+@bp.route('/api/flask/guest/is-guest', methods=['GET'])
+def is_guest():
+    print("Checking if student is guest", flush=True)
+    try:
+        student_id = request.args.get('student_id')
+        guest = Student.get_guest_by_id(student_id)
+        return jsonify({"guest":guest}, 200)
+    except Exception as e:
+        return jsonify({"message":"Error checking guest", "error":e},500)

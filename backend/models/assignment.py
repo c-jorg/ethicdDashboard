@@ -76,7 +76,7 @@ class Assignment(db.Model):
             .order_by(cls.last_modified.desc())
             .all()
         )
-        print(f'from assignment model: {assignments}',flush=True)
+        #print(f'from assignment model: {assignments}',flush=True)
         return assignments
     
     @classmethod

@@ -16,6 +16,7 @@ def setup_guest():
         Professor.post_professor("guest professor", "guestprofessoremail@testmail.com", "$2a$12$2ENfWLUOCsfG9wU5FxLe5O7X/NiPdxgKEb4DnCAdY5JAy.Z1CN51O")
         class_exists = Class.get_class_id_by_class_name("guest class")
         if class_exists is None:
+            print("guest class 1 does not exist", flush=True)
             Class.post_class("guest class", Professor.get_professor_id_by_professor_name("guest professor"), "Guest Class")
             print("guest class added", flush=True)
         else:
@@ -23,6 +24,7 @@ def setup_guest():
             
         class2_exists = Class.get_class_id_by_class_name("guest class 2")
         if class2_exists is None:
+            print("Guest class 2 does not exist", flush=True)
             Class.post_class("guest class 2", Professor.get_professor_id_by_professor_name("guest professor"), "Guest Class 2")
             print("guest class 2 added", flush=True)
         else:
