@@ -37,6 +37,7 @@ class Class(db.Model):
     
     @classmethod
     def post_class(cls, class_name, prof_id, class_code):
+        print(f"Creating class name: {class_name}, prof_id: {prof_id}, class_code: {class_code}",flush=True)
         course = cls(class_name, prof_id, class_code)
         db.session.add(course)
         db.session.commit()

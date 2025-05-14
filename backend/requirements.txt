@@ -8,3 +8,4 @@ marshmallow-sqlalchemy
 bcrypt
 pytz
 pytest
+ethics-dashboard-models

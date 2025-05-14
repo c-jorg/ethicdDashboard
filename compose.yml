@@ -11,6 +11,9 @@ services:
        NEXT_PUBLIC_API_URL: http://213.255.209.162:4000
     ports:
       - 3000:3000
+    volumes:
+      - .:/frontend
+      - ./frontend/node_modules:/app/node_modules
     environment:
     - NEXT_PUBLIC_API_URL=http://213.255.209.162:4000
     - DEBUG=true
@@ -32,8 +35,11 @@ services:
       dockerfile: flask.dockerfile
     ports:
       - "4000:4000"
+    volumes:
+      - .:/backend
     environment:
       - DATABASE_URL=postgresql://ethics_dashboard:Letmein1!@db:5432/ethics_dashboard
+      - FLASK_ENV=development
     depends_on:
       - db
     networks:
@@ -46,6 +52,8 @@ services:
     build:
       context: ./cron
       dockerfile: cron.dockerfile 
+    volumes:
+      - .:/cron
     depends_on:
       - flaskapp
     networks:
