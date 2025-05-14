@@ -8,6 +8,7 @@ class Class(db.Model):
     id = db.Column("class_id", db.Integer, primary_key=True)
     class_name = db.Column("class_name", db.String)
     prof_id = db.Column("prof_id", db.Integer, db.ForeignKey('professors.prof_id'))
+    class_code = db.Column("class_code", db.String, unique=True)
     
     # Relationships
     # enrollments = db.relationship("Enrollment", backref="class", lazy='dynamic')
@@ -16,15 +17,16 @@ class Class(db.Model):
     # caseStudies = db.relationship("CaseStudy", backref='class_id', lazy=True)
     # enrollements = db.relationship("Enrollment", backref='class_id', lazy=True)
 
-    def __init__(self, class_name, prof_id):
+    def __init__(self, class_name, prof_id, class_code):
         self.class_name = class_name
         self.prof_id = prof_id
+        self.class_code = class_code
 
     # def json(self):
     #     return {'id': self.id, 'class_name': self.class_name}
     
     def __repr__(self):
-        return f"Class(ID: {self.id}, Name: {self.class_name}, Prof ID: {self.prof_id})"
+        return f"Class(ID: {self.id}, Name: {self.class_name}, Prof ID: {self.prof_id}, Class Code: {self.class_code})"
     
     def get_id(self):
         return self.id
@@ -34,8 +36,9 @@ class Class(db.Model):
         return db.session.query(cls).filter(cls.class_name == class_name).first().id
     
     @classmethod
-    def post_class(cls, class_name, prof_id):
-        course = cls(class_name, prof_id)
+    def post_class(cls, class_name, prof_id, class_code):
+        print(f"Creating class name: {class_name}, prof_id: {prof_id}, class_code: {class_code}",flush=True)
+        course = cls(class_name, prof_id, class_code)
         db.session.add(course)
         db.session.commit()
 
@@ -51,9 +54,11 @@ class Class(db.Model):
     def get_class_id_by_class_name(cls, class_name):
         class1 = db.session.query(cls).filter(cls.class_name == class_name).first()
         print(f"In school_class model: {class1}",flush=True)
-        if class1 is None:
-            return None
         return class1.id 
+    
+    @classmethod
+    def get_class_by_class_code(cls, class_code):
+        return db.session.query(cls).filter(cls.class_code == class_code).first()
 
 class ClassSchema(ma.SQLAlchemyAutoSchema):
     class Meta:

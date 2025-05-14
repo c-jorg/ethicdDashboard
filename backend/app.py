@@ -30,7 +30,7 @@ def create_app():
   #     )
   app.secret_key = 'dev'
   app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Disable modification tracking
-
+  #app.config('FLASK_ENV') = environ.get('FLASK_ENV')
     # Configure SQLAlchemy connection pool
   # app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
   #     'pool_size': 10,

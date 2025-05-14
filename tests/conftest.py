@@ -3,8 +3,11 @@ from flask import Flask, request, jsonify, make_response
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 import pytest 
-from backend.models.db import db, ma
-from backend.models import *
+#from backend.models.db import db, ma
+#from backend.models import *
+
+from ethics_dashboard_models import Form
+from ethics_dashboard_models import db, ma
 from backend import create_app
 import os
 
