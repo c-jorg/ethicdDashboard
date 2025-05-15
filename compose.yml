@@ -1,6 +1,21 @@
 
 services:
 
+  # PostgreSQL database service
+  db:
+    container_name: db
+    image: postgres:13
+    environment:
+      POSTGRES_USER: ethics_dashboard
+      POSTGRES_PASSWORD: Letmein1!
+      POSTGRES_DB: ethics_dashboard
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - shared_network
+
   nextapp:
     container_name: nextapp
     image: nextapp:1.0.0
@@ -57,21 +72,6 @@ services:
       - .:/cron
     depends_on:
       - flaskapp
-    networks:
-      - shared_network
-
-  # PostgreSQL database service
-  db:
-    container_name: db
-    image: postgres:13
-    environment:
-      POSTGRES_USER: ethics_dashboard
-      POSTGRES_PASSWORD: Letmein1!
-      POSTGRES_DB: ethics_dashboard
-    ports:
-      - "127.0.0.1:5432:5432"
-    volumes:
-      - pgdata:/var/lib/postgresql/data
     networks:
       - shared_network
 

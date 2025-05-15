@@ -74,14 +74,20 @@ export default function Page() {
       }
       try{
         //checking to see if the logged in student is a guest or not
-        const guest = await axios.get(`${apiUrl}/api/flask/guest/is-guest?student_id=${localStorage.getItem('id')}`);
+        const userId = localStorage.getItem('id');
+        const guest = await axios.get(`${apiUrl}/api/flask/guest/is-guest?student_id=${userId}`);
         if(guest){
           setIsGuest(true);
           localStorage.setItem('guest', 'true');
           console.log("student is guest");
+          const response = await axios.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userId}&assignment_id=${assignmentID}&form_name=dilemma`); 
+          console.log("Checked dilemma form submission")
+          if(response.data.status == 200){
+            setDilemmaSubmitted(true);
+          }
         }else{
           localStorage.setItem('guest','false');
-          console.log("student is not a guest")
+          console.log("student is not a guest");
         }
       }catch(error){
         console.log("Error checking if student is guest");

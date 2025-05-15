@@ -51,6 +51,10 @@ class CaseStudy(db.Model):
             return case_study.id
         return None
     
+    @classmethod 
+    def get_case_studies_by_class_id(cls, class_id):
+        return db.session.query(cls).filter(cls.class_id == class_id).all()        
+    
 class CaseStudySchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = CaseStudy

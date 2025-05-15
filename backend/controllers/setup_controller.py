@@ -50,9 +50,18 @@ def setup_guest():
         options = CaseStudyOption.get_case_study_options_by_case_study_id(case_study_id)
         if len(options) < 3:
             CaseStudyOption.delete_case_study_options_by_case_study_id(case_study_id)
-            CaseStudyOption.post_case_study_option(case_study_id, "Option 1", "Description for Option 1")
-            CaseStudyOption.post_case_study_option(case_study_id, "Option 2", "Description for Option 2")
-            CaseStudyOption.post_case_study_option(case_study_id, "Option 3", "Description for Option 3")
+            try:
+                print(os.getcwd(), flush=True)
+                with open('controllers/guest_assignments/safety_above_all.txt', 'r') as file:
+                    safety_text = file.read()
+                print(os.getcwd(), flush=True)
+                with open('controllers/guest_assignments/doing_wrong_to_do_right.txt', 'r') as file:
+                    doing_text = file.read()
+            except Exception as e:
+                print(f"failed to read case study files {e}", flush=True) 
+            CaseStudyOption.post_case_study_option(case_study_id, "Safety Above All", safety_text)
+            CaseStudyOption.post_case_study_option(case_study_id, "Doing Wrong to do Right", doing_text)
+            CaseStudyOption.post_case_study_option(case_study_id, "Enter the details of your hard case and/or difficult decision here", "Enter details - 700 words max")
             print("guest case study options added", flush=True)
         else:
             print("guest case study options already exist", flush=True)
