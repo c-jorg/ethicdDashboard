@@ -854,11 +854,13 @@ export default function ConsStakeholdersForm() {
             <Button type="button" onClick={submitForm} data-html2canvas-ignore className="final-button bg-blue-600 text-white px-6 py-4 rounded-lg text-xl hover:bg-blue-700 transition" data-form-name={formName}>
                 Save
             </Button>
-            <SubmitButtonWithConfirmation formRef={formRef} buttonText="Submit" onClick={(e) => { 
-              e.preventDefault();
-              submitted = true; 
-              //console.log("submitted is now " + submitted);
-            }}/>
+            {localStorage.getItem("guest") == "false" && (
+              <SubmitButtonWithConfirmation formRef={formRef} buttonText="Submit" onClick={(e) => { 
+                e.preventDefault();
+                submitted = true; 
+                //console.log("submitted is now " + submitted);
+              }}/>
+            )}
           </div>
 
           {/*Professor Comment Box for key WHOLE FORM */}

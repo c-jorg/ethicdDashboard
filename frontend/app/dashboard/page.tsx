@@ -154,10 +154,10 @@ export default function Page() {
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
           <div>
             <h2 className={`${lusitana.className} text-xl md:text-5xl`}>
-              This is Guest Mode
+              This is Guest Mode 
             </h2>
             <p className="text-gray-500 text-sm md:text-lg">
-              You can test the website here without permanently saving your inputs. Once you logout you will not be able to see your answers.
+              (Guest Mode is a work in progress) You can test the website here without permanently saving your inputs. Once you logout you will not be able to see your answers.
             </p>
           </div>
         </div>

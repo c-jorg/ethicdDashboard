@@ -500,15 +500,17 @@ export default function UniversalPrinciplesForm() {
                 ))}
 
                 {/* Save Button */}
-                <div className="mt-6 w-full max-w-screen-2xl flex justify-end gap-4">
+                <div className="mt-6 w-full max-w-screen-2xl flex justify-center gap-4">
                     <Button type="submit" data-html2canvas-ignore className="final-button bg-blue-600 text-white px-6 py-4 rounded-lg text-xl hover:bg-blue-700 transition" onClick={submitAssignmentForm} data-form-name={formName}>
                         Save
                     </Button>
-                    <SubmitButtonWithConfirmation formRef={formRef} buttonText="Submit" onClick={(e) => { 
-                        e.preventDefault();
-                        submitted = true; 
-                        console.log("submitted is now " + submitted);
-                    }}/>
+                    {localStorage.getItem("guest") == "false" && (
+                        <SubmitButtonWithConfirmation formRef={formRef} buttonText="Submit" onClick={(e) => { 
+                            e.preventDefault();
+                            submitted = true; 
+                            console.log("submitted is now " + submitted);
+                        }}/>
+                    )}
                 </div>
 
                 {/*Professor Comment Box for WHOLE FORM */}
