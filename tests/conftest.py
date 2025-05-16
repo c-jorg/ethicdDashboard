@@ -3,11 +3,11 @@ from flask import Flask, request, jsonify, make_response
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 import pytest 
-#from backend.models.db import db, ma
-#from backend.models import *
+from backend.models.db import db, ma
+from backend.models import *
 
-from ethics_dashboard_models import Form
-from ethics_dashboard_models import db, ma
+#from ethics_dashboard_models import Form
+#from ethics_dashboard_models import db, ma
 from backend import create_app
 import os
 
@@ -55,7 +55,7 @@ def client(app):
     return app.test_client()
 
 # this returns a db.session
-@pytest.fixture(scope='function')
+@pytest.fixture(scope='module')
 def db_session(app):
     with app.app_context():
         session = db.session

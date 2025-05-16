@@ -626,6 +626,7 @@ def login_guest(email, password):
                "id": student.id,
                "name": student.name
                })
+             #print(f"logging in guest, response will be {response.data}", flush=True)
              expire_date = datetime.datetime.now() + datetime.timedelta(days=500)
              return response, 200
            else:

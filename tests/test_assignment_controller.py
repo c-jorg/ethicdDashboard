@@ -16,7 +16,7 @@ def test_get_assignments_for_student(client, db_session):
     Assumes that user with ID of the student has assignments assigned to them
     """
     # add a class to the db
-    class1 = Class(class_name='example class', prof_id=1)
+    class1 = Class(class_name='example class', prof_id=1, class_code='exampleclass1')
     db_session.add(class1)
     db_session.commit()
 
