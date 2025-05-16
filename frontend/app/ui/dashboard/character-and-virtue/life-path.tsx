@@ -498,11 +498,13 @@ export default function LifePathForm() {
           <Button type="submit" onClick={submitAssignmentForm} data-html2canvas-ignore className="final-button bg-blue-600 text-white px-6 py-4 rounded-lg text-xl hover:bg-blue-700 transition">
             Save
           </Button>
-          <SubmitButtonWithConfirmation formRef={formRef} buttonText="Submit" onClick={(e) => { 
-              e.preventDefault();
-              submitted = true; 
-              console.log("submitted is now " + submitted);
-          }}/>
+          {localStorage.getItem("guest") == "false" && (
+            <SubmitButtonWithConfirmation formRef={formRef} buttonText="Submit" onClick={(e) => { 
+                e.preventDefault();
+                submitted = true; 
+                console.log("submitted is now " + submitted);
+            }}/>
+          )}
         </div>
 
         {/*Professor Comment Box for WHOLE FORM */}

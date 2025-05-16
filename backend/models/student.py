@@ -186,6 +186,9 @@ class Student(db.Model):
         ids = [guest.id for guest in guests]
         return ids 
     
+    @classmethod
+    def get_guest_by_id(cls, id):
+        return db.session.query(cls).filter(cls.id == id).first().guest    
     
 class StudentSchema(ma.SQLAlchemyAutoSchema):
     class Meta:

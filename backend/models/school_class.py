@@ -53,12 +53,24 @@ class Class(db.Model):
     @classmethod 
     def get_class_id_by_class_name(cls, class_name):
         class1 = db.session.query(cls).filter(cls.class_name == class_name).first()
-        print(f"In school_class model: {class1}",flush=True)
-        return class1.id 
+        #print(f"In school_class model: {class1}",flush=True)
+        if class1 is None:
+            print("returning None",flush=True)
+            return None
+        else:
+            print("returning class1 id",flush=True)
+            return class1.id 
     
     @classmethod
     def get_class_by_class_code(cls, class_code):
         return db.session.query(cls).filter(cls.class_code == class_code).first()
+    
+    @classmethod
+    def get_class_id_by_class_code(cls, class_code):
+        course = db.session.query(cls).filter(cls.class_code == class_code).first()
+        if course:
+            return course.id
+        return None
 
 class ClassSchema(ma.SQLAlchemyAutoSchema):
     class Meta:

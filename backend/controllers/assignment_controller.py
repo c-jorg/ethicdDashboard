@@ -61,11 +61,11 @@ def save_form():
     #         last_modified=last_modified
     #     )
     # db.session.add(answer)
-    print(answers, flush=True)
+    #print(answers, flush=True)
     print("top of loop", flush=True)
     for key, value in answers.items():
       #print(answer)
-      print("in loop", flush=True)
+      #print("in loop", flush=True)
       #print(key, value)
       #new_answer = Answer(assignment_id, form_id, key, value if isinstance(value, str) else None, value if isinstance(value, int) else None, datetime.now(), last_modified)
       if isinstance(value,str):
@@ -346,11 +346,11 @@ def submit_form():
     #         last_modified=last_modified
     #     )
     # db.session.add(answer)
-    print(answers, flush=True)
+    #print(answers, flush=True)
     print("top of loop", flush=True)
     for key, value in answers.items():
       #print(answer)
-      print("in loop", flush=True)
+      #print("in loop", flush=True)
       #print(key, value)
       #new_answer = Answer(assignment_id, form_id, key, value if isinstance(value, str) else None, value if isinstance(value, int) else None, datetime.now(), datetime.now())
       #db.session.add(new_answer)
@@ -436,7 +436,7 @@ def get_answers():
             #form_data = [{'content': {answer.key : answer.value_int if answer.value_int is not None else answer.value_string}} for answer in answers]
             form_data = [{'content' : {}}]
             for answer in answers:
-                print(answer.key, flush=True)
+                #print(answer.key, flush=True)
                 #content = {f"{answer.key}" : answer.value_int if answer.value_int is not None else f"{answer.value_string}"}
                 content = answer.value_int if answer.value_int is not None else answer.value_string
                 form_data[0]['content'][answer.key] = content
@@ -449,7 +449,7 @@ def get_answers():
         }
         assignment_data.append(assignment_info)
 
-        print("ASSIGNMENT DAtA: ", assignment_data, flush=True)
+        #print("ASSIGNMENT DAtA: ", assignment_data, flush=True)
 
         # Serialize the data into a list of dictionaries
         return jsonify({'message': 'Form data retrieved successfully', 'data': assignment_data}), 200

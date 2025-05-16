@@ -14,6 +14,7 @@ export const dilemmaFormSubmitted = async (
   apiUrl: string
 ): Promise<boolean> => {
   let data;
+  console.log(`in dilemmaFormSubmitted function userID ${userID} assignmentID ${assignmentID} apiURL ${apiUrl}`);
   try {
     if (!userID) {
       console.log("User ID is not found in localStorage.");
@@ -25,13 +26,26 @@ export const dilemmaFormSubmitted = async (
     if (localSubmitted) {
       return localSubmitted === "true";
     }
+    var thisFormData;
+    if(localStorage.getItem("guest") == 'false') {
+      console.log("is-dilemma-submitted.tsx user is not a guest")
+      thisFormData = await axios.get(
+        `${apiUrl}/api/flask/assignment/is-form-submitted?student_id=${userID}&assignment_id=${assignmentID}&form_name=dilemma`
+      );
+    } else {
+      thisFormData = await axios.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userID}&assignment_id=${assignmentID}&form_name=dilemma`);
+      if(thisFormData.status == 200){
+        thisFormData.data.message = "true"; 
+        console.log("is-dilemma-submitted.tsx Dilemma has been saved and user is a guest");
+      }
+    }
 
-    const thisFormData = await axios.get(
-      `${apiUrl}/api/flask/assignment/is-form-submitted?student_id=${userID}&assignment_id=${assignmentID}&form_name=dilemma`
-    );
-
-    data = thisFormData.data.message;
-
+    try{
+      data = thisFormData.data.message;
+    }catch(error){
+      console.log("Error checing if guest saved dilemma form")
+      //data = "false"
+    }
     if (data) {
       return data === "true";
     } else {

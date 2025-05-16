@@ -11,7 +11,7 @@ export default function DilemmaPage() {
 
         <div className="">
           <h1 className="font-semibold text-grey-800 md:text-3xl text-center">
-            Describe Your Dilemma
+            Choose Your Case Study
           </h1>
         </div>
 

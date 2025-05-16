@@ -14,59 +14,160 @@ def setup_guest():
     try:
         #make guest prof and class
         Professor.post_professor("guest professor", "guestprofessoremail@testmail.com", "$2a$12$2ENfWLUOCsfG9wU5FxLe5O7X/NiPdxgKEb4DnCAdY5JAy.Z1CN51O")
-        class_exists = Class.get_class_id_by_class_name("guest class")
+        class_exists = Class.get_class_id_by_class_code("guest111")
         if class_exists is None:
-            Class.post_class("guest class", Professor.get_professor_id_by_professor_name("guest professor"), "Guest Class")
+            print("guest class 111 does not exist", flush=True)
+            Class.post_class("guest class 111", Professor.get_professor_id_by_professor_name("guest professor"), "guest111")
             print("guest class added", flush=True)
         else:
             print("guest class already exists", flush=True)
             
-        class2_exists = Class.get_class_id_by_class_name("guest class 2")
+        class2_exists = Class.get_class_id_by_class_code("guest222")
         if class2_exists is None:
-            Class.post_class("guest class 2", Professor.get_professor_id_by_professor_name("guest professor"), "Guest Class 2")
+            print("Guest class 2 does not exist", flush=True)
+            Class.post_class("guest class 222", Professor.get_professor_id_by_professor_name("guest professor"), "guest222")
             print("guest class 2 added", flush=True)
         else:
             print("guest class 2 already exists", flush=True)
             
-        case_study_exists = CaseStudy.get_case_study_by_title("Guest Case Study")
+        case_study_exists = CaseStudy.get_case_study_by_title("Guest Assignment 1")
         if case_study_exists is None:
-            CaseStudy.post_case_study(Professor.get_professor_id_by_professor_name("guest professor"), Class.get_class_id_by_class_name("guest class"), 'Guest Case Study', datetime.now())
+            CaseStudy.post_case_study(Professor.get_professor_id_by_professor_name("guest professor"), Class.get_class_id_by_class_code("guest111"), 'Guest Assignment 1', datetime.now())
             print("gues case study added", flush=True)
         else:
             print("guest case study already exists", flush=True)
             
-        case_study2_exists = CaseStudy.get_case_study_by_title("Guest Case Study 2")
+        case_study2_exists = CaseStudy.get_case_study_by_title("Guest Ethical Dilemma")
         if case_study2_exists is None:
-            CaseStudy.post_case_study(Professor.get_professor_id_by_professor_name("guest professor"), Class.get_class_id_by_class_name("guest class 2"), 'Guest Case Study 2', datetime.now())
+            CaseStudy.post_case_study(Professor.get_professor_id_by_professor_name("guest professor"), Class.get_class_id_by_class_code("guest111"), 'Guest Ethical Dilemma', datetime.now())
             print("guest case study 2 added", flush=True)
         else:
             print("guest case study 2 already exists", flush=True)
             
+        case_study3_exists = CaseStudy.get_case_study_by_title("Guest Moral Dilemma")
+        if case_study3_exists is None:
+            CaseStudy.post_case_study(Professor.get_professor_id_by_professor_name("guest professor"), Class.get_class_id_by_class_code("guest111"), 'Guest Moral Dilemma', datetime.now())
+        else:
+            print("guest case study 3 already exists", flush=True)
+            
+        case_study4_exists = CaseStudy.get_case_study_by_title("guest class 222 assignment 1")
+        if case_study4_exists is None:
+            CaseStudy.post_case_study(Professor.get_professor_id_by_professor_name("guest professor"), Class.get_class_id_by_class_code("guest222"), 'guest class 222 assignment 1', datetime.now())
+        else:
+            print("guest case study 4 already exists", flush=True)
+            
+        case_study5_exists = CaseStudy.get_case_study_by_title("guest 222 Final Project")
+        if case_study5_exists is None:
+            CaseStudy.post_case_study(Professor.get_professor_id_by_professor_name("guest professor"), Class.get_class_id_by_class_code("guest222"), 'guest 222 Final Project', datetime.now())
+        else:
+            print("guest case study 5 already exists")
+            
         print("getting case study id", flush=True)
-        case_study_id = CaseStudy.get_case_study_id_by_title("Guest Case Study")
+        case_study_id = CaseStudy.get_case_study_id_by_title("Guest Assignment 1")
         print("getting case study options", flush=True)
         options = CaseStudyOption.get_case_study_options_by_case_study_id(case_study_id)
         if len(options) < 3:
             CaseStudyOption.delete_case_study_options_by_case_study_id(case_study_id)
-            CaseStudyOption.post_case_study_option(case_study_id, "Option 1", "Description for Option 1")
-            CaseStudyOption.post_case_study_option(case_study_id, "Option 2", "Description for Option 2")
-            CaseStudyOption.post_case_study_option(case_study_id, "Option 3", "Description for Option 3")
+            try:
+                print(os.getcwd(), flush=True)
+                with open('controllers/guest_assignments/safety_above_all.txt', 'r') as file:
+                    safety_text = file.read()
+                print(os.getcwd(), flush=True)
+                with open('controllers/guest_assignments/doing_wrong_to_do_right.txt', 'r') as file:
+                    doing_text = file.read()
+            except Exception as e:
+                print(f"failed to read case study files {e}", flush=True) 
+            CaseStudyOption.post_case_study_option(case_study_id, "Safety Above All", safety_text)
+            CaseStudyOption.post_case_study_option(case_study_id, "Doing Wrong to do Right", doing_text)
+            CaseStudyOption.post_case_study_option(case_study_id, "Enter the details of your hard case and/or difficult decision here", "Enter details - 700 words max")
             print("guest case study options added", flush=True)
         else:
             print("guest case study options already exist", flush=True)
             
-        case_study2_id = CaseStudy.get_case_study_id_by_title("Guest Case Study 2")
+        case_study2_id = CaseStudy.get_case_study_id_by_title("Guest Ethical Dilemma")
         #print("getting case study options", flush=True)
         options2 = CaseStudyOption.get_case_study_options_by_case_study_id(case_study2_id)
         if len(options2) < 3:
             CaseStudyOption.delete_case_study_options_by_case_study_id(case_study2_id)
-            CaseStudyOption.post_case_study_option(case_study2_id, "Option 1", "Description for Option 1")
-            CaseStudyOption.post_case_study_option(case_study2_id, "Option 2", "Description for Option 2")
-            CaseStudyOption.post_case_study_option(case_study2_id, "Option 3", "Description for Option 3")
+            try:
+                print(os.getcwd(), flush=True)
+                with open('controllers/guest_assignments/safety_above_all.txt', 'r') as file:
+                    safety_text = file.read()
+                print(os.getcwd(), flush=True)
+                with open('controllers/guest_assignments/doing_wrong_to_do_right.txt', 'r') as file:
+                    doing_text = file.read()
+            except Exception as e:
+                print(f"failed to read case study files {e}", flush=True) 
+            CaseStudyOption.post_case_study_option(case_study2_id, "Safety Above All", safety_text)
+            CaseStudyOption.post_case_study_option(case_study2_id, "Doing Wrong to do Right", doing_text)
+            CaseStudyOption.post_case_study_option(case_study2_id, "Enter the details of your hard case and/or difficult decision here", "Enter details - 700 words max")
             print("guest case study 2 options added", flush=True)
         else:
             print("guest case study 2 options already exist", flush=True)
         
+        case_study3_id = CaseStudy.get_case_study_id_by_title("Guest Moral Dilemma")
+        #print("getting case study options", flush=True)
+        options3 = CaseStudyOption.get_case_study_options_by_case_study_id(case_study3_id)
+        if len(options3) < 3:
+            CaseStudyOption.delete_case_study_options_by_case_study_id(case_study3_id)
+            try:
+                print(os.getcwd(), flush=True)
+                with open('controllers/guest_assignments/safety_above_all.txt', 'r') as file:
+                    safety_text = file.read()
+                print(os.getcwd(), flush=True)
+                with open('controllers/guest_assignments/doing_wrong_to_do_right.txt', 'r') as file:
+                    doing_text = file.read()
+            except Exception as e:
+                print(f"failed to read case study files {e}", flush=True) 
+            CaseStudyOption.post_case_study_option(case_study3_id, "Safety Above All", safety_text)
+            CaseStudyOption.post_case_study_option(case_study3_id, "Doing Wrong to do Right", doing_text)
+            CaseStudyOption.post_case_study_option(case_study3_id, "Enter the details of your hard case and/or difficult decision here", "Enter details - 700 words max")
+            print("guest case study 3 options added", flush=True)
+        else:
+            print("guest case study 3 options already exist", flush=True)
+            
+        case_study4_id = CaseStudy.get_case_study_id_by_title("guest class 222 assignment 1")
+        #print("getting case study options", flush=True)
+        options4 = CaseStudyOption.get_case_study_options_by_case_study_id(case_study4_id)
+        if len(options4) < 3:
+            CaseStudyOption.delete_case_study_options_by_case_study_id(case_study4_id)
+            try:
+                print(os.getcwd(), flush=True)
+                with open('controllers/guest_assignments/safety_above_all.txt', 'r') as file:
+                    safety_text = file.read()
+                print(os.getcwd(), flush=True)
+                with open('controllers/guest_assignments/doing_wrong_to_do_right.txt', 'r') as file:
+                    doing_text = file.read()
+            except Exception as e:
+                print(f"failed to read case study files {e}", flush=True) 
+            CaseStudyOption.post_case_study_option(case_study4_id, "Safety Above All", safety_text)
+            CaseStudyOption.post_case_study_option(case_study4_id, "Doing Wrong to do Right", doing_text)
+            CaseStudyOption.post_case_study_option(case_study4_id, "Enter the details of your hard case and/or difficult decision here", "Enter details - 700 words max")
+            print("guest case study 4 options added", flush=True)
+        else:
+            print("guest case study 4 options already exist", flush=True)
+            
+        case_study5_id = CaseStudy.get_case_study_id_by_title("guest 222 Final Project")
+        #print("getting case study options", flush=True)
+        options5 = CaseStudyOption.get_case_study_options_by_case_study_id(case_study5_id)
+        if len(options5) < 3:
+            CaseStudyOption.delete_case_study_options_by_case_study_id(case_study5_id)
+            try:
+                print(os.getcwd(), flush=True)
+                with open('controllers/guest_assignments/safety_above_all.txt', 'r') as file:
+                    safety_text = file.read()
+                print(os.getcwd(), flush=True)
+                with open('controllers/guest_assignments/doing_wrong_to_do_right.txt', 'r') as file:
+                    doing_text = file.read()
+            except Exception as e:
+                print(f"failed to read case study files {e}", flush=True) 
+            CaseStudyOption.post_case_study_option(case_study5_id, "Safety Above All", safety_text)
+            CaseStudyOption.post_case_study_option(case_study5_id, "Doing Wrong to do Right", doing_text)
+            CaseStudyOption.post_case_study_option(case_study5_id, "Enter the details of your hard case and/or difficult decision here", "Enter details - 700 words max")
+            print("guest case study 5 options added", flush=True)
+        else:
+            print("guest case study 5 options already exist", flush=True)
+            
         return make_response(jsonify({"message":"guest setup successful"}), 201)
     except Exception as e:
         return make_response(jsonify({"message":"error setting up guest mode", "error":f"{e}"}), 500)

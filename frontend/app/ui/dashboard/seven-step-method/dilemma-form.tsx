@@ -10,6 +10,10 @@ import SubmitButtonWithConfirmation from '@/app/ui/components/submit-button-with
 import DotsLoading from '@/app/ui/components/loading';
 import FormCompletedCard from '@/app/ui/components/form-completed-card';
 import ProfessorCommentBox from '@/app/ui/components/prof-comment-box';
+import { dilemmaFormSubmitted } from '@/app/utils/is-dilemma-submitted';
+import CategoricalImperativesForm from '../action-and-duty/categorical-imperatives-form';
+import { useServerInsertedHTML } from 'next/navigation';
+import setDilemmaSubmitted from '@/app/ui/components/nav-links';
 
 interface RadioItem {
   id: number;
@@ -86,17 +90,17 @@ export default function RadioButtonForm() {
     { title: '', description: '' },
     { title: '', description: '' },
     { title: '', description: '' },
-    { title: '', description: '' },
-    { title: '', description: '' },
+
   ]);
 
-  const [radioSelections, setRadioSelections] = useState(
-    Array.from({ length: 5 }, () => ({
-      harm: '',
-      publicity: '',
-      reversible: '',
-    }))
-  );
+  //removing the test options section
+  // const [radioSelections, setRadioSelections] = useState(
+  //   Array.from({ length: 5 }, () => ({
+  //     harm: '',
+  //     publicity: '',
+  //     reversible: '',
+  //   }))
+  // );
 
   const gatherFactsQuestions = [
     "Why did it happen the way it did?",
@@ -137,29 +141,30 @@ export default function RadioButtonForm() {
     localStorage.setItem(`${prefix}${label}`, value);
   };
 
+  //this function not needed unless test options are added back in
   //radio change for test options
   // Handling radio button change
-  const handleRadioChange2 = (sectionIndex: number, field: 'harm' | 'publicity' | 'reversible', value: string) => {
-    const updatedSelections = [...radioSelections];
-    updatedSelections[sectionIndex][field] = value;
+  // const handleRadioChange2 = (sectionIndex: number, field: 'harm' | 'publicity' | 'reversible', value: string) => {
+  //   const updatedSelections = [...radioSelections];
+  //   updatedSelections[sectionIndex][field] = value;
     
-    setRadioSelections(updatedSelections);
+  //   setRadioSelections(updatedSelections);
 
 
-    localStorage.setItem(`${prefix}${field}-${value}-${sectionIndex}`, value);
-    if(value == 'no'){
-      localStorage.setItem(`${prefix}${field}-yes-${sectionIndex}`, 'false');
-    }else{
-      localStorage.setItem(`${prefix}${field}-no-${sectionIndex}`, 'false');
-    }
+  //   localStorage.setItem(`${prefix}${field}-${value}-${sectionIndex}`, value);
+  //   if(value == 'no'){
+  //     localStorage.setItem(`${prefix}${field}-yes-${sectionIndex}`, 'false');
+  //   }else{
+  //     localStorage.setItem(`${prefix}${field}-no-${sectionIndex}`, 'false');
+  //   }
     
-  };
+  // };
 
   const handleTentativeChoiceChange = ( value: string, button: string) => {
     setTentativeChoice(value);
     setTentativeChoiceIndex(button.charAt(button.length - 1));
     
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 3; i++) {
       const tentativeChoiceKey = `tentative-choice-${i}`;
       if (tentativeChoiceKey !== button) {
         localStorage.setItem(`${prefix}${tentativeChoiceKey}`, 'false');
@@ -292,17 +297,18 @@ export default function RadioButtonForm() {
       localStorage.removeItem(`${prefix}dilemma-${i}`);
       localStorage.removeItem(`${prefix}gather-facts-${i}`);
     }
-    for(let i = 0; i < 5; i++){
-      localStorage.removeItem(`${prefix}option-title-${i}`);
-      localStorage.removeItem(`${prefix}option-description-${i}`);
-      localStorage.removeItem(`${prefix}harm-no-${i}`);
-      localStorage.removeItem(`${prefix}harm-yes-${i}`);
-      localStorage.removeItem(`${prefix}publicity-no-${i}`);
-      localStorage.removeItem(`${prefix}publicity-yes-${i}`);
-      localStorage.removeItem(`${prefix}reversible-no-${i}`);
-      localStorage.removeItem(`${prefix}reversible-yes-${i}`);
-      localStorage.removeItem(`${prefix}tentative-choice-${i}`);
-    }
+    //this for loop has to do with the test options section
+    // for(let i = 0; i < 5; i++){
+    //   localStorage.removeItem(`${prefix}option-title-${i}`);
+    //   localStorage.removeItem(`${prefix}option-description-${i}`);
+    //   localStorage.removeItem(`${prefix}harm-no-${i}`);
+    //   localStorage.removeItem(`${prefix}harm-yes-${i}`);
+    //   localStorage.removeItem(`${prefix}publicity-no-${i}`);
+    //   localStorage.removeItem(`${prefix}publicity-yes-${i}`);
+    //   localStorage.removeItem(`${prefix}reversible-no-${i}`);
+    //   localStorage.removeItem(`${prefix}reversible-yes-${i}`);
+    //   localStorage.removeItem(`${prefix}tentative-choice-${i}`);
+    // }
     localStorage.removeItem(`${prefix}results-1`);
     localStorage.removeItem(`${prefix}results-2`);
     localStorage.removeItem(`${prefix}state-the-problem`);
@@ -593,7 +599,7 @@ export default function RadioButtonForm() {
   
           // Set options data
           const optionsData = [];
-          for (let i = 0; i < 5; i++) {  // Assuming 5 options
+          for (let i = 0; i < 3; i++) {  // Assuming 3 options
             const titleKey = `option-title-${i}`;
             const descriptionKey = `option-description-${i}`;
 
@@ -618,28 +624,29 @@ export default function RadioButtonForm() {
           setOptions([...optionsData]);
           //console.log("1 options data is " + JSON.stringify(options, null, 2));
 
+          //not needed with no test options section
           // Populate radio button selections 
-          const radioSelectionsData = [];
+          // const radioSelectionsData = [];
 
-          var i = 0;
-          for(i = 0; i < 5; i++){
-            const harmNo = localStorage.getItem(`${prefix}harm-no-${i}`) || content[`harm-no-${i}`] || '';
-            const harmYes = localStorage.getItem(`${prefix}harm-yes-${i}`) || content[`harm-yes-${i}`] || '';
-            const publicityNo = localStorage.getItem(`${prefix}publicity-no-${i}`) || content[`publicity-no-${i}`] || '';
-            const publicityYes = localStorage.getItem(`${prefix}publicity-yes-${i}`) || content[`publicity-yes-${i}`] || '';
-            const reversibleNo = localStorage.getItem(`${prefix}reversible-no-${i}`) || content[`reversible-no-${i}`] || '';
-            const reversibleYes = localStorage.getItem(`${prefix}reversible-yes-${i}`) || content[`reversible-yes-${i}`] || '';
+          // var i = 0;
+          // for(i = 0; i < 5; i++){
+          //   const harmNo = localStorage.getItem(`${prefix}harm-no-${i}`) || content[`harm-no-${i}`] || '';
+          //   const harmYes = localStorage.getItem(`${prefix}harm-yes-${i}`) || content[`harm-yes-${i}`] || '';
+          //   const publicityNo = localStorage.getItem(`${prefix}publicity-no-${i}`) || content[`publicity-no-${i}`] || '';
+          //   const publicityYes = localStorage.getItem(`${prefix}publicity-yes-${i}`) || content[`publicity-yes-${i}`] || '';
+          //   const reversibleNo = localStorage.getItem(`${prefix}reversible-no-${i}`) || content[`reversible-no-${i}`] || '';
+          //   const reversibleYes = localStorage.getItem(`${prefix}reversible-yes-${i}`) || content[`reversible-yes-${i}`] || '';
 
-            radioSelectionsData.push({
-              harm: (harmNo != 'false')? harmNo : harmYes,
-              publicity: (publicityNo != 'false')? publicityNo : publicityYes,
-              reversible: (reversibleNo != 'false')? reversibleNo : reversibleYes,
-            })
+          //   radioSelectionsData.push({
+          //     harm: (harmNo != 'false')? harmNo : harmYes,
+          //     publicity: (publicityNo != 'false')? publicityNo : publicityYes,
+          //     reversible: (reversibleNo != 'false')? reversibleNo : reversibleYes,
+          //   })
             
-          }
-          setRadioSelections(radioSelectionsData);
+          // }
+          // setRadioSelections(radioSelectionsData);
 
-          for(let i = 0; i < 5; i++){
+          for(let i = 0; i < 3; i++){
             const choiceKey = `tentative-choice-${i}`;
 
             if(localStorage.getItem(`${prefix}${choiceKey}`) != null && localStorage.getItem(`${prefix}${choiceKey}`) != 'false'){
@@ -699,6 +706,7 @@ export default function RadioButtonForm() {
    * @param e  The form submission event
    */
   const submitAssignmentForm = async (e:any) => {
+      console.log("Saving dilemma form answers");
       e.preventDefault()
       //console.log("Entered the submit assignment handler")
       const studentID = localStorage.getItem('id'); 
@@ -783,7 +791,7 @@ export default function RadioButtonForm() {
         }
 
         clearLocalStorage();
-        if(submitted){
+        if(submitted || localStorage.getItem("guest") == "true"){
           localStorage.setItem(`${prefix}dilemma-submitted`, "true");
           //force refresh so the nav links update
           window.location.reload();
@@ -824,7 +832,7 @@ export default function RadioButtonForm() {
        
         {/*CASE STUDY OPTIONS*/}
         <h1 className={`${lusitana.className} mb-4 text-2xl text-center`}>
-          Select one of the following dilemmas
+          Select one of the following case studies
         </h1>
 
         {shuffledOptions.map((item) => (
@@ -1086,7 +1094,8 @@ export default function RadioButtonForm() {
         </fieldset>
 
         {/*Field set for the  Test Options section*/}
-        <fieldset className="border border-gray-300 rounded-lg p-4 space-y-4">
+        {/*Removing this section*/}
+        {/*<fieldset className="border border-gray-300 rounded-lg p-4 space-y-4">
             <legend className="font-semibold">Test Options:</legend>
             {options.map((option, index) => (
                 <div key={index} className="border border-gray-200 rounded-lg p-4 flex flex-col">
@@ -1201,13 +1210,15 @@ export default function RadioButtonForm() {
             ))}
 
             {/*Professor Comment Box for key TEST-OPTIONS */}
+            {/*not needed with no test options sextion*/}
+            {/*}
             {lockForm && feedback["test-options"] && (
               <div className="border border-gray-200 rounded-lg p-4">
                 <ProfessorCommentBox comment={feedback["test-options"]} />
               </div>
             )}
         </fieldset>
-
+        */}
 
 
         {/*Field set for the tentative choice section*/}
@@ -1250,14 +1261,26 @@ export default function RadioButtonForm() {
           
 
         <div className="flex justify-center mt-6 gap-4">
-          <Button type="button" onClick={submitAssignmentForm} data-html2canvas-ignore className="final-button bg-blue-600 text-white px-6 py-4 rounded-lg text-xl hover:bg-blue-700 transition" data-form-name={formName}>
+          <Button
+           type="button"
+            onClick={(e) => {
+              //console.log("save button clicked");
+              //if the user is a guest unlock the other forms
+              if(localStorage.getItem("guest") == "true"){
+                localStorage.setItem(`${prefix}dilemma-submitted`, "true")
+              }
+              submitAssignmentForm(e);
+            }} 
+            data-html2canvas-ignore className="final-button bg-blue-600 text-white px-6 py-4 rounded-lg text-xl hover:bg-blue-700 transition" data-form-name={formName}>
               Save
           </Button>
+        {localStorage.getItem("guest") == "false" && (
           <SubmitButtonWithConfirmation formRef={formRef} buttonText="Submit" onClick={(e) => { 
             e.preventDefault();
             submitted = true; 
             //console.log("submitted is now " + submitted);
           }}/>
+        )}
         </div>
 
         {/*Professor Comment Box for key WHOLE FORM */}

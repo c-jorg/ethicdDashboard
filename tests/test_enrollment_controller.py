@@ -32,7 +32,7 @@ def test_get_enrollments(client, db_session):
     db_session.commit()
     print("Professor: ", prof, flush=True)
 
-    course = Class('Philosophy 331', f'{prof.get_id()}')
+    course = Class('Philosophy 331', f'{prof.get_id()}', 'PHIL331')
     db_session.add(course)
     db_session.commit()
     print("Course: ", course, flush=True)
@@ -72,7 +72,7 @@ def test_enroll_student(client, db_session):
     db_session.commit()
     print("Professor: ", prof, flush=True)
 
-    course = Class('Philosophy 331', f'{prof.get_id()}')
+    course = Class('Philosophy 331', f'{prof.get_id()}', 'PHIL3331')
     db_session.add(course)
     db_session.commit()
     print("Course: ", course, flush=True)
@@ -112,7 +112,7 @@ def test_enroll_student_already_enrolled(client, db_session):
     db_session.commit()
     print("Professor: ", prof, flush=True)
 
-    course = Class('Philosophy 331', f'{prof.get_id()}')
+    course = Class('Philosophy 331', f'{prof.get_id()}', 'PHIL3311')
     db_session.add(course)
     db_session.commit()
     print("Course: ", course, flush=True)

@@ -32,7 +32,9 @@ class Enrollment(db.Model):
         db.session.commit()
         return enrollment
     
-    
+    @classmethod
+    def delete_enrollment_by_student_id(cls, student_id):
+        db.session.query(cls).filter(cls.id == student_id).delete()
 
 class EnrollmentSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
