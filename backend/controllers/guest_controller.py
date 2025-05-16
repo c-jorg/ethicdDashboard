@@ -139,118 +139,118 @@ def populate_guest_assignments(guest_id):
 
         #for each file add the answers to the tables
         #one will have all of them, one empty, another about half finished
-        print("making dilemma answers",flush=True)
-        #print(dilemma,flush=True)
-        print(half_assignment,flush=True)
-        print(done_assignment, flush=True)
-        for item in dilemma:
-            #print(item, flush=True)
-            key = item['key']
-            value_string = item['value_string']
-            value_int = item['value_int']
-            Answer.post_answer(half_assignment.id, Form.get_form_id_by_name("dilemma"), key, value_string, value_int, datetime.now(), datetime.now())
-            Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("dilemma"), key, value_string, value_int, datetime.now(), datetime.now())
+        # print("making dilemma answers",flush=True)
+        # #print(dilemma,flush=True)
+        # print(half_assignment,flush=True)
+        # print(done_assignment, flush=True)
+        # for item in dilemma:
+        #     #print(item, flush=True)
+        #     key = item['key']
+        #     value_string = item['value_string']
+        #     value_int = item['value_int']
+        #     Answer.post_answer(half_assignment.id, Form.get_form_id_by_name("dilemma"), key, value_string, value_int, datetime.now(), datetime.now())
+        #     Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("dilemma"), key, value_string, value_int, datetime.now(), datetime.now())
 
-        Submission.post_submission(half_assignment.id, Form.get_form_id_by_name("dilemma"), datetime.now(), guest_id)
-        Submission.post_submission(done_assignment.id, Form.get_form_id_by_name("dilemma"), datetime.now(), guest_id)
-        print("making care form",flush=True)
-        for item in care_form:
-            key = item['key']
-            value_string = item['value_string']
-            value_int = item['value_int']
-            Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("care-form"), key, value_string, value_int, datetime.now(), datetime.now())
+        # Submission.post_submission(half_assignment.id, Form.get_form_id_by_name("dilemma"), datetime.now(), guest_id)
+        # Submission.post_submission(done_assignment.id, Form.get_form_id_by_name("dilemma"), datetime.now(), guest_id)
+        # print("making care form",flush=True)
+        # for item in care_form:
+        #     key = item['key']
+        #     value_string = item['value_string']
+        #     value_int = item['value_int']
+        #     Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("care-form"), key, value_string, value_int, datetime.now(), datetime.now())
 
-        print("Making imperatives form",flush=True)
-        for item in categorical_imperatives:
-            key = item['key']
-            value_string = item['value_string']
-            value_int = item['value_int']
-            Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("categorical-imperatives"), key, value_string, value_int, datetime.now(), datetime.now())
-            Answer.post_answer(half_assignment.id, Form.get_form_id_by_name("categorical-imperatives"), key, value_string, value_int, datetime.now(), datetime.now())
-
-
-        print("making stakeholder form",flush=True)
-        for item in cons_stakeholders:
-            key = item['key']
-            value_string = item['value_string']
-            value_int = item['value_int']
-            Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("cons-stakeholders"), key, value_string, value_int, datetime.now(), datetime.now())
-            Answer.post_answer(half_assignment.id, Form.get_form_id_by_name("cons-stakeholders"), key, value_string, value_int, datetime.now(), datetime.now())
+        # print("Making imperatives form",flush=True)
+        # for item in categorical_imperatives:
+        #     key = item['key']
+        #     value_string = item['value_string']
+        #     value_int = item['value_int']
+        #     Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("categorical-imperatives"), key, value_string, value_int, datetime.now(), datetime.now())
+        #     Answer.post_answer(half_assignment.id, Form.get_form_id_by_name("categorical-imperatives"), key, value_string, value_int, datetime.now(), datetime.now())
 
 
-        print("making bentham form",flush=True)
-        for item in cons_util_bentham:
-            key = item['key']
-            value_string = item['value_string']
-            value_int = item['value_int']
-            Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("cons-util-bentham"), key, value_string, value_int, datetime.now(), datetime.now())
-            Answer.post_answer(half_assignment.id, Form.get_form_id_by_name("cons-util-bentham"), key, value_string, value_int, datetime.now(), datetime.now())
+        # print("making stakeholder form",flush=True)
+        # for item in cons_stakeholders:
+        #     key = item['key']
+        #     value_string = item['value_string']
+        #     value_int = item['value_int']
+        #     Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("cons-stakeholders"), key, value_string, value_int, datetime.now(), datetime.now())
+        #     Answer.post_answer(half_assignment.id, Form.get_form_id_by_name("cons-stakeholders"), key, value_string, value_int, datetime.now(), datetime.now())
 
 
-        print("making mill form",flush=True)
-        for item in cons_util_mill:
-            key = item['key']
-            value_string = item['value_string']
-            value_int = item['value_int']
-            Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("cons-util-mill"), key, value_string, value_int, datetime.now(), datetime.now())
-            Answer.post_answer(half_assignment.id, Form.get_form_id_by_name("cons-util-mill"), key, value_string, value_int, datetime.now(), datetime.now())
+        # print("making bentham form",flush=True)
+        # for item in cons_util_bentham:
+        #     key = item['key']
+        #     value_string = item['value_string']
+        #     value_int = item['value_int']
+        #     Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("cons-util-bentham"), key, value_string, value_int, datetime.now(), datetime.now())
+        #     Answer.post_answer(half_assignment.id, Form.get_form_id_by_name("cons-util-bentham"), key, value_string, value_int, datetime.now(), datetime.now())
 
 
-        print("making critical quesion form",flush=True)
-        for item in critical_questions:
-            key = item['key']
-            value_string = item['value_string']
-            value_int = item['value_int']
-            Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("critical-questions"), key, value_string, value_int, datetime.now(), datetime.now())
+        # print("making mill form",flush=True)
+        # for item in cons_util_mill:
+        #     key = item['key']
+        #     value_string = item['value_string']
+        #     value_int = item['value_int']
+        #     Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("cons-util-mill"), key, value_string, value_int, datetime.now(), datetime.now())
+        #     Answer.post_answer(half_assignment.id, Form.get_form_id_by_name("cons-util-mill"), key, value_string, value_int, datetime.now(), datetime.now())
 
-        print("making duties actions form",flush=True)
-        for item in duties_versus_actions:
-            key = item['key']
-            value_string = item['value_string']
-            value_int = item['value_int']
-            Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("duties-versus-actions"), key, value_string, value_int, datetime.now(), datetime.now())
 
-        print("making generations form",flush=True)
-        for item in generations_form:
-            key = item['key']
-            value_string = item['value_string']
-            value_int = item['value_int']
-            Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("generations-form"), key, value_string, value_int, datetime.now(), datetime.now())
+        # print("making critical quesion form",flush=True)
+        # for item in critical_questions:
+        #     key = item['key']
+        #     value_string = item['value_string']
+        #     value_int = item['value_int']
+        #     Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("critical-questions"), key, value_string, value_int, datetime.now(), datetime.now())
 
-        print("making intersect form",flush=True)
-        for item in intersect_form:
-            key = item['key']
-            value_string = item['value_string']
-            value_int = item['value_int']
-            Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("intersect-form"), key, value_string, value_int, datetime.now(), datetime.now())
+        # print("making duties actions form",flush=True)
+        # for item in duties_versus_actions:
+        #     key = item['key']
+        #     value_string = item['value_string']
+        #     value_int = item['value_int']
+        #     Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("duties-versus-actions"), key, value_string, value_int, datetime.now(), datetime.now())
 
-        print("making life path form",flush=True)
-        for item in life_path:
-            key = item['key']
-            value_string = item['value_string']
-            value_int = item['value_int']
-            Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("life-path"), key, value_string, value_int, datetime.now(), datetime.now())
+        # print("making generations form",flush=True)
+        # for item in generations_form:
+        #     key = item['key']
+        #     value_string = item['value_string']
+        #     value_int = item['value_int']
+        #     Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("generations-form"), key, value_string, value_int, datetime.now(), datetime.now())
 
-        print("making personal sacrifices form",flush=True)
-        for item in personal_sacrifices:
-            key = item['key']
-            value_string = item['value_string']
-            value_int = item['value_int']
-            Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("personal-sacrifices"), key, value_string, value_int, datetime.now(), datetime.now())
+        # print("making intersect form",flush=True)
+        # for item in intersect_form:
+        #     key = item['key']
+        #     value_string = item['value_string']
+        #     value_int = item['value_int']
+        #     Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("intersect-form"), key, value_string, value_int, datetime.now(), datetime.now())
 
-        print("making universal principlsd form",flush=True)
-        for item in universal_principles:
-            key = item['key']
-            value_string = item['value_string']
-            value_int = item['value_int']
-            Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("universal-principles"), key, value_string, value_int, datetime.now(), datetime.now())
+        # print("making life path form",flush=True)
+        # for item in life_path:
+        #     key = item['key']
+        #     value_string = item['value_string']
+        #     value_int = item['value_int']
+        #     Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("life-path"), key, value_string, value_int, datetime.now(), datetime.now())
 
-        print("making virtue ethics form",flush=True)
-        for item in virtue_ethics:
-            key = item['key']
-            value_string = item['value_string']
-            value_int = item['value_int']
-            Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("virtue-ethics"), key, value_string, value_int, datetime.now(), datetime.now())
+        # print("making personal sacrifices form",flush=True)
+        # for item in personal_sacrifices:
+        #     key = item['key']
+        #     value_string = item['value_string']
+        #     value_int = item['value_int']
+        #     Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("personal-sacrifices"), key, value_string, value_int, datetime.now(), datetime.now())
+
+        # print("making universal principlsd form",flush=True)
+        # for item in universal_principles:
+        #     key = item['key']
+        #     value_string = item['value_string']
+        #     value_int = item['value_int']
+        #     Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("universal-principles"), key, value_string, value_int, datetime.now(), datetime.now())
+
+        # print("making virtue ethics form",flush=True)
+        # for item in virtue_ethics:
+        #     key = item['key']
+        #     value_string = item['value_string']
+        #     value_int = item['value_int']
+        #     Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("virtue-ethics"), key, value_string, value_int, datetime.now(), datetime.now())
 
         print("guest assignments populated",flush=True)
         
