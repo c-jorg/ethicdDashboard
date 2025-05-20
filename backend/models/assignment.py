@@ -84,14 +84,16 @@ class Assignment(db.Model):
         query= (
             db.session.query(cls, CaseStudy.title)
             .join(CaseStudy, cls.case_study_id == CaseStudy.id)
-            .filter(cls.student_id == student_id, CaseStudy.class_id == class_id)
+            .filter(cls.student_id == student_id, 
+                    CaseStudy.class_id == class_id,
+                    cls.case_study_id == CaseStudy.id)
             .order_by(cls.last_modified.desc())
             .all()
         )
         print(query, flush=True)
-        results = query.all()
-        print(results, flush=True)
-        return results
+        #results = query.all()
+        #print(results, flush=True)
+        return query
         #return db.session.query(cls).filter(cls.student_id == student_id and cls.
     
     @classmethod 
