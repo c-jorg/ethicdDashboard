@@ -85,8 +85,7 @@ class Assignment(db.Model):
             db.session.query(cls, CaseStudy.title)
             .join(CaseStudy, cls.case_study_id == CaseStudy.id)
             .filter(cls.student_id == student_id, 
-                    CaseStudy.class_id == class_id,
-                    cls.case_study_id == CaseStudy.id)
+                    CaseStudy.class_id == class_id)
             .order_by(cls.last_modified.desc())
             .all()
         )
