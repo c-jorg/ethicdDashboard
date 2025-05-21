@@ -42,6 +42,12 @@ class CaseStudyOption(db.Model):
     def delete_case_study_options_by_case_study_id(cls, case_study_id):
         db.session.query(cls).filter(cls.case_study_id == case_study_id).delete()
         db.session.commit()
+        
+    @classmethod
+    def update_description(cls, id, description):
+        option = db.session.query(cls).filter(cls.id == id).first()
+        option.description = description
+        db.session.commit()
 
 class CaseStudyOptionSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
