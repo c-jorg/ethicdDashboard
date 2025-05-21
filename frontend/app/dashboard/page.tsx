@@ -74,8 +74,10 @@ export default function Page() {
       }
       try{
         //checking to see if the logged in student is a guest or not
+        console.log("checking if user is guest");
         const userId = localStorage.getItem('id');
         const response = await axios.get(`${apiUrl}/api/flask/guest/is-guest?student_id=${userId}`);
+        console.log("is guest api response " + response.data.guest);
         const guest = response.data.guest;
         if(guest){
           setIsGuest(true);

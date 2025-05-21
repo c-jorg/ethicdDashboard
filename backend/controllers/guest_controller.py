@@ -263,6 +263,7 @@ def is_guest():
     try:
         student_id = request.args.get('student_id')
         guest = Student.get_guest_by_id(student_id)
-        return jsonify({"guest":guest}, 200)
+        print(f'guest {guest}', flush=True)
+        return make_response(jsonify({"guest":guest}),200)
     except Exception as e:
         return jsonify({"message":"Error checking guest", "error":e},500)

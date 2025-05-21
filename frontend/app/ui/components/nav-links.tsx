@@ -122,7 +122,7 @@ export default function NavLinks(props: any) {
     },
     {
       name: 'Action and Duty',
-      href: '/dashboard/action-and-duty',
+      href: '/dashboard/action-and-duty/reason',
       icon: MapIcon,
       isLocked: !dilemmaSubmitted,
       subLinks: [

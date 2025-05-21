@@ -14,6 +14,7 @@ export default function ConsequencesPage() {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
   const benthamFormName = 'cons-util-bentham';
   const millFormName  = 'cons-util-mill'; 
+  
 
   /**
    * Enforcing form completion order:

@@ -334,6 +334,11 @@ export default function UtilitarianFormMill() {
           const thisFormData = await axios.get(`${apiUrl}/api/flask/assignment/is-form-submitted?student_id=${userID}&assignment_id=${assignmentID}&form_name=cons-util-bentham`);
           //console.log("done fetching bentham form data");
           data = thisFormData.data.message;
+          const guest = localStorage.getItem('guest');
+          if(guest == 'true'){
+            console.log("User is guest, unlocking js mill");
+            setBenthamSubmitted(true)
+          }
     
           if(data){
             console.log("bentham form submitted? mill form says " + data);
