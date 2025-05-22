@@ -1,3 +1,5 @@
+"use client"
+
 import axios from 'axios';
 import Cookie from 'js-cookie';
 import React, { useState, useEffect} from 'react';
