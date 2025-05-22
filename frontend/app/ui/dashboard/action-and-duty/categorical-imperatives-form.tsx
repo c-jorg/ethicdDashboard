@@ -446,11 +446,10 @@ export default function CategoricalImperativesForm() {
           </label>
           <input
             type="text"
-
-            readOnly={true}
+            readOnly={false}
             placeholder="Auto fill chosen option from Seven Step Method"
             value={tentativeChoice}
-
+            onChange={e => setTentativeChoice(e.target.value)}
             className="mt-2 w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-300 focus:outline-none"
           />
         </div>

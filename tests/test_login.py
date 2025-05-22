@@ -29,7 +29,7 @@ def test_login(client):
 
     token_request = client.post(
         '/api/flask/auth/login-student',
-        data = json.dumps({"email":"example@example.com", "password":"Password1"}),
+        data = json.dumps({"email":"examplenewstudent@example.com", "password":"Password1"}),
         headers={"Content-Type":"application/json"}
         )
 

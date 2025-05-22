@@ -630,3 +630,26 @@ def is_assignment_submitted():
     
     except Exception as e:
         return make_response(jsonify({'message': 'Error retrieving form data', 'error': str(e)}), 500)
+      
+@bp.route('/api/flask/assignment/option', methods=['GET'])
+def get_case_study_option_id():
+  try:
+    assignment_id = request.args.get('assignment_id')
+    if not assignment_id:
+      return make_response(jsonify({"message":"Must provide an assignment id"}), 400)
+    try:
+      assignment_id = int(assignment_id)
+    except Exception as e:
+      print(f"eror casting assignment id {e}", flush=True)
+    if type(assignment_id) != int:
+      return make_response(jsonify({"message":"Invalid data type"}), 400)
+    if not Assignment.get_assignment_by_id(assignment_id):
+      return make_response(jsonify({"message":"No assignment with that id found"}), 404)
+    option_id = Assignment.get_case_study_option_id_by_assignment_id(assignment_id)
+    if not option_id:
+      print(f'no assignments for id {assignment_id}', flush=True)
+      return make_response(jsonify({"message":"No assignment with that id found"}), 404)
+    return make_response(jsonify({"message":"Successfully got case study option id", "option_id":option_id}), 200)
+  except Exception as e:
+    print(f"something went wrong {e}", flush=True)
+    return make_response(jsonify({"message":"Error getting case study option","error":e}), 500)

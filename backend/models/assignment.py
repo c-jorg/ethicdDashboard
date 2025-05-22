@@ -127,7 +127,14 @@ class Assignment(db.Model):
         assignment = db.session.query(cls).filter(cls.id == assignment_id).first()
         assignment.case_study_option_id = case_study_option
         db.session.commit()
-
+        
+    @classmethod
+    def get_case_study_option_id_by_assignment_id(cls, assignment_id):
+        assignment = db.session.query(cls).filter(cls.id == assignment_id).first()
+        if assignment.case_study_option_id is None:
+            print(f"no case option {assignment}", flush=True)
+            return None
+        return assignment.case_study_option_id
     
 class AssignmentSchema(ma.SQLAlchemyAutoSchema):
     class Meta:

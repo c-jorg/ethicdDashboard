@@ -14,6 +14,7 @@ import { dilemmaFormSubmitted } from '@/app/utils/is-dilemma-submitted';
 import CategoricalImperativesForm from '../action-and-duty/categorical-imperatives-form';
 import { useServerInsertedHTML } from 'next/navigation';
 import setDilemmaSubmitted from '@/app/ui/components/nav-links';
+import { json } from 'stream/consumers';
 
 interface RadioItem {
   id: number;
@@ -161,10 +162,11 @@ export default function RadioButtonForm() {
   // };
 
   const handleTentativeChoiceChange = ( value: string, button: string) => {
+    console.log(`Tentative choice value is handleTentativChoiceChange ${value}`)
     setTentativeChoice(value);
     setTentativeChoiceIndex(button.charAt(button.length - 1));
     
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 10; i++) {
       const tentativeChoiceKey = `tentative-choice-${i}`;
       if (tentativeChoiceKey !== button) {
         localStorage.setItem(`${prefix}${tentativeChoiceKey}`, 'false');
@@ -765,6 +767,19 @@ export default function RadioButtonForm() {
               'Content-Type': 'application/json',
             }
           });
+          if(localStorage.getItem('guest') == 'true'){
+            console.log('user is guest, setting case study option')
+            const case_study_data = {
+              assignment_id: assignmentID,
+              case_study_option: caseStudyOptionID
+            }
+            const optionResponse = await axios.patch(`${apiUrl}/api/flask/assignment/set-case-study-option`, case_study_data, {
+              headers: {
+               'Content-Type': 'application/json',
+              }
+            });
+            console.log(`option response ${optionResponse}`)
+          }
         }else{
           response = await axios.post(`${apiUrl}/api/flask/assignment/submit-form`, data, {
             headers: {
@@ -1265,7 +1280,7 @@ export default function RadioButtonForm() {
            type="button"
             onClick={(e) => {
               //console.log("save button clicked");
-              //if the user is a guest unlock the other forms
+              //if the user is a guest unlock the other forms and set case study option
               if(localStorage.getItem("guest") == "true"){
                 localStorage.setItem(`${prefix}dilemma-submitted`, "true")
               }

@@ -55,7 +55,8 @@ services:
     environment:
       - DATABASE_URL=postgresql://ethics_dashboard:Letmein1!@db:5432/ethics_dashboard
       - FLASK_ENV=development
-    command: flask run --host=0.0.0.0 --port=4000
+      - FLASK_APP=app.py #make sure app.py is the entry point
+    command: flask run --host=0.0.0.0 --port=4000 --reload #reload is supposed to allow hot loading
     depends_on:
       - db
     networks:

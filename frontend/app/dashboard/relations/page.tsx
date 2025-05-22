@@ -2,19 +2,22 @@ import CareForm from '@/app/ui/dashboard/relations/care-form';
 import IntersectForm from '@/app/ui/dashboard/relations/intersect-form';
 import GenerationsForm from '@/app/ui/dashboard/relations/generations-form';
 import { lusitana } from '@/app/ui/fonts';
+import { CaseStudyOptionBox } from '@/app/ui/components/case-study-option-box';
+import Cookie from 'js-cookie'
 
 //WE DON'T ACTUALLY USE THIS PAGE, THIS HAS ALL FORMS ON ONE PAGE, IT IS NOT ACTIVE ON THE SITE
 
 export default function Relations() {
   return (
-    <main className="flex items-center justify-center w-full h-screen">
-      <div className="relative flex flex-col w-full h-full space-y-2.5">
+    <main className="flex items-center justify-center w-full min-h-screen">
+      {/*<div className="relative flex flex-col w-full h-full space-y-2.5">*/}
+      <div className="relative flex flex-col w-full max-w-5xl space-y-2.5">
+        <CaseStudyOptionBox assignmentID={Cookie.get('assignment_id') || ''} apiUrl={process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'}/>
         <div className="flex h-20 w-full items-center justify-center  p-4 md:h-36">
           <h1 className="text-5xl font-semibold text-grey-800 md:text-3xl text-center">
             Relations
           </h1>
         </div>
-
         {/* Care Ethics Card Component with instructions */}
         <h1 id='care-ethics' className={`${lusitana.className} mb-4 text-2xl text-center`}>
             Care Ethics
