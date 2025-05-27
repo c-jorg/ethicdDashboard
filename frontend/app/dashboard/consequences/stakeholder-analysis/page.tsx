@@ -25,8 +25,9 @@ export default function ConsequencesPage() {
    */
   useEffect(() => {
     const checkDilemmaForm = async () => {
+      const userID = localStorage.getItem('id');
       const isSubmitted = await dilemmaFormSubmitted(
-        localStorage.getItem('id'),
+        userID,
         Cookie.get('assignment_id') || '',
         apiUrl
       );

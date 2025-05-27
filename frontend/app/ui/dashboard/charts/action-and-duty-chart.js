@@ -210,8 +210,13 @@ const ActionAndDutyChart = () => {
     }, [fidelity, gratitude, reparation]); // This useEffect runs whenever fidelity, gratitude, or reparation changes
 
     // Line chart data structure for Personal Sacrifices
+    const MAX_LABEL_LENGTH=10;
     const personalSacrificesData = {
-        labels: personalSacrifices.map(sacrifice => sacrifice.name), // Use the names from personalSacrifices as labels
+        labels: personalSacrifices.map(sacrifice => 
+            sacrifice.name.length > MAX_LABEL_LENGTH
+            ? sacrifice.name.slice(0, MAX_LABEL_LENGTH) + "..."
+            : sacrifice.name
+        ), // Use the names from personalSacrifices as labels
         datasets: [
             {
                 label: 'Personal Sacrifice',
@@ -362,27 +367,42 @@ const ActionAndDutyChart = () => {
                 
             },
             },
+            // annotation: {
+            //     clip: false, // Allow annotations to overflow the chart area
+            //     annotations: {
+            //         myText: {
+            //             type: 'label', // Type of annotation
+            //             content: [percentageActionTaken] + '%', // Text to display
+            //             position: {
+            //                 x: 'end', // Position the label at the end of the x-axis
+            //                 y: 'start', // Position the label at the start of the y-axis
+            //                 xAdjust: 0, // Adjust the x position to move the label outside the chart area
+            //                 yAdjust: 0 // Adjust the y position if needed
+                          
+            //             },
+            //             color: lineColours[0], // Text color
+            //             font: {
+            //                 size: window.innerWidth < 768 ? 30 : 50, // Responsive font size // Font size
+            //                 //weight: 'bold' // Font weight
+            //             }
+            //         }
+            //     }
+            // },
             annotation: {
                 clip: false, // Allow annotations to overflow the chart area
                 annotations: {
                     myText: {
                         type: 'label', // Type of annotation
                         content: [percentageActionTaken] + '%', // Text to display
-                        position: {
-                            x: 'end', // Position the label at the end of the x-axis
-                            y: 'start', // Position the label at the start of the y-axis
-                            xAdjust: 60, // Adjust the x position to move the label outside the chart area
-                            yAdjust: 0 // Adjust the y position if needed
-                          
-                        },
+                        xValue: 2.2, // start just off the end of x axix
+                        yValue: 11, // slightly above top of graph
                         color: lineColours[0], // Text color
                         font: {
-                            size: window.innerWidth < 768 ? 30 : 50, // Responsive font size // Font size
-                            //weight: 'bold' // Font weight
+                            size: window.innerWidth < 768 ? 12 : 25, // Responsive font size // Font size
                         }
                     }
                 }
-            },
+            }
         },
         scales: {
             x: {

@@ -315,18 +315,7 @@ export default function UtilitarianFormMill() {
         }
     };
 
-     //load the form with previously submitted data if there is any
-   useEffect(() => {
-        //console.log("use effect is running");
-        benthamFormSubmitted();
-
-        fetchData();
-
-        console.log("mill: Feedback is: ", feedback);
-        
-    }, [criticalQuestions, feedback]);
-
-    const benthamFormSubmitted = async (): Promise<boolean> => {
+        const benthamFormSubmitted = async (): Promise<boolean> => {
         let data;
         try{
           //console.log("Mill form: gonna see if bentham form is submitted");
@@ -334,11 +323,6 @@ export default function UtilitarianFormMill() {
           const thisFormData = await axios.get(`${apiUrl}/api/flask/assignment/is-form-submitted?student_id=${userID}&assignment_id=${assignmentID}&form_name=cons-util-bentham`);
           //console.log("done fetching bentham form data");
           data = thisFormData.data.message;
-          const guest = localStorage.getItem('guest');
-          if(guest == 'true'){
-            console.log("User is guest, unlocking js mill");
-            setBenthamSubmitted(true)
-          }
     
           if(data){
             console.log("bentham form submitted? mill form says " + data);
@@ -359,12 +343,32 @@ export default function UtilitarianFormMill() {
           if (axios.isAxiosError(isAxiosError) && isAxiosError.response?.status === 404) {
             console.log("Mill - 404 for is-form-submitted bentham form");
             setBenthamSubmitted(false)
+            const guest = localStorage.getItem('guest');
+            if(guest == 'true'){
+                console.log("User is guest, unlocking js mill");
+                setBenthamSubmitted(true)
+                return true;
+            }else{
+                console.log("User is not a guest not unlocking mill form");
+            }
           }else{
             console.log("Error fetching form data: ", isAxiosError);
           }
           return false;
         }
       } //end of benthamFormSubmitted
+
+     //load the form with previously submitted data if there is any and check if bentham form is submitted
+   useEffect(() => {
+        //console.log("use effect is running");
+        benthamFormSubmitted();
+
+        fetchData();
+
+        console.log("mill: Feedback is: ", feedback);
+        
+    }, [criticalQuestions, feedback]);
+
     
 
     if (loading) {

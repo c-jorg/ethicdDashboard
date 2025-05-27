@@ -45,19 +45,20 @@ export default function CareForm() {
         {attentiveness:50, competence:50, responsiveness:50}
     );
 
-    const [stakeholders, setStakeholders] = useState<{ name: string; direct: boolean; indirect: boolean; attentiveness: number; competence: number; responsiveness: number }[]>(
-        Array(minStakeholders).fill({ name: '', direct: false, indirect: false, attentiveness: 5  , competence: 5, responsiveness: 5 }) // Default values
+    const [stakeholders, setStakeholders] = useState<{ name: string; direct: boolean; indirect: boolean; notApplicable: boolean; attentiveness: number; competence: number; responsiveness: number }[]>(
+        Array(minStakeholders).fill({ name: '', direct: false, indirect: false, notApplicable: false, attentiveness: 5  , competence: 5, responsiveness: 5 }) // Default values
     );
 
     // Function to add a new stakeholder card
     const addStakeholder = () => {
         if (stakeholders.length < maxStakeholders) {
-            const newStakeholders = [...stakeholders, { name: '', direct:false, indirect:false, attentiveness: 5, competence: 5, responsiveness: 5 }];
+            const newStakeholders = [...stakeholders, { name: '', direct:false, indirect:false, notApplicable: false, attentiveness: 5, competence: 5, responsiveness: 5 }];
             setStakeholders(newStakeholders);
             const index = newStakeholders.length - 1;
             localStorage.setItem(`${prefix}stakeholder-name-${index}`, '');
             localStorage.setItem(`${prefix}stakeholder-directly-${index}`, 'false');
             localStorage.setItem(`${prefix}stakeholder-indirectly-${index}`, 'false');
+            localStorage.setItem(`${prefix}stakeholder-notApplicable-${index}`, 'false');
             localStorage.setItem(`${prefix}attentiveness-${index}`, '5');
             localStorage.setItem(`${prefix}competence-${index}`, '5');
             localStorage.setItem(`${prefix}responsiveness-${index}`, '5');
@@ -94,6 +95,7 @@ export default function CareForm() {
             localStorage.setItem(`${prefix}stakeholder-name-${i}`, stakeholders[i].name);
             localStorage.setItem(`${prefix}stakeholder-directly-${i}`, String(stakeholders[i].direct));
             localStorage.setItem(`${prefix}stakeholder-indirectly-${i}`, String(stakeholders[i].indirect));
+            localStorage.setItem(`${prefix}stakeholder-notApplicable-${i}`, String(stakeholders[i].notApplicable));
             localStorage.setItem(`${prefix}attentiveness-${i}`, String(stakeholders[i].attentiveness));
             localStorage.setItem(`${prefix}competence-${i}`, String(stakeholders[i].competence));
             localStorage.setItem(`${prefix}responsiveness-${i}`, String(stakeholders[i].responsiveness));
@@ -104,6 +106,7 @@ export default function CareForm() {
         localStorage.removeItem(`${prefix}stakeholder-name-${stakeholders.length}`);
         localStorage.removeItem(`${prefix}stakeholder-directly-${stakeholders.length}`);
         localStorage.removeItem(`${prefix}stakeholder-indirectly-${stakeholders.length}`);
+        localStorage.removeItem(`${prefix}stakeholder-notApplicable-${stakeholders.length}`);
         localStorage.removeItem(`${prefix}attentiveness-${stakeholders.length}`);
         localStorage.removeItem(`${prefix}competence-${stakeholders.length}`);
         localStorage.removeItem(`${prefix}responsiveness-${stakeholders.length}`);
@@ -113,14 +116,14 @@ export default function CareForm() {
     };
 
     // Function to handle slider and impact changes
-    const handleStakeholderChange = (index: number, field: 'name' | 'indirect' | 'direct' | 'attentiveness' | 'competence' | 'responsiveness', value: any) => {
+    const handleStakeholderChange = (index: number, field: 'name' | 'indirect' | 'direct' | 'notApplicable' | 'attentiveness' | 'competence' | 'responsiveness', value: any) => {
         setStakeholders(stakeholders.map((stakeholder, i) => 
             i === index ? { ...stakeholder, [field]: value } : stakeholder
         ));
-        if(field != 'name' && field != 'direct' && field != 'indirect'){
+        if(field != 'name' && field != 'direct' && field != 'indirect' && field != 'notApplicable'){
             //attentiveness, competence, responsiveness
             localStorage.setItem(`${prefix}${field}-${index}`, value);
-        }else if(field == 'direct' || field == 'indirect'){
+        }else if(field == 'direct' || field == 'indirect' || field == 'notApplicable'){
             //direct and indirect
             localStorage.setItem(`${prefix}stakeholder-${field}ly-${index}`, value);
             //localStorage.setItem(`${prefix}stakeholder-${field}ly-${index}-ce`, value);
@@ -136,14 +139,19 @@ export default function CareForm() {
 
     // Function to calculate average care values
     const calcAverageStakeholderCare = () => {
-        const length = stakeholders.length;
+        const applicableStakeholders = stakeholders.filter(s => !s.notApplicable)
+        const length = applicableStakeholders.length || 1;
+        console.log(`stakeholders length ${stakeholders.length
+            
+        }`)
         let att: number = 0;
         let com: number = 0;
         let res: number = 0;
-        stakeholders.forEach((stakeholder,index) => {
+        applicableStakeholders.forEach((stakeholder,index) => {
             att+=stakeholder.attentiveness;
             com+=stakeholder.competence;
             res+=stakeholder.responsiveness;
+            
         });
         //console.log("Attentiveness Sum:", att);
         //console.log("Competence Sum:", com);
@@ -152,12 +160,16 @@ export default function CareForm() {
     };
 
     const calculateCumulativeScore = () => {
-        //The average of attentiveness, competence and responsiveness for all stakeholders
+        //The average of attentiveness, competence and responsiveness for all stakeholders ignoring not applicable ones
+        const applicableStakeholders = stakeholders.filter(s => !s.notApplicable);
+        const length = applicableStakeholders.length || 1;
         let total = 0;
-        stakeholders.forEach((stakeholder) => {
-            total += stakeholder.attentiveness + stakeholder.competence + stakeholder.responsiveness;
+        applicableStakeholders.forEach((stakeholder) => {
+            if(!stakeholder.notApplicable){
+                total += stakeholder.attentiveness + stakeholder.competence + stakeholder.responsiveness;
+            }
         });
-        return Math.round(total / (3 * stakeholders.length));
+        return Math.round(total / (3 * length));
     }
 
     const clearLocalStorage = () => {
@@ -308,6 +320,7 @@ export default function CareForm() {
         const nameKey = `stakeholder-name-${i}`;
         const impactDirectKey = `stakeholder-directly-${i}`;
         const impactIndirectKey = `stakeholder-indirectly-${i}`;
+        const notApplicableKey = `stakeholder-notApplicable-${i}`;
 
         const attentivenessKey = `attentiveness-${i}`;
         const competenceKey = `competence-${i}`;
@@ -342,6 +355,19 @@ export default function CareForm() {
             }
         }
 
+        let noImpact;
+        if(localStorage.getItem(`${prefix}${notApplicableKey}`) !== null){
+            noImpact = String(localStorage.getItem(`${prefix}${notApplicableKey}`)) !== 'false' ? true : false;
+        }else{
+            if(content.length > 0){ 
+                //only if there is data saved can we use this logic
+                noImpact = String(content[notApplicableKey]) !== 'false' ? true : false;
+            }else{
+                //if there is no data saved then it is always false
+                noImpact = false;
+            }
+        }
+
         let attentiveness1;
         if(localStorage.getItem(`${prefix}${attentivenessKey}`) !== null){
             attentiveness1 = parseInt(localStorage.getItem(`${prefix}${attentivenessKey}`) || '-1');
@@ -370,6 +396,7 @@ export default function CareForm() {
         name: name,
         direct: directImpact,
         indirect: indirectImpact,
+        notApplicable: noImpact,
         attentiveness: attentiveness1,
             competence: competence1,
             responsiveness: responsiveness1,
@@ -587,23 +614,33 @@ export default function CareForm() {
                     <div className="flex justify-between items-center text-sm">
                         <span className="font-semibold">Impact:</span>
                         <label className="flex items-center">
-                        <input
-                            type="checkbox"
-                            checked={stakeholder.direct}
-                            onChange={(e) => handleStakeholderChange(index, 'direct', e.target.checked)}
-                            className="h-4 w-4"
-                        />
-                        <span className="ml-1">Direct</span>
+                            <input
+                                type="checkbox"
+                                checked={stakeholder.direct}
+                                onChange={(e) => handleStakeholderChange(index, 'direct', e.target.checked)}
+                                className="h-4 w-4"
+                            />
+                            <span className="ml-1">Direct</span>
                         </label>
 
                         <label className="flex items-center">
-                        <input
-                            type="checkbox"
-                            checked={stakeholder.indirect}
-                            onChange={(e) => handleStakeholderChange(index, 'indirect', e.target.checked)}
-                            className="h-4 w-4"
-                        />
-                        <span className="ml-1">Indirect</span>
+                            <input
+                                type="checkbox"
+                                checked={stakeholder.indirect}
+                                onChange={(e) => handleStakeholderChange(index, 'indirect', e.target.checked)}
+                                className="h-4 w-4"
+                            />
+                            <span className="ml-1">Indirect</span>
+                        </label>
+
+                        <label className="flex items-center">
+                            <input
+                                type="checkbox"
+                                checked={stakeholder.notApplicable}
+                                onChange={(e) => handleStakeholderChange(index, 'notApplicable', e.target.checked)}
+                                className="h-4 w-4"
+                            />
+                            <span className="ml-1">Not Applicable</span>
                         </label>
                     </div>
 

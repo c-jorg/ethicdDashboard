@@ -103,7 +103,7 @@ export default function NavLinks(props: any) {
   const links: LinkType[] = [
   
     {
-      name: 'Describe your dilemma',
+      name: 'Choose Your Case',
       href: '/dashboard/describe-dilemma',
       icon: PencilSquareIcon,
       subLinks: [

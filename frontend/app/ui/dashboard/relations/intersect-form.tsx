@@ -39,10 +39,10 @@ export default function IntersectForm() {
     const [questionsInitialized, setQuestionsInitialized] = useState(false); //set to true once critical qs have been fetched from DB
 
     const [stakeholders, setStakeholders] = useState<{ 
-        name: string; direct: boolean; indirect: boolean; sexism: number; racism: number; ableism: number; ageism: number 
+        name: string; direct: boolean; indirect: boolean; notApplicable: boolean; sexism: number; racism: number; ableism: number; ageism: number 
     
     }[]>(
-        Array(minStakeholders).fill({ name: "", direct: false, indirect: false, sexism: 10, racism: 10, ableism: 10, ageism: 10 }) // Default values
+        Array(minStakeholders).fill({ name: "", direct: false, indirect: false, notApplicable: false, sexism: 10, racism: 10, ableism: 10, ageism: 10 }) // Default values
     );
 
     const [criticalQuestions, setCriticalQuestions] = useState([
@@ -54,7 +54,7 @@ export default function IntersectForm() {
     // Function to add a new stakeholder card
     const addStakeholder = () => {
         if (stakeholders.length < maxStakeholders) {
-            const newStakeholders = [...stakeholders, { name: '', direct: false, indirect: false, sexism: 5, racism: 5, ableism: 5, ageism: 5 }];
+            const newStakeholders = [...stakeholders, { name: '', direct: false, indirect: false, notApplicable: false, sexism: 5, racism: 5, ableism: 5, ageism: 5 }];
             setStakeholders(newStakeholders);
             const index = newStakeholders.length - 1;
             //save the data to local storage
@@ -63,6 +63,7 @@ export default function IntersectForm() {
             localStorage.setItem(`${prefix}stakeholder-name-${index}`, '');
             localStorage.setItem(`${prefix}stakeholder-directly-${index}`, 'false');
             localStorage.setItem(`${prefix}stakeholder-indirectly-${index}`, 'false');
+            localStorage.setItem(`${prefix}stakeholder-notApplicable-${index}`, 'false');
             localStorage.setItem(`${prefix}sexism-${index}`, '5');
             localStorage.setItem(`${prefix}racism-${index}`, '5');
             localStorage.setItem(`${prefix}ableism-${index}`, '5');
@@ -101,6 +102,7 @@ export default function IntersectForm() {
             localStorage.setItem(`${prefix}stakeholder-name-${i}`, stakeholders[i].name);
             localStorage.setItem(`${prefix}stakeholder-directly-${i}`, String(stakeholders[i].direct));
             localStorage.setItem(`${prefix}stakeholder-indirectly-${i}`, String(stakeholders[i].indirect));
+            localStorage.setItem(`${prefix}stakeholder-notApplicable-${i}`, String(stakeholders[i].notApplicable));
             localStorage.setItem(`${prefix}sexism-${i}`, String(stakeholders[i].sexism));
             localStorage.setItem(`${prefix}racism-${i}`, String(stakeholders[i].racism));
             localStorage.setItem(`${prefix}ableism-${i}`, String(stakeholders[i].ableism));
@@ -112,6 +114,7 @@ export default function IntersectForm() {
         localStorage.removeItem(`${prefix}stakeholder-name-${stakeholders.length}`);
         localStorage.removeItem(`${prefix}stakeholder-directly-${stakeholders.length}`);
         localStorage.removeItem(`${prefix}stakeholder-indirectly-${stakeholders.length}`);
+        localStorage.removeItem(`${prefix}stakeholder-notApplicable-${stakeholders.length}`);
         localStorage.removeItem(`${prefix}sexism-${stakeholders.length}`);
         localStorage.removeItem(`${prefix}racism-${stakeholders.length}`);
         localStorage.removeItem(`${prefix}ageism-${stakeholders.length}`);
@@ -122,16 +125,16 @@ export default function IntersectForm() {
     };
 
     // Function to handle slider and impact changes
-    const handleStakeholderChange = (index: number, field: 'name' | 'direct' | 'indirect' | 'sexism' | 'racism' | 'ableism' | 'ageism', value: any) => {
+    const handleStakeholderChange = (index: number, field: 'name' | 'direct' | 'indirect' | 'notApplicable' | 'sexism' | 'racism' | 'ableism' | 'ageism', value: any) => {
         setStakeholders(stakeholders.map((stakeholder, i) => 
             i === index ? { ...stakeholder, [field]: value } : stakeholder
         ));
-        if(field != 'name' && field != 'direct' && field != 'indirect'){
+        if(field != 'name' && field != 'direct' && field != 'indirect' && field != 'notApplicable'){
             localStorage.setItem(`${prefix}${field}-${index}`, value); //racism, sexism, ableism, ageism
             compareScores();
 
-        }else if(field == 'direct' || field == 'indirect'){
-            localStorage.setItem(`${prefix}stakeholder-${field}ly-${index}`, value);  //directly and indirectly
+        }else if(field == 'direct' || field == 'indirect' || field == 'notApplicable'){
+            localStorage.setItem(`${prefix}stakeholder-${field}ly-${index}`, value);  //directly and indirectly and not aplicable
         
         }else{
             localStorage.setItem(`${prefix}stakeholder-${field}-${index}`, value); //name
@@ -337,6 +340,7 @@ export default function IntersectForm() {
         const nameKey = `stakeholder-name-${i}`;
         const impactDirectKey = `stakeholder-directly-${i}`;
         const impactIndirectKey = `stakeholder-indirectly-${i}`;
+        const notApplicableKey = `stakeholer-notApplicable-${i}`;
 
         const sexismKey = `sexism-${i}`;
         const racismKey = `racism-${i}`;
@@ -366,6 +370,17 @@ export default function IntersectForm() {
                 indirectImpact= false;
             }
         }
+
+        let noImpact;
+        if(localStorage.getItem(`${prefix}${notApplicableKey}`) !== null){
+            noImpact = String(localStorage.getItem(`${prefix}${notApplicableKey}`)) !== 'false' ? true : false;
+        }else{
+            if(content[notApplicableKey] != null){
+                noImpact = String(content[notApplicableKey]) !== 'false' ? true: false;
+            }else{
+                noImpact = false;
+            }
+        }
         
         let sexism = localStorage.getItem(`${prefix}${sexismKey}`) || content[sexismKey] || 10;
         let racism = localStorage.getItem(`${prefix}${racismKey}`) || content[racismKey] || 10;
@@ -376,6 +391,7 @@ export default function IntersectForm() {
             name: name,
             direct: directImpact,
             indirect: indirectImpact,
+            notApplicable: noImpact,
             sexism: sexism,
             racism: racism,
             ableism: ableism,
@@ -621,6 +637,18 @@ export default function IntersectForm() {
                                                 value="indirectly"
                                             />
                                             <span className="ml-2 md:text-md text-sm">Indirectly</span>
+                                        </label>
+
+                                        <label className="flex items-center">
+                                            <input
+                                                id={`stakeholder-notApplicable-${index}`}
+                                                type="checkbox"
+                                                checked={stakeholder.notApplicable}
+                                                onChange={(e) => handleStakeholderChange(index, 'notApplicable', e.target.checked)}
+                                                className="stakeholder answer-input stakeholder h-4 w-4"
+                                                value="not applicable"
+                                            />
+                                            <span className="ml-2 md:text-md text-sm">Not Applicable</span>
                                         </label>
                                     </div>
                                 </div>
