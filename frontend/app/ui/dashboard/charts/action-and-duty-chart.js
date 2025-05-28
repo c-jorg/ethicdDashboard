@@ -279,6 +279,7 @@ const ActionAndDutyChart = () => {
                         size: window.innerWidth < 768 ? 12 : 25, // Responsive font size
                     },
                 },
+                onClick: (e) => {}, //do nothing when clicked on, default behavior is to remove it from graph
             },
             title: {
                 display: true,
@@ -364,7 +365,7 @@ const ActionAndDutyChart = () => {
                 font: {
                     size: window.innerWidth < 768 ? 20 : 25, // Responsive font size
                 },
-                
+                onClick: (e) => {}, //do nothing when clicked on, default behavior is to remove it from graph  
             },
             },
             // annotation: {

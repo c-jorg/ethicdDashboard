@@ -172,6 +172,7 @@ const LifePathChart = () => {
                 },
                 legend: {
                 display: false, // Show legend
+                onClick: (e) => {}, //do nothing when clicked on, default behavior is to remove it from graph
             },
             tooltip: {
                 callbacks: {

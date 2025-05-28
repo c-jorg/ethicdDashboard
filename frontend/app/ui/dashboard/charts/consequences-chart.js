@@ -259,7 +259,7 @@ const ConsequencesChart = () => {
                     },
                     
                 },
-                
+                onClick: (e) => {}, //do nothing when clicked on, default behavior is to remove it from graph
             },
             title: {
                 display: window.innerWidth < 768 ? true : false,

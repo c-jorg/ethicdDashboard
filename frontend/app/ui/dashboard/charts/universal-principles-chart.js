@@ -172,6 +172,7 @@ const UniversalPrinciplesChart = () => {
                 align: 'start', // Align the legend to the start
                 fullSize: true, // Make the legend take full width
                 display: true,
+                onClick: (e) => {}, //do nothing when clicked on, default behavior is to remove it from graph
             },
             tooltip: {
                 callbacks: {

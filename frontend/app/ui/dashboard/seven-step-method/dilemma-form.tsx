@@ -1244,7 +1244,7 @@ export default function RadioButtonForm() {
                   Which option is the best choice based on your analysis so far?
                 </label>
                 <span className="text-md mb-2">
-                  Choose one option to move on to the seventh step: Deeper analysis on the Ethics Dashboard.
+                  Choose one option to move on to deeper analysis on the Ethics Dashboard.
                 </span>
 
 

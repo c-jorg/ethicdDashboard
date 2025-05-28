@@ -174,6 +174,7 @@ const CharacterVirtueChart = () => {
                         size: window.innerWidth < 768 ? 12 : 20, // Smaller font size on mobile
                     },
                 },
+                onClick: (e) => {}, //do nothing when clicked on, default behavior is to remove it from graph
             },
             tooltip: {
                 callbacks: {

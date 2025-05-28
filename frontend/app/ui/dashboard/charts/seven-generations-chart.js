@@ -170,6 +170,7 @@ const SevenGenerationsChart = () => {
         plugins: {
             legend: {
                 display: false, // Hide legend
+                onClick: (e) => {}, //do nothing when clicked on, default behavior is to remove it from graph
             },
             tooltip: {
                 enabled: false, // Disable tooltips

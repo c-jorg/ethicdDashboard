@@ -317,90 +317,84 @@ export default function CareForm() {
     
         // Iterate over the stakeholders
         for (let i = 0; i < numStakeholders; i++) {
-        const nameKey = `stakeholder-name-${i}`;
-        const impactDirectKey = `stakeholder-directly-${i}`;
-        const impactIndirectKey = `stakeholder-indirectly-${i}`;
-        const notApplicableKey = `stakeholder-notApplicable-${i}`;
+            const nameKey = `stakeholder-name-${i}`;
+            const impactDirectKey = `stakeholder-directly-${i}`;
+            const impactIndirectKey = `stakeholder-indirectly-${i}`;
+            const notApplicableKey = `stakeholder-notApplicable-${i}`;
 
-        const attentivenessKey = `attentiveness-${i}`;
-        const competenceKey = `competence-${i}`;
-        const responsivenessKey = `responsiveness-${i}`;
-        
-        const name = feedback[nameKey] || localStorage.getItem(`${prefix}${nameKey}`) || content[nameKey] || "";   
-        console.log("feed back is ", feedback);
+            const attentivenessKey = `attentiveness-${i}`;
+            const competenceKey = `competence-${i}`;
+            const responsivenessKey = `responsiveness-${i}`;
+            
+            const name = feedback[nameKey] || localStorage.getItem(`${prefix}${nameKey}`) || content[nameKey] || "";   
+            console.log("feed back is ", feedback);
 
-        let directImpact;
-        if(localStorage.getItem(`${prefix}${impactDirectKey}`) !== null){
-            directImpact = String(localStorage.getItem(`${prefix}${impactDirectKey}`)) !== 'false' ? true : false;
-        }else{
-            if(content.length > 0){
+            let directImpact;
+            if(localStorage.getItem(`${prefix}${impactDirectKey}`) !== null){
+                directImpact = String(localStorage.getItem(`${prefix}${impactDirectKey}`)) === 'true';
+            }else if(content && content[impactDirectKey] !== undefined){
                 //only if there is data saved can we use this logic
-                directImpact = String(content[impactDirectKey]) !== 'false' ? true : false;
+                directImpact = content[impactDirectKey] === 'true';      
             }else{
                 //if there is no data saved then it is always false
                 directImpact = false;
             }
-        }
 
-        let indirectImpact;
-        if(localStorage.getItem(`${prefix}${impactIndirectKey}`) !== null){
-            indirectImpact = String(localStorage.getItem(`${prefix}${impactIndirectKey}`)) !== 'false' ? true : false;
-        }else{
-            if(content.length > 0){ 
+            let indirectImpact;
+            if(localStorage.getItem(`${prefix}${impactIndirectKey}`) !== null){
+               indirectImpact = String(localStorage.getItem(`${prefix}${impactIndirectKey}`)) === 'true';
+            }else if(content && content[impactIndirectKey] !== undefined){
                 //only if there is data saved can we use this logic
-                indirectImpact = String(content[impactIndirectKey]) !== 'false' ? true : false;
+                indirectImpact = content[impactIndirectKey] === 'true';      
             }else{
                 //if there is no data saved then it is always false
                 indirectImpact = false;
             }
-        }
 
-        let noImpact;
-        if(localStorage.getItem(`${prefix}${notApplicableKey}`) !== null){
-            noImpact = String(localStorage.getItem(`${prefix}${notApplicableKey}`)) !== 'false' ? true : false;
-        }else{
-            if(content.length > 0){ 
+            let noImpact;
+            if(localStorage.getItem(`${prefix}${notApplicableKey}`) !== null){
+                noImpact = String(localStorage.getItem(`${prefix}${notApplicableKey}`)) === 'true';
+            }else if(content && content[notApplicableKey] !== undefined){
                 //only if there is data saved can we use this logic
-                noImpact = String(content[notApplicableKey]) !== 'false' ? true : false;
+                noImpact = content[notApplicableKey] === 'true';      
             }else{
                 //if there is no data saved then it is always false
                 noImpact = false;
             }
-        }
 
-        let attentiveness1;
-        if(localStorage.getItem(`${prefix}${attentivenessKey}`) !== null){
-            attentiveness1 = parseInt(localStorage.getItem(`${prefix}${attentivenessKey}`) || '-1');
-            if(attentiveness1 == -1) attentiveness1 = 0;
-        }else{
-            attentiveness1  = parseInt(content[attentivenessKey]) || 5;
-        }
+            let attentiveness1;
+            if(localStorage.getItem(`${prefix}${attentivenessKey}`) !== null){
+                attentiveness1 = parseInt(localStorage.getItem(`${prefix}${attentivenessKey}`) || '-1');
+                if(attentiveness1 == -1) attentiveness1 = 0;
+            }else{
+                attentiveness1  = parseInt(content[attentivenessKey]) || 5;
+            }
 
-        let competence1;
-        if(localStorage.getItem(`${prefix}${competenceKey}`) !== null){
-            competence1 = parseInt(localStorage.getItem(`${prefix}${competenceKey}`) || '-1');
-            if(competence1 == -1) competence1 = 0;
-        }else{
-            competence1 = parseInt(content[competenceKey]) || 5;
-        }
-       
-        let responsiveness1;
-        if(localStorage.getItem(`${prefix}${responsivenessKey}`) !== null){
-            responsiveness1 = parseInt(localStorage.getItem(`${prefix}${responsivenessKey}`) || '-1');
-            if(responsiveness1 == -1) responsiveness1 = 0;
-        }else{
-            responsiveness1 = parseInt(content[responsivenessKey]) || 5;
-        }
+            let competence1;
+            if(localStorage.getItem(`${prefix}${competenceKey}`) !== null){
+                competence1 = parseInt(localStorage.getItem(`${prefix}${competenceKey}`) || '-1');
+                if(competence1 == -1) competence1 = 0;
+            }else{
+                competence1 = parseInt(content[competenceKey]) || 5;
+            }
+        
+            let responsiveness1;
+            if(localStorage.getItem(`${prefix}${responsivenessKey}`) !== null){
+                responsiveness1 = parseInt(localStorage.getItem(`${prefix}${responsivenessKey}`) || '-1');
+                if(responsiveness1 == -1) responsiveness1 = 0;
+            }else{
+                responsiveness1 = parseInt(content[responsivenessKey]) || 5;
+            }
 
-        stakeholdersData.push({
-        name: name,
-        direct: directImpact,
-        indirect: indirectImpact,
-        notApplicable: noImpact,
-        attentiveness: attentiveness1,
-            competence: competence1,
-            responsiveness: responsiveness1,
-        });
+            stakeholdersData.push({
+            name: name,
+            direct: directImpact,
+            indirect: indirectImpact,
+            notApplicable: noImpact,
+            attentiveness: attentiveness1,
+                competence: competence1,
+                responsiveness: responsiveness1,
+            });
         }
         setStakeholders(stakeholdersData);
         calcAverageStakeholderCare();
@@ -503,7 +497,7 @@ export default function CareForm() {
             // Handle checkboxes and radio buttons
             if (inputElement.type === 'checkbox') {
                 //stakeholderAnswers[inputElement.id] = inputElement.checked ? inputElement.value : 'false';
-                answers[inputElement.id] = inputElement.checked ? inputElement.value : 'false';
+                answers[inputElement.id] = inputElement.checked ? 'true' : 'false';
             } else {
                 answers[inputElement.id] = inputElement.value;
             }
@@ -601,7 +595,7 @@ export default function CareForm() {
                         placeholder="Enter name"
                         value={stakeholder.name}
                         onChange={(e) => handleStakeholderChange(index, 'name', e.target.value)}
-                        className="w-full border border-gray-300 rounded-lg p-2 text-sm"
+                        className="w-full border border-gray-300 rounded-lg p-2 text-sm answer-input"
                         required
                         />
                     ) : (
@@ -618,7 +612,8 @@ export default function CareForm() {
                                 type="checkbox"
                                 checked={stakeholder.direct}
                                 onChange={(e) => handleStakeholderChange(index, 'direct', e.target.checked)}
-                                className="h-4 w-4"
+                                className="h-4 w-4 answer-input"
+                                id={`stakeholder-directly-${index}`}
                             />
                             <span className="ml-1">Direct</span>
                         </label>
@@ -628,7 +623,8 @@ export default function CareForm() {
                                 type="checkbox"
                                 checked={stakeholder.indirect}
                                 onChange={(e) => handleStakeholderChange(index, 'indirect', e.target.checked)}
-                                className="h-4 w-4"
+                                className="h-4 w-4 answer-input"
+                                id={`stakeholder-indirectly-${index}`}
                             />
                             <span className="ml-1">Indirect</span>
                         </label>
@@ -638,7 +634,8 @@ export default function CareForm() {
                                 type="checkbox"
                                 checked={stakeholder.notApplicable}
                                 onChange={(e) => handleStakeholderChange(index, 'notApplicable', e.target.checked)}
-                                className="h-4 w-4"
+                                className="h-4 w-4 answer-input"
+                                id={`stakeholder-notApplicable-${index}`}
                             />
                             <span className="ml-1">Not Applicable</span>
                         </label>
