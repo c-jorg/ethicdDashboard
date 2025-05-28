@@ -30,7 +30,7 @@ export default function CareForm() {
     const [removalTriggered, setRemovalTriggered] = useState(false);
 
     const maxStakeholders = 12;
-    const minStakeholders = 7;
+    const minStakeholders = 1;
     const maxWords = 200;
 
     const [feedback, setFeedback] = useState<{ [key: string]: string }>({});

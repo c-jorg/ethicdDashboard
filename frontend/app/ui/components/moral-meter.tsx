@@ -113,58 +113,11 @@ const getMillScore = async (): Promise<number> => {
  * If the data for the Consequences subsection is incomplete, it will return 0.
  */
   const getScoreConsequences = async (): Promise<number> => {
-        // let stakeholdersData;
-        // let benthamData;
-        // let millData;
-
-        let consequencesScore = 0;
-        let benthamScore = 0;
-        let millScore = 0;
-        let cumulative;
-        // const userID = localStorage.getItem('id');
-        // try {
-        //     console.log("moral meter: getting form data for consequences");
-        //     const consStakeholdersData = await axios.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userID}&assignment_id=${assignmentID}&form_name=cons-stakeholders`);
-        //     console.log("moral meter: got cons stakeholders");
-        //     const consUtilBenthamData = await axios.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userID}&assignment_id=${assignmentID}&form_name=cons-util-bentham`);
-        //     console.log("moral meter: got bentham data");
-        //     const consUtilMillData = await axios.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userID}&assignment_id=${assignmentID}&form_name=cons-util-mill`);
-        //     console.log("moral meter: got mill data");
-        //     stakeholdersData = consStakeholdersData.data.data;
-        //     benthamData = consUtilBenthamData.data.data;
-        //     millData = consUtilMillData.data.data;
-        //     console.log("moral meter: got form data for consquences");
-        //     console.log(`moral meter: stakeholder data ${stakeholdersData} bentham data ${benthamData} mill data ${millData}`);
-        // } catch (error) {
-        //     if (axios.isAxiosError(error) && error.response?.status === 404) {
-        //         console.log("Moral Meter: We don't have all data for the Consequences subsection - aborting moral meter calculation for this subsection");
-        //         consDataExists = false;
-        //         return 0;
-        //     } else {
-        //         console.log("Error fetching form data: ", error);
-        //     }
-        // }
-
-        // if (stakeholdersData && stakeholdersData.length > 0 && stakeholdersData[0].answers && stakeholdersData[0].answers[0] && stakeholdersData[0].answers[0].content) {
-        //     let content = stakeholdersData[0].answers[0].content;
-        //     //The cumulative score is a percentage based on the sum of all sub-sections out of 30:   (x/30)*100 
-        //     consequencesScore = parseInt(content[key]) || 0;
-        // } 
-
-        // if (benthamData && benthamData.length > 0 && benthamData[0].answers && benthamData[0].answers[0] && benthamData[0].answers[0].content){
-        //     let content = benthamData[0].answers[0].content;
-        //     benthamScore = parseInt(content[key]) || 0;
-        // }
-
-        // if (millData && millData.length > 0 && millData[0].answers && millData[0].answers[0] && millData[0].answers[0].content){
-        //     let content = millData[0].answers[0].content;
-        //     millScore = parseInt(content[key]) || 0;
-        // }
-        consequencesScore = await getStakeholdersScore();
-        benthamScore = await getBenthamScore();
-        millScore = await getMillScore();
+        let consequencesScore = await getStakeholdersScore();
+        let benthamScore = await getBenthamScore();
+        let millScore = await getMillScore();
         //The cumulative score is a percentage based on the sum of all sub-sections out of 30:   (x/30)*100 
-        cumulative = ((millScore + benthamScore + consequencesScore)/30)*100;
+        let cumulative = ((millScore + benthamScore + consequencesScore)/30)*100;
         //setConsequencesCumulativeScore(cumulative);
         return Math.round(cumulative);
   };
@@ -222,44 +175,10 @@ const getMillScore = async (): Promise<number> => {
  * @throws Will log an error message if there is an issue fetching the form data.
  */
   const getScoresActionDuty = async (): Promise<number> => {
-        // let sacrificeData;
-        // let dvaData;
-
-        let sacrificeScore = 0;
-        let dvaScore = 0;
-        let cumulative;
-        // const userID = localStorage.getItem('id');
-        // try {
-        //     const personalSacrificesData = await axios.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userID}&assignment_id=${assignmentID}&form_name=personal-sacrifices`);
-        //     const dutiesActionsData = await axios.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userID}&assignment_id=${assignmentID}&form_name=duties-versus-actions`);
-           
-        //     sacrificeData = personalSacrificesData.data.data;
-        //     dvaData = dutiesActionsData.data.data;
-    
-        // } catch (error) {
-        //     if (axios.isAxiosError(error) && error.response?.status === 404) {
-        //         //console.log("Moral Meter: We don't have all data for the Action and Duty subsection - aborting moral meter calculation for this subsection");
-        //         adDataExists = false;
-        //         return 0;
-        //     } else {
-        //         console.log("Error fetching form data: ", error);
-        //     }
-        // }
-
-        // if (sacrificeData && sacrificeData.length > 0 && sacrificeData[0].answers && sacrificeData[0].answers[0] && sacrificeData[0].answers[0].content) {
-        //     let content = sacrificeData[0].answers[0].content;
-        //     // The cumulative score is a percentage based on the sum of all sub-sections out of 30: (x/30)*100
-        //     sacrificeScore = parseInt(content[key]) || 0;
-        // }
-
-        // if (dvaData && dvaData.length > 0 && dvaData[0].answers && dvaData[0].answers[0] && dvaData[0].answers[0].content) {
-        //     let content = dvaData[0].answers[0].content;
-        //     dvaScore = parseInt(content[key]) || 0;
-        // }
-        sacrificeScore = await getPersonalSacrificesScore();
-        dvaScore = await getDutiesActionsScore();
+        let sacrificeScore = await getPersonalSacrificesScore();
+        let dvaScore = await getDutiesActionsScore();
         //The cumulative score is a percentage based on the sum of all sub-sections out of 20:  (x/20)*100
-        cumulative = ((sacrificeScore + dvaScore)/20)*100;
+        let cumulative = ((sacrificeScore + dvaScore)/20)*100;
         //setActionDutyCumulativeScore(cumulative);
         return Math.round(cumulative);
   };
@@ -335,55 +254,11 @@ const getMillScore = async (): Promise<number> => {
  * @throws Will log an error message if there is an issue fetching the form data.
  */
   const getScoresRelations = async (): Promise<number> => {
-        let careData;
-        let intersectData;
-        let generationsData;
-
-        let careScore = 0;
-        let intersectScore = 0;
-        let generationsScore = 0;
-        let cumulative;
-        // const userID = localStorage.getItem('id');
-        // let prefix = assignmentID +'-';
-        // try {
-        //     const careEthicsData = await axios.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userID}&assignment_id=${assignmentID}&form_name=care-form`);
-        //     const intersectionalityData = await axios.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userID}&assignment_id=${assignmentID}&form_name=intersect-form`);
-        //     const sevenGenerationsData = await axios.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userID}&assignment_id=${assignmentID}&form_name=generations-form`);
-        
-        //     careData = careEthicsData.data.data;
-        //     intersectData = intersectionalityData.data.data;
-        //     generationsData = sevenGenerationsData.data.data;
-
-        // } catch (error) {
-        //     if (axios.isAxiosError(error) && error.response?.status === 404) {
-        //         //console.log("Moral Meter: We don't have all data for the Relations subsection - aborting moral meter calculation for this subsection");
-        //         relDataExists = false;
-        //         return 0;
-        //     } else {
-        //         console.log("Error fetching form data in moral meter: ", error);
-        //     }
-        // }
-
-        // if (careData && careData.length > 0 && careData[0].answers && careData[0].answers[0] && careData[0].answers[0].content) {
-        //     let content = careData[0].answers[0].content;
-        //     // The cumulative score is a percentage based on the sum of all sub-sections out of 30: (x/30)*100
-        //     careScore = parseInt(content[key]) || 0;
-        // }
-
-        // if (intersectData && intersectData.length > 0 && intersectData[0].answers && intersectData[0].answers[0] && intersectData[0].answers[0].content) {
-        //     let content = intersectData[0].answers[0].content;
-        //     intersectScore = parseInt(content[key]) || 0;
-        // }
-
-        // if (generationsData && generationsData.length > 0 && generationsData[0].answers && generationsData[0].answers[0] && generationsData[0].answers[0].content) {
-        //     let content = generationsData[0].answers[0].content;
-        //     generationsScore = parseInt(content[key]) || 0;
-        // }
-        careScore = await getCareEthicsScore();
-        intersectScore = await getIntersectionalityScore();
-        generationsScore = await getSevenGenerationsScore();
+        let careScore = await getCareEthicsScore();
+        let intersectScore = await getIntersectionalityScore();
+        let generationsScore = await getSevenGenerationsScore();
         //The cumulative score is a percentage based on the sum of all sub-sections out of 30:  (x/30)*100
-        cumulative = ((careScore + intersectScore + generationsScore)/30)*100;
+        let cumulative = ((careScore + intersectScore + generationsScore)/30)*100;
         //setRelationsCumulativeScore(cumulative);
         return Math.round(cumulative);
   };
@@ -457,55 +332,12 @@ const getMillScore = async (): Promise<number> => {
  * @returns {Promise<number>} The cumulative score as a percentage, or 0 if data is not available.
  */
   const getScoresCharacterVirtue = async (): Promise<number> => {
-        // let virtueData;
-        // let pathData;
-        // let universalData;
-
-        let virtueScore = 0;
-        let pathScore = 0;
-        let universalScore = 0;
-        let cumulative;
-        //const userID = localStorage.getItem('id');
-        //try{
-        //     const virtueEthicsData = await axios.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userID}&assignment_id=${assignmentID}&form_name=virtue-ethics`);
-        //     const lifePathData = await axios.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userID}&assignment_id=${assignmentID}&form_name=life-path`);
-        //     const universalPrinciplesData = await axios.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userID}&assignment_id=${assignmentID}&form_name=universal-principles`);
-        
-        //     virtueData = virtueEthicsData.data.data;
-        //     pathData = lifePathData.data.data;
-        //     universalData = universalPrinciplesData.data.data;
-
-        // } catch (error) {
-        //     if (axios.isAxiosError(error) && error.response?.status === 404) {
-        //         //console.log("Moral Meter: We don't have all data for the Relations subsection - aborting moral meter calculation for this subsection");
-        //         cvDataExists = false;
-        //         return 0;
-        //     } else {
-        //         console.log("Error fetching form data: ", error);
-        //     }
-        // }
-
-        // if (virtueData && virtueData.length > 0 && virtueData[0].answers && virtueData[0].answers[0] && virtueData[0].answers[0].content) {
-        //     let content = virtueData[0].answers[0].content;
-        //     // The cumulative score is a percentage based on the sum of all sub-sections out of 30: (x/30)*100
-        //     virtueScore = parseInt(content[key]) || 0;
-        // }
-
-        // if (pathData && pathData.length > 0 && pathData[0].answers && pathData[0].answers[0] && pathData[0].answers[0].content) {
-        //     let content = pathData[0].answers[0].content;
-        //     pathScore = parseInt(content[key]) || 0;
-        // }
-
-        // if (universalData && universalData.length > 0 && universalData[0].answers && universalData[0].answers[0] && universalData[0].answers[0].content) {
-        //     let content = universalData[0].answers[0].content;
-        //     universalScore = parseInt(content[key]) || 0;
-        // }
-        virtueScore = await getVirtueEthicsScore();
-        pathScore = await getLifePathScore();
-        universalScore = await getUniversalPrinciplesScore();
+        let virtueScore = await getVirtueEthicsScore();
+        let pathScore = await getLifePathScore();
+        let universalScore = await getUniversalPrinciplesScore();
 
         //The cumulative score is a percentage based on the sum of all sub-sections out of 30:  (x/30)*100
-        cumulative = ((virtueScore + pathScore + universalScore)/30)*100;
+        let cumulative = ((virtueScore + pathScore + universalScore)/30)*100;
         //setCharacterVirtueCumulativeScore(cumulative);
         return Math.round(cumulative);
   };
@@ -585,7 +417,7 @@ const StyledWrapper = styled.div<StyledWrapperProps>`
             to right,
             lightcoral 0%,
             lightcoral 35%,
-            #c9c6c5 50%,
+            #FFC107 50%,
             lightgreen 65%,
             lightgreen 100%
         ); /* Smooth gradient with blue in the middle */
