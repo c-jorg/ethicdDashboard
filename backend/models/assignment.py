@@ -81,13 +81,18 @@ class Assignment(db.Model):
     
     @classmethod
     def get_all_assignments_by_student_and_class(cls, student_id, class_id):
-        return (
+        query= (
             db.session.query(cls, CaseStudy.title)
             .join(CaseStudy, cls.case_study_id == CaseStudy.id)
-            .filter(cls.student_id == student_id, CaseStudy.class_id == class_id)
+            .filter(cls.student_id == student_id, 
+                    CaseStudy.class_id == class_id)
             .order_by(cls.last_modified.desc())
             .all()
         )
+        print(query, flush=True)
+        #results = query.all()
+        #print(results, flush=True)
+        return query
         #return db.session.query(cls).filter(cls.student_id == student_id and cls.
     
     @classmethod 
@@ -122,7 +127,14 @@ class Assignment(db.Model):
         assignment = db.session.query(cls).filter(cls.id == assignment_id).first()
         assignment.case_study_option_id = case_study_option
         db.session.commit()
-
+        
+    @classmethod
+    def get_case_study_option_id_by_assignment_id(cls, assignment_id):
+        assignment = db.session.query(cls).filter(cls.id == assignment_id).first()
+        if assignment.case_study_option_id is None:
+            print(f"no case option {assignment}", flush=True)
+            return None
+        return assignment.case_study_option_id
     
 class AssignmentSchema(ma.SQLAlchemyAutoSchema):
     class Meta:

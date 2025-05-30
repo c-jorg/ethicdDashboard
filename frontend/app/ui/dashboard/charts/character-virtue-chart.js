@@ -174,6 +174,7 @@ const CharacterVirtueChart = () => {
                         size: window.innerWidth < 768 ? 12 : 20, // Smaller font size on mobile
                     },
                 },
+                onClick: (e) => {}, //do nothing when clicked on, default behavior is to remove it from graph
             },
             tooltip: {
                 callbacks: {
@@ -193,39 +194,48 @@ const CharacterVirtueChart = () => {
     };
     return (
         <div className="w-full md:col-span-4">
-    <h2 className={`${lusitana.className} mb-4 text-xl md:text-4xl`}>Character and Virtue</h2>
-
-    {/* Chart Container */}
-    <div className="flex flex-col md:flex-row rounded-xl bg-gray-50 p-4 gap-4 md:gap-0" style={{ minHeight: '400px' }}>
-        
-        {/* Left Side: CharacterVirtueChart and LifePathChart */}
-        <div className="flex flex-col w-full md:w-[60%]" style={{ position: 'relative', height: '100%' }}>
-            
-            {/* CharacterVirtueChart */}
-            <div className="w-full" style={{ height: '40%' }}>
-                <div>
-                    {dataArr.length > 0 ? (
-                        <Pie ref={chartRef} data={data} options={options} />
-                    ) : (
-                        <div className="absolute inset-0 flex justify-center items-center">
-                            <DotsLoading />
+        <h2 className={`${lusitana.className} mb-4 text-xl md:text-4xl`}>Character and Virtue</h2>
+            <div
+                className="overflow-auto"
+                style={{
+                    maxHeight: '550px', // adjust as needed
+                    maxWidth: '100%',
+                    overflowY: 'auto',
+                    overflowX: 'auto',
+                }}
+            >
+                {/* Chart Container */}
+                <div className="flex flex-col md:flex-row rounded-xl bg-gray-50 p-4 gap-4 md:gap-0" style={{ minHeight: '400px' }}>
+                    
+                    {/* Left Side: CharacterVirtueChart and LifePathChart */}
+                    <div className="flex flex-col w-full md:w-[60%]" style={{ position: 'relative', height: '100%' }}>
+                        
+                        {/* CharacterVirtueChart */}
+                        <div className="w-full" style={{ height: '40%' }}>
+                            <div>
+                                {dataArr.length > 0 ? (
+                                    <Pie ref={chartRef} data={data} options={options} />
+                                ) : (
+                                    <div className="absolute inset-0 flex justify-center items-center">
+                                        <DotsLoading />
+                                    </div>
+                                )}
+                            </div>
                         </div>
-                    )}
+
+                        {/* LifePathChart */}
+                        <div className="w-full" style={{ height: '60%' }}>
+                            <LifePathChart />
+                        </div>
+                    </div>
+
+                    {/* Right Side: UniversalPrinciplesChart */}
+                    <div className="w-full md:w-[40%]" style={{ height: '100%', position: 'relative' }}>
+                        <UniversalPrincplesChart />
+                    </div>
                 </div>
             </div>
-
-            {/* LifePathChart */}
-            <div className="w-full" style={{ height: '60%' }}>
-                <LifePathChart />
-            </div>
         </div>
-
-        {/* Right Side: UniversalPrinciplesChart */}
-        <div className="w-full md:w-[40%]" style={{ height: '100%', position: 'relative' }}>
-            <UniversalPrincplesChart />
-        </div>
-    </div>
-</div>
 
     
 

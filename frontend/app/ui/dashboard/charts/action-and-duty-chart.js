@@ -7,6 +7,7 @@ import { Chart } from 'chart.js/auto';
 //import 'chart.js/auto'; // Import Chart.js
 import { lusitana } from '@/app/ui/fonts';
 import DotsLoading from '@/app/ui/components/loading';
+import ThumbsUpComponent from '@/app/ui/components/thumbs-up-down'
 
 import annotationPlugin from 'chartjs-plugin-annotation';
 
@@ -28,6 +29,8 @@ const ActionAndDutyChart = () => {
     const [fillColor, SetFillColor] = useState('rgba(26, 116, 49, 0.2)');
     const [percentageActionTaken, setPercentageActionTaken] = useState(0);
     const [lineColours, setLineColours] = useState(['rgba(45, 198, 83, 1)', 'rgba(183, 239, 197, 1)']);
+    const [kant, setKant] = useState(0);
+    const [kantText, setKantText] = useState("Does not pass");
     let isLoading = true;
 
     // Create a gradient for the fill color
@@ -73,11 +76,13 @@ const ActionAndDutyChart = () => {
                             }
                             setPersonalSacrifices(sacrificesData);
 
-                            setAverage(sum / numSacrifices);
+                            const average = sum / numSacrifices;
+                            setAverage(average);
+                            console.log('average is: ', average);
                             if (average >= 0 && average <= 3) {
                                 SetFillColor('rgba(211, 21, 16, 0.2)'); // Red
                             } else if (average >= 4 && average <= 6) {
-                                SetFillColor('rgba(169, 169, 169,0.2)'); // Grey
+                                SetFillColor('rgba(222, 167, 5, 0.2)'); // amber
                             } else if (average >= 7 && average <= 10) {
                                 SetFillColor('rgba(45, 198, 83, 0.2)'); // Green
                             }
@@ -108,6 +113,29 @@ const ActionAndDutyChart = () => {
                             // Something happened in setting up the request that triggered an error
                             console.log("Error setting up the request:", error.message);
                         }
+                    }
+
+                    // categorical imperitaves universal law test
+                    try{
+                        const thisFormData = await axios.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userId}&assignment_id=${assignmentId}&form_name=categorical-imperatives`);
+                        let data = thisFormData.data.data[0].answers[0].content;
+                        console.log("kant data ", data);
+                        if(data){
+                            const consistencyPass = data['consistency-pass'];
+                            const universalityPass = data['universalizability-pass'];
+                            console.log(`kant checks consistency: ${consistencyPass}, universality: ${universalityPass}`);
+                            if(consistencyPass === 'pass' && universalityPass === 'pass'){
+                                setKant(100);
+                                setKantText("Passes");
+                                console.log("kant passes");
+                            }else{
+                                setKant(0);
+                                setKantText("Does not pass");
+                                console.log("kant does not pass");
+                            }
+                        }
+                    }catch(error){
+                        console.log("categorical imperatives failed ", error);
                     }
                     
                    
@@ -151,7 +179,7 @@ const ActionAndDutyChart = () => {
                                 //console.log("Deciding colour, percentage action taken is " + percentageActionTaken);
                                 setLineColours(['rgb(211, 21, 16)', 'rgb(255, 124, 101)']);
                             }else if(parseInt(content["percentage-action-taken"]) >= 40 && parseInt(content["percentage-action-taken"]) < 70){
-                                setLineColours(['rgb(85,85,85)', 'rgb(153,153,153)']);
+                                setLineColours(['rgb(255,193,7)', 'rgb(255,206,97)']);
                             }else{
                                 setLineColours(['rgba(45, 198, 83, 1)', 'rgba(183, 239, 197, 1)']);
                             }
@@ -210,8 +238,13 @@ const ActionAndDutyChart = () => {
     }, [fidelity, gratitude, reparation]); // This useEffect runs whenever fidelity, gratitude, or reparation changes
 
     // Line chart data structure for Personal Sacrifices
+    const MAX_LABEL_LENGTH=10;
     const personalSacrificesData = {
-        labels: personalSacrifices.map(sacrifice => sacrifice.name), // Use the names from personalSacrifices as labels
+        labels: personalSacrifices.map(sacrifice => 
+            sacrifice.name.length > MAX_LABEL_LENGTH
+            ? sacrifice.name.slice(0, MAX_LABEL_LENGTH) + "..."
+            : sacrifice.name
+        ), // Use the names from personalSacrifices as labels
         datasets: [
             {
                 label: 'Personal Sacrifice',
@@ -274,6 +307,7 @@ const ActionAndDutyChart = () => {
                         size: window.innerWidth < 768 ? 12 : 25, // Responsive font size
                     },
                 },
+                onClick: (e) => {}, //do nothing when clicked on, default behavior is to remove it from graph
             },
             title: {
                 display: true,
@@ -359,30 +393,45 @@ const ActionAndDutyChart = () => {
                 font: {
                     size: window.innerWidth < 768 ? 20 : 25, // Responsive font size
                 },
-                
+                onClick: (e) => {}, //do nothing when clicked on, default behavior is to remove it from graph  
             },
             },
+            // annotation: {
+            //     clip: false, // Allow annotations to overflow the chart area
+            //     annotations: {
+            //         myText: {
+            //             type: 'label', // Type of annotation
+            //             content: [percentageActionTaken] + '%', // Text to display
+            //             position: {
+            //                 x: 'end', // Position the label at the end of the x-axis
+            //                 y: 'start', // Position the label at the start of the y-axis
+            //                 xAdjust: 0, // Adjust the x position to move the label outside the chart area
+            //                 yAdjust: 0 // Adjust the y position if needed
+                          
+            //             },
+            //             color: lineColours[0], // Text color
+            //             font: {
+            //                 size: window.innerWidth < 768 ? 30 : 50, // Responsive font size // Font size
+            //                 //weight: 'bold' // Font weight
+            //             }
+            //         }
+            //     }
+            // },
             annotation: {
                 clip: false, // Allow annotations to overflow the chart area
                 annotations: {
                     myText: {
                         type: 'label', // Type of annotation
                         content: [percentageActionTaken] + '%', // Text to display
-                        position: {
-                            x: 'end', // Position the label at the end of the x-axis
-                            y: 'start', // Position the label at the start of the y-axis
-                            xAdjust: 60, // Adjust the x position to move the label outside the chart area
-                            yAdjust: 0 // Adjust the y position if needed
-                          
-                        },
+                        xValue: 2.2, // start just off the end of x axix
+                        yValue: 11, // slightly above top of graph
                         color: lineColours[0], // Text color
                         font: {
-                            size: window.innerWidth < 768 ? 30 : 50, // Responsive font size // Font size
-                            //weight: 'bold' // Font weight
+                            size: window.innerWidth < 768 ? 12 : 25, // Responsive font size // Font size
                         }
                     }
                 }
-            },
+            }
         },
         scales: {
             x: {
@@ -415,32 +464,46 @@ const ActionAndDutyChart = () => {
     return (
         <div className="w-full md:col-span-4">
             <h2 className={`${lusitana.className} mb-4 text-xl md:text-4xl`}>Action and Duty</h2>
-    
-            {/* Chart Container */}
-            <div className="flex flex-col md:flex-row rounded-xl bg-gray-50 p-4" style={{ minHeight: '500px' }}>
+            {/* Scrollable Chart Area */}
+            <div
+                className="overflow-auto"
+                style={{
+                    maxHeight: '550px', // adjust as needed
+                    maxWidth: '100%',
+                }}
+            >
+                {/* Chart Container */}
+                <div className="flex flex-col md:flex-row rounded-xl bg-gray-50 p-4" style={{ minHeight: '500px' }}>
+                    {/* kant thumbs up down */}
+                    <div className="w-full md:w-1/4 flex flex-row md:flex-col gap-10 md:gap-2 justify-center items-center">
+                        <div className="text-xl md:text-2xl">Kant Universal Law</div>
+                        <ThumbsUpComponent ratio={kant} style={{ fontSize: window.innerWidth < 768 ? '18px' : '36px' }} />
+                        <span className="text-xl md:text-2xl">{kantText}</span>
+                    </div>
 
-                {/* Render the Personal Sacrifices Line chart */}
-                <div className="w-full" style={{ minHeight: '300px', position: 'relative' }}>
-                    {personalSacrifices.length > 0 ? (
-                        <Line data={personalSacrificesData} options={personalSacrificesOptions} id="personalSacrifices" />
-                    ) : (
-                        <div className="absolute inset-0 flex justify-center items-center">
-                            <DotsLoading />
-                        </div>
-                    )}
-                </div>
-    
-                {/* Render the Action and Duty Line chart */}
-                <div className="w-full" style={{ minHeight: '300px', position: 'relative' }}>
-                    {fidelity.length > 0 && reparation.length > 0 && gratitude.length > 0 ? (
-                        <Line data={actionAndDutyData} options={actionAndDutyOptions}  plugins={[annotationPlugin]} id="dutiesVersusActions" />// Register the plugin locally />
-                    ) : (
-                        <div className="absolute inset-0 flex justify-center items-center">
-                            <DotsLoading />
-                        </div>
-                    )}
-                </div>
+                    {/* Render the Personal Sacrifices Line chart */}
+                    <div className="w-full" style={{ minHeight: '300px', position: 'relative' }}>
+                        {personalSacrifices.length > 0 ? (
+                            <Line data={personalSacrificesData} options={personalSacrificesOptions} id="personalSacrifices" />
+                        ) : (
+                            <div className="absolute inset-0 flex justify-center items-center">
+                                <DotsLoading />
+                            </div>
+                        )}
+                    </div>
+        
+                    {/* Render the Action and Duty Line chart */}
+                    <div className="w-full" style={{ minHeight: '300px', position: 'relative' }}>
+                        {fidelity.length > 0 && reparation.length > 0 && gratitude.length > 0 ? (
+                            <Line data={actionAndDutyData} options={actionAndDutyOptions}  plugins={[annotationPlugin]} id="dutiesVersusActions" />// Register the plugin locally />
+                        ) : (
+                            <div className="absolute inset-0 flex justify-center items-center">
+                                <DotsLoading />
+                            </div>
+                        )}
+                    </div>
 
+                </div>
             </div>
         </div>
     );

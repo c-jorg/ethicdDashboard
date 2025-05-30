@@ -8,6 +8,7 @@ import CriticalQuestionsForm from '@/app/ui/dashboard/action-and-duty/critical-q
 import LockedFormCard from '@/app/ui/components/locked-form-card';
 import { dilemmaFormSubmitted } from '@/app/utils/is-dilemma-submitted';
 import { lusitana } from '@/app/ui/fonts';
+import { CaseStudyOptionBox } from "@/app/ui/components/case-study-option-box";
 
 export default function ReasonPage() {
 
@@ -37,8 +38,9 @@ export default function ReasonPage() {
    */
    useEffect(() => {
     const checkDilemmaForm = async () => {
+      const userID = localStorage.getItem('id');
       const isSubmitted = await dilemmaFormSubmitted(
-        localStorage.getItem('id'),
+        userID,
         Cookie.get('assignment_id') || '',
         apiUrl
       );
@@ -52,6 +54,7 @@ export default function ReasonPage() {
    actionAndDutySubmitted && dilemmaSubmitted ? (
       <main className="flex items-center justify-center w-full bg-gray-100">
         <div className="w-full h-full space-y-2.5 p-4">
+          <CaseStudyOptionBox assignmentID={Cookie.get('assignment_id') || ''} apiUrl={process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'}/>
           <div>
             <ActionAndDutyForm />
           </div>

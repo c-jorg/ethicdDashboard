@@ -30,9 +30,9 @@ def test_setup_guest(client, db_session):
     THEN response should contain success message
     """
     db_session.query(CaseStudy).filter(CaseStudy.title == "").delete()
-    print(db_session.query(CaseStudy).filter(CaseStudy.title == "Guest Case Study").count())
-    print(db_session.query(CaseStudy).filter(CaseStudy.title == "Guest Case Study").all())
-    print(db_session.query(CaseStudy).all())
+    #print(db_session.query(CaseStudy).filter(CaseStudy.title == "Guest Case Study").count())
+    #print(db_session.query(CaseStudy).filter(CaseStudy.title == "Guest Case Study").all())
+    #print(db_session.query(CaseStudy).all())
     response = client.post('/api/flask/setup/guest')
     print(response)
     assert response.status_code ==  201

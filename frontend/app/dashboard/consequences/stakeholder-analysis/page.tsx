@@ -8,6 +8,7 @@ import LockedFormCard from '@/app/ui/components/locked-form-card';
 import { dilemmaFormSubmitted } from '@/app/utils/is-dilemma-submitted';
 import Cookie from 'js-cookie';
 import DescriptionCard from '@/app/ui/components/description-card';
+import { CaseStudyOptionBox } from '@/app/ui/components/case-study-option-box';
 
 export default function ConsequencesPage() {
   const [dilemmaSubmitted, setDilemmaSubmitted] = useState(true);
@@ -24,8 +25,9 @@ export default function ConsequencesPage() {
    */
   useEffect(() => {
     const checkDilemmaForm = async () => {
+      const userID = localStorage.getItem('id');
       const isSubmitted = await dilemmaFormSubmitted(
-        localStorage.getItem('id'),
+        userID,
         Cookie.get('assignment_id') || '',
         apiUrl
       );
@@ -39,6 +41,7 @@ export default function ConsequencesPage() {
     dilemmaSubmitted ? (
       <main className="flex items-center justify-center w-full h-screen">
         <div className="w-full h-full space-y-2.5">
+          <CaseStudyOptionBox assignmentID={Cookie.get('assignment_id') || ''} apiUrl={process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'}/>
           <div className="">
             <h1 className="text-5xl font-semibold text-grey-800 md:text-3xl text-center">
               Consequences

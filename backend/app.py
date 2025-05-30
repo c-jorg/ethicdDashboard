@@ -6,7 +6,7 @@ from os import environ
 from flask_jwt_extended import JWTManager
 from .models.db import db, ma
 from .models import *
-from .controllers import student_controller, assignment_controller, auth, question_controller, guest_controller, feedback_controller, grade_controller, enrollment_controller, form_description_controller, case_study_controller, slider_question_controller, setup_controller
+from .controllers import student_controller, assignment_controller, auth, question_controller, guest_controller, feedback_controller, grade_controller, enrollment_controller, form_description_controller, case_study_controller, slider_question_controller, setup_controller, case_study_option_controller
 from .utils.exceptions import errors_bp
 
 
@@ -61,6 +61,7 @@ def create_app():
   app.register_blueprint(slider_question_controller.bp)
   app.register_blueprint(errors_bp)
   app.register_blueprint(setup_controller.bp)
+  app.register_blueprint(case_study_option_controller.bp)
 
   with app.app_context():
       db.create_all()

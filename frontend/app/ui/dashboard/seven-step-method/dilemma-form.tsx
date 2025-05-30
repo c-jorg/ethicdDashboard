@@ -14,6 +14,7 @@ import { dilemmaFormSubmitted } from '@/app/utils/is-dilemma-submitted';
 import CategoricalImperativesForm from '../action-and-duty/categorical-imperatives-form';
 import { useServerInsertedHTML } from 'next/navigation';
 import setDilemmaSubmitted from '@/app/ui/components/nav-links';
+import { json } from 'stream/consumers';
 
 interface RadioItem {
   id: number;
@@ -42,6 +43,10 @@ export default function RadioButtonForm() {
   const [removalTriggered, setRemovalTriggered] = useState(false);
   const [lockForm, setLockForm] = useState(false);  
   const [isLoading, setIsLoading] = useState(true);
+
+  const [showStudentInputs, setShowStudentInputs] = useState(false);
+  const [studentOptionTitle, setStudentOptionTitle] = useState('');
+  const [studentOptionDescription, setStudentOptionDescription] = useState('');
 
   const [caseOptions, setCaseOptions] = useState<RadioItem[]>([
     {
@@ -136,7 +141,7 @@ export default function RadioButtonForm() {
     for(let i = 0; i < numDilemmas; i++){
       localStorage.setItem(`${prefix}dilemma-${i}`, 'false');
     }
-    
+    setShowStudentInputs(false);
     setSelectedItem({ value, label });
     localStorage.setItem(`${prefix}${label}`, value);
   };
@@ -161,10 +166,11 @@ export default function RadioButtonForm() {
   // };
 
   const handleTentativeChoiceChange = ( value: string, button: string) => {
+    console.log(`Tentative choice value is handleTentativChoiceChange ${value}`)
     setTentativeChoice(value);
     setTentativeChoiceIndex(button.charAt(button.length - 1));
     
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 10; i++) {
       const tentativeChoiceKey = `tentative-choice-${i}`;
       if (tentativeChoiceKey !== button) {
         localStorage.setItem(`${prefix}${tentativeChoiceKey}`, 'false');
@@ -765,6 +771,19 @@ export default function RadioButtonForm() {
               'Content-Type': 'application/json',
             }
           });
+          if(localStorage.getItem('guest') == 'true'){
+            console.log('user is guest, setting case study option')
+            const case_study_data = {
+              assignment_id: assignmentID,
+              case_study_option: caseStudyOptionID
+            }
+            const optionResponse = await axios.patch(`${apiUrl}/api/flask/assignment/set-case-study-option`, case_study_data, {
+              headers: {
+               'Content-Type': 'application/json',
+              }
+            });
+            console.log(`option response ${optionResponse}`)
+          }
         }else{
           response = await axios.post(`${apiUrl}/api/flask/assignment/submit-form`, data, {
             headers: {
@@ -864,6 +883,45 @@ export default function RadioButtonForm() {
             )}
           </div>
         ))}
+        <div className="border border-gray-300 rounded-lg p-4 transition-all duration-300 bg-gray-50">
+          <input 
+            type="radio"
+            name="ethicalConsideration"
+            id="dilemma-student"
+            value="student-option"
+            onChange={() => {
+              setSelectedItem({ value: 'student-option', label: 'Student Option'});
+              setShowStudentInputs(true);
+              localStorage.setItem(`${prefix}dilemma-student`, 'true');
+            }}
+            checked={selectedItem?.value === 'student-option'}
+            className="answer-input mr-3 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+            required
+          />
+          <label htmlFor="dilemma-student" className="text-md font-medium text-gray-900">
+            Enter the details of your hard case and/or difficult decision here - 700 words max
+          </label>
+          {showStudentInputs && (
+          <div className="mt-2 flex flex-col gap-2">
+            <input 
+              type="text"
+              id="student-option-title"
+              placeholder="Case Study Title"
+              value={studentOptionTitle}
+              onChange={e => setStudentOptionTitle(e.target.value)}
+              className="answer-input border border-gray-300 rounded-lg p-2"
+            />
+            <textarea 
+              id="student-option-description"
+              placeholder="Enter details"
+              value={studentOptionDescription}
+              onChange={e => setStudentOptionDescription(e.target.value)}
+              className="answer-input border border-gray-300 rounded-lg p-2 resize-none"
+              rows={3}
+            />
+          </div>
+          )}
+        </div>
         {/*Professor Comment Box for key RADIO BUTTONS */}
         {lockForm && feedback["select-dilemma"] && (
           <div className="border border-gray-200 rounded-lg p-4 mt-4">
@@ -1229,7 +1287,7 @@ export default function RadioButtonForm() {
                   Which option is the best choice based on your analysis so far?
                 </label>
                 <span className="text-md mb-2">
-                  Choose one option to move on to the seventh step: Deeper analysis on the Ethics Dashboard.
+                  Choose one option to move on to deeper analysis on the Ethics Dashboard.
                 </span>
 
 
@@ -1265,7 +1323,7 @@ export default function RadioButtonForm() {
            type="button"
             onClick={(e) => {
               //console.log("save button clicked");
-              //if the user is a guest unlock the other forms
+              //if the user is a guest unlock the other forms and set case study option
               if(localStorage.getItem("guest") == "true"){
                 localStorage.setItem(`${prefix}dilemma-submitted`, "true")
               }

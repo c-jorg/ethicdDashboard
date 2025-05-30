@@ -118,9 +118,9 @@ const LifePathChart = () => {
                 'rgba(150, 235, 170, 1)', 
             ]; // Green spectrum
         }else if(average >= 4 && average <= 6){
-            colors = ['rgb(183, 182, 182)', 
-                      'rgba(221,221,221, 1)', 
-            ]; // Grey spectrum
+            colors = ['rgb(190,143,4)', 
+                      'rgb(255,193,7)', 
+            ]; // amber spectrum
          }else {
             colors = [
                 'rgb(211, 21, 16)', 
@@ -172,6 +172,7 @@ const LifePathChart = () => {
                 },
                 legend: {
                 display: false, // Show legend
+                onClick: (e) => {}, //do nothing when clicked on, default behavior is to remove it from graph
             },
             tooltip: {
                 callbacks: {

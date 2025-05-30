@@ -46,7 +46,7 @@ export default function LifePathForm() {
     //state for slider scales
     const [scalesLabels, setScalesLabels] = useState([
       ['Ignorance', 'Wisdom'],
-      ['Hatred', 'Loving Kindness'],
+      ['Hatred', 'Kindness'],
       ['Greed', 'Generosity'],
     ]);
 

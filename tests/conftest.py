@@ -1,4 +1,6 @@
+from datetime import datetime
 import functools
+from bcrypt import hashpw, gensalt
 from flask import Flask, request, jsonify, make_response
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
@@ -17,7 +19,7 @@ os.environ['DATABASE_URL'] = 'sqlite:///:memory:'
 os.environ['NEXT_PUBLIC_API_URL'] = 'http://http://4.206.215.51/:4000'
 
 #this function does initialization
-@pytest.fixture(scope = 'session')
+@pytest.fixture(scope = 'module')
 def app():
     #hopefully setting the environ database url works
     app = create_app()
@@ -50,7 +52,7 @@ def app():
         db.drop_all()
 
 #this function return a testing app
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='module')
 def client(app):
     return app.test_client()
 
@@ -62,3 +64,21 @@ def db_session(app):
         session.begin()
         yield db.session
         session.rollback()
+        
+@pytest.fixture(scope='module',autouse=False)
+def setup_fixture(client, db_session):
+    Professor.post_professor('example','example@example.com', hashpw('Letmein1'.encode('utf-8'), gensalt()).decode('utf-8'))
+    prof_id = Professor.get_professor_by_email('example@example.com').id
+    Class.post_class('example class',prof_id,'example111')
+    class_id = Class.get_class_id_by_class_code('example111')
+    CaseStudy.post_case_study(prof_id,class_id,'example 1',datetime.now())
+    case_study_id = CaseStudy.get_case_study_id_by_title('example 1')
+    Student.post_student('example student','examplestudent@example.com', hashpw('Letmein1'.encode('utf-8'), gensalt()).decode('utf-8'), False)
+    student_id = Student.get_student_by_email('examplestudent@exmple.com')
+    Enrollment.enroll_student(class_id,student_id)
+    enrollment_id = Enrollment.get_enrollments_by_student_id(student_id)[0].id
+    CaseStudyOption.post_case_study_option(case_study_id, 'option 1', 'option 1 description')
+    case_study_option_id = CaseStudyOption.get_case_study_options_by_case_study_id(case_study_id)[0].id
+    Assignment.post_assignment(student_id,case_study_id,case_study_option_id)
+    assignment_id = Assignment.get_all_assignment_ids_by_student_id(student_id)[0]
+    return prof_id, class_id, case_study_id, student_id, enrollment_id, assignment_id, case_study_option_id

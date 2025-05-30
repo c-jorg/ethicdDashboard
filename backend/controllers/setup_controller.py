@@ -198,3 +198,19 @@ def setup_forms():
     except Exception as e:
         print(f"error adding forms {e}", flush=True)
         return make_response(jsonify({"message":"error setting up forms", "error":f"{e}"}),500)
+    
+
+@bp.route('/api/flask/setup/desc-change', methods=['PATCH'])
+def manual_option_description():
+    try:
+        data = request.get_json()
+        #student_id = data['student_id']
+        option_id = data['option_id']
+        description = data['file']
+        with open(f'controllers/guest_assignments/{description}', 'r') as file:
+            description = file.read()
+        CaseStudyOption.update_description(option_id, description)
+        return make_response(jsonify({"message":"description updated"}), 201)
+    except Exception as e:
+        print(f'something went wrong {e}', flush=True)
+        return make_response(jsonify({"message":"something went wrong", "error":e}), 500)

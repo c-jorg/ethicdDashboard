@@ -30,7 +30,7 @@ export default function CareForm() {
     const [removalTriggered, setRemovalTriggered] = useState(false);
 
     const maxStakeholders = 12;
-    const minStakeholders = 7;
+    const minStakeholders = 1;
     const maxWords = 200;
 
     const [feedback, setFeedback] = useState<{ [key: string]: string }>({});
@@ -45,19 +45,20 @@ export default function CareForm() {
         {attentiveness:50, competence:50, responsiveness:50}
     );
 
-    const [stakeholders, setStakeholders] = useState<{ name: string; direct: boolean; indirect: boolean; attentiveness: number; competence: number; responsiveness: number }[]>(
-        Array(minStakeholders).fill({ name: '', direct: false, indirect: false, attentiveness: 5  , competence: 5, responsiveness: 5 }) // Default values
+    const [stakeholders, setStakeholders] = useState<{ name: string; direct: boolean; indirect: boolean; notApplicable: boolean; attentiveness: number; competence: number; responsiveness: number }[]>(
+        Array(minStakeholders).fill({ name: '', direct: false, indirect: false, notApplicable: false, attentiveness: 5  , competence: 5, responsiveness: 5 }) // Default values
     );
 
     // Function to add a new stakeholder card
     const addStakeholder = () => {
         if (stakeholders.length < maxStakeholders) {
-            const newStakeholders = [...stakeholders, { name: '', direct:false, indirect:false, attentiveness: 5, competence: 5, responsiveness: 5 }];
+            const newStakeholders = [...stakeholders, { name: '', direct:false, indirect:false, notApplicable: false, attentiveness: 5, competence: 5, responsiveness: 5 }];
             setStakeholders(newStakeholders);
             const index = newStakeholders.length - 1;
             localStorage.setItem(`${prefix}stakeholder-name-${index}`, '');
             localStorage.setItem(`${prefix}stakeholder-directly-${index}`, 'false');
             localStorage.setItem(`${prefix}stakeholder-indirectly-${index}`, 'false');
+            localStorage.setItem(`${prefix}stakeholder-notApplicable-${index}`, 'false');
             localStorage.setItem(`${prefix}attentiveness-${index}`, '5');
             localStorage.setItem(`${prefix}competence-${index}`, '5');
             localStorage.setItem(`${prefix}responsiveness-${index}`, '5');
@@ -94,6 +95,7 @@ export default function CareForm() {
             localStorage.setItem(`${prefix}stakeholder-name-${i}`, stakeholders[i].name);
             localStorage.setItem(`${prefix}stakeholder-directly-${i}`, String(stakeholders[i].direct));
             localStorage.setItem(`${prefix}stakeholder-indirectly-${i}`, String(stakeholders[i].indirect));
+            localStorage.setItem(`${prefix}stakeholder-notApplicable-${i}`, String(stakeholders[i].notApplicable));
             localStorage.setItem(`${prefix}attentiveness-${i}`, String(stakeholders[i].attentiveness));
             localStorage.setItem(`${prefix}competence-${i}`, String(stakeholders[i].competence));
             localStorage.setItem(`${prefix}responsiveness-${i}`, String(stakeholders[i].responsiveness));
@@ -104,6 +106,7 @@ export default function CareForm() {
         localStorage.removeItem(`${prefix}stakeholder-name-${stakeholders.length}`);
         localStorage.removeItem(`${prefix}stakeholder-directly-${stakeholders.length}`);
         localStorage.removeItem(`${prefix}stakeholder-indirectly-${stakeholders.length}`);
+        localStorage.removeItem(`${prefix}stakeholder-notApplicable-${stakeholders.length}`);
         localStorage.removeItem(`${prefix}attentiveness-${stakeholders.length}`);
         localStorage.removeItem(`${prefix}competence-${stakeholders.length}`);
         localStorage.removeItem(`${prefix}responsiveness-${stakeholders.length}`);
@@ -113,14 +116,14 @@ export default function CareForm() {
     };
 
     // Function to handle slider and impact changes
-    const handleStakeholderChange = (index: number, field: 'name' | 'indirect' | 'direct' | 'attentiveness' | 'competence' | 'responsiveness', value: any) => {
+    const handleStakeholderChange = (index: number, field: 'name' | 'indirect' | 'direct' | 'notApplicable' | 'attentiveness' | 'competence' | 'responsiveness', value: any) => {
         setStakeholders(stakeholders.map((stakeholder, i) => 
             i === index ? { ...stakeholder, [field]: value } : stakeholder
         ));
-        if(field != 'name' && field != 'direct' && field != 'indirect'){
+        if(field != 'name' && field != 'direct' && field != 'indirect' && field != 'notApplicable'){
             //attentiveness, competence, responsiveness
             localStorage.setItem(`${prefix}${field}-${index}`, value);
-        }else if(field == 'direct' || field == 'indirect'){
+        }else if(field == 'direct' || field == 'indirect' || field == 'notApplicable'){
             //direct and indirect
             localStorage.setItem(`${prefix}stakeholder-${field}ly-${index}`, value);
             //localStorage.setItem(`${prefix}stakeholder-${field}ly-${index}-ce`, value);
@@ -136,14 +139,19 @@ export default function CareForm() {
 
     // Function to calculate average care values
     const calcAverageStakeholderCare = () => {
-        const length = stakeholders.length;
+        const applicableStakeholders = stakeholders.filter(s => !s.notApplicable)
+        const length = applicableStakeholders.length || 1;
+        console.log(`stakeholders length ${stakeholders.length
+            
+        }`)
         let att: number = 0;
         let com: number = 0;
         let res: number = 0;
-        stakeholders.forEach((stakeholder,index) => {
+        applicableStakeholders.forEach((stakeholder,index) => {
             att+=stakeholder.attentiveness;
             com+=stakeholder.competence;
             res+=stakeholder.responsiveness;
+            
         });
         //console.log("Attentiveness Sum:", att);
         //console.log("Competence Sum:", com);
@@ -152,12 +160,16 @@ export default function CareForm() {
     };
 
     const calculateCumulativeScore = () => {
-        //The average of attentiveness, competence and responsiveness for all stakeholders
+        //The average of attentiveness, competence and responsiveness for all stakeholders ignoring not applicable ones
+        const applicableStakeholders = stakeholders.filter(s => !s.notApplicable);
+        const length = applicableStakeholders.length || 1;
         let total = 0;
-        stakeholders.forEach((stakeholder) => {
-            total += stakeholder.attentiveness + stakeholder.competence + stakeholder.responsiveness;
+        applicableStakeholders.forEach((stakeholder) => {
+            if(!stakeholder.notApplicable){
+                total += stakeholder.attentiveness + stakeholder.competence + stakeholder.responsiveness;
+            }
         });
-        return Math.round(total / (3 * stakeholders.length));
+        return Math.round(total / (3 * length));
     }
 
     const clearLocalStorage = () => {
@@ -305,75 +317,84 @@ export default function CareForm() {
     
         // Iterate over the stakeholders
         for (let i = 0; i < numStakeholders; i++) {
-        const nameKey = `stakeholder-name-${i}`;
-        const impactDirectKey = `stakeholder-directly-${i}`;
-        const impactIndirectKey = `stakeholder-indirectly-${i}`;
+            const nameKey = `stakeholder-name-${i}`;
+            const impactDirectKey = `stakeholder-directly-${i}`;
+            const impactIndirectKey = `stakeholder-indirectly-${i}`;
+            const notApplicableKey = `stakeholder-notApplicable-${i}`;
 
-        const attentivenessKey = `attentiveness-${i}`;
-        const competenceKey = `competence-${i}`;
-        const responsivenessKey = `responsiveness-${i}`;
-        
-        const name = feedback[nameKey] || localStorage.getItem(`${prefix}${nameKey}`) || content[nameKey] || "";   
-        console.log("feed back is ", feedback);
+            const attentivenessKey = `attentiveness-${i}`;
+            const competenceKey = `competence-${i}`;
+            const responsivenessKey = `responsiveness-${i}`;
+            
+            const name = feedback[nameKey] || localStorage.getItem(`${prefix}${nameKey}`) || content[nameKey] || "";   
+            console.log("feed back is ", feedback);
 
-        let directImpact;
-        if(localStorage.getItem(`${prefix}${impactDirectKey}`) !== null){
-            directImpact = String(localStorage.getItem(`${prefix}${impactDirectKey}`)) !== 'false' ? true : false;
-        }else{
-            if(content.length > 0){
+            let directImpact;
+            if(localStorage.getItem(`${prefix}${impactDirectKey}`) !== null){
+                directImpact = String(localStorage.getItem(`${prefix}${impactDirectKey}`)) === 'true';
+            }else if(content && content[impactDirectKey] !== undefined){
                 //only if there is data saved can we use this logic
-                directImpact = String(content[impactDirectKey]) !== 'false' ? true : false;
+                directImpact = content[impactDirectKey] === 'true';      
             }else{
                 //if there is no data saved then it is always false
                 directImpact = false;
             }
-        }
 
-        let indirectImpact;
-        if(localStorage.getItem(`${prefix}${impactIndirectKey}`) !== null){
-            indirectImpact = String(localStorage.getItem(`${prefix}${impactIndirectKey}`)) !== 'false' ? true : false;
-        }else{
-            if(content.length > 0){ 
+            let indirectImpact;
+            if(localStorage.getItem(`${prefix}${impactIndirectKey}`) !== null){
+               indirectImpact = String(localStorage.getItem(`${prefix}${impactIndirectKey}`)) === 'true';
+            }else if(content && content[impactIndirectKey] !== undefined){
                 //only if there is data saved can we use this logic
-                indirectImpact = String(content[impactIndirectKey]) !== 'false' ? true : false;
+                indirectImpact = content[impactIndirectKey] === 'true';      
             }else{
                 //if there is no data saved then it is always false
                 indirectImpact = false;
             }
-        }
 
-        let attentiveness1;
-        if(localStorage.getItem(`${prefix}${attentivenessKey}`) !== null){
-            attentiveness1 = parseInt(localStorage.getItem(`${prefix}${attentivenessKey}`) || '-1');
-            if(attentiveness1 == -1) attentiveness1 = 0;
-        }else{
-            attentiveness1  = parseInt(content[attentivenessKey]) || 5;
-        }
+            let noImpact;
+            if(localStorage.getItem(`${prefix}${notApplicableKey}`) !== null){
+                noImpact = String(localStorage.getItem(`${prefix}${notApplicableKey}`)) === 'true';
+            }else if(content && content[notApplicableKey] !== undefined){
+                //only if there is data saved can we use this logic
+                noImpact = content[notApplicableKey] === 'true';      
+            }else{
+                //if there is no data saved then it is always false
+                noImpact = false;
+            }
 
-        let competence1;
-        if(localStorage.getItem(`${prefix}${competenceKey}`) !== null){
-            competence1 = parseInt(localStorage.getItem(`${prefix}${competenceKey}`) || '-1');
-            if(competence1 == -1) competence1 = 0;
-        }else{
-            competence1 = parseInt(content[competenceKey]) || 5;
-        }
-       
-        let responsiveness1;
-        if(localStorage.getItem(`${prefix}${responsivenessKey}`) !== null){
-            responsiveness1 = parseInt(localStorage.getItem(`${prefix}${responsivenessKey}`) || '-1');
-            if(responsiveness1 == -1) responsiveness1 = 0;
-        }else{
-            responsiveness1 = parseInt(content[responsivenessKey]) || 5;
-        }
+            let attentiveness1;
+            if(localStorage.getItem(`${prefix}${attentivenessKey}`) !== null){
+                attentiveness1 = parseInt(localStorage.getItem(`${prefix}${attentivenessKey}`) || '-1');
+                if(attentiveness1 == -1) attentiveness1 = 0;
+            }else{
+                attentiveness1  = parseInt(content[attentivenessKey]) || 5;
+            }
 
-        stakeholdersData.push({
-        name: name,
-        direct: directImpact,
-        indirect: indirectImpact,
-        attentiveness: attentiveness1,
-            competence: competence1,
-            responsiveness: responsiveness1,
-        });
+            let competence1;
+            if(localStorage.getItem(`${prefix}${competenceKey}`) !== null){
+                competence1 = parseInt(localStorage.getItem(`${prefix}${competenceKey}`) || '-1');
+                if(competence1 == -1) competence1 = 0;
+            }else{
+                competence1 = parseInt(content[competenceKey]) || 5;
+            }
+        
+            let responsiveness1;
+            if(localStorage.getItem(`${prefix}${responsivenessKey}`) !== null){
+                responsiveness1 = parseInt(localStorage.getItem(`${prefix}${responsivenessKey}`) || '-1');
+                if(responsiveness1 == -1) responsiveness1 = 0;
+            }else{
+                responsiveness1 = parseInt(content[responsivenessKey]) || 5;
+            }
+
+            stakeholdersData.push({
+            name: name,
+            direct: directImpact,
+            indirect: indirectImpact,
+            notApplicable: noImpact,
+            attentiveness: attentiveness1,
+                competence: competence1,
+                responsiveness: responsiveness1,
+            });
         }
         setStakeholders(stakeholdersData);
         calcAverageStakeholderCare();
@@ -476,7 +497,7 @@ export default function CareForm() {
             // Handle checkboxes and radio buttons
             if (inputElement.type === 'checkbox') {
                 //stakeholderAnswers[inputElement.id] = inputElement.checked ? inputElement.value : 'false';
-                answers[inputElement.id] = inputElement.checked ? inputElement.value : 'false';
+                answers[inputElement.id] = inputElement.checked ? 'true' : 'false';
             } else {
                 answers[inputElement.id] = inputElement.value;
             }
@@ -574,7 +595,7 @@ export default function CareForm() {
                         placeholder="Enter name"
                         value={stakeholder.name}
                         onChange={(e) => handleStakeholderChange(index, 'name', e.target.value)}
-                        className="w-full border border-gray-300 rounded-lg p-2 text-sm"
+                        className="w-full border border-gray-300 rounded-lg p-2 text-sm answer-input"
                         required
                         />
                     ) : (
@@ -587,23 +608,36 @@ export default function CareForm() {
                     <div className="flex justify-between items-center text-sm">
                         <span className="font-semibold">Impact:</span>
                         <label className="flex items-center">
-                        <input
-                            type="checkbox"
-                            checked={stakeholder.direct}
-                            onChange={(e) => handleStakeholderChange(index, 'direct', e.target.checked)}
-                            className="h-4 w-4"
-                        />
-                        <span className="ml-1">Direct</span>
+                            <input
+                                type="checkbox"
+                                checked={stakeholder.direct}
+                                onChange={(e) => handleStakeholderChange(index, 'direct', e.target.checked)}
+                                className="h-4 w-4 answer-input"
+                                id={`stakeholder-directly-${index}`}
+                            />
+                            <span className="ml-1">Direct</span>
                         </label>
 
                         <label className="flex items-center">
-                        <input
-                            type="checkbox"
-                            checked={stakeholder.indirect}
-                            onChange={(e) => handleStakeholderChange(index, 'indirect', e.target.checked)}
-                            className="h-4 w-4"
-                        />
-                        <span className="ml-1">Indirect</span>
+                            <input
+                                type="checkbox"
+                                checked={stakeholder.indirect}
+                                onChange={(e) => handleStakeholderChange(index, 'indirect', e.target.checked)}
+                                className="h-4 w-4 answer-input"
+                                id={`stakeholder-indirectly-${index}`}
+                            />
+                            <span className="ml-1">Indirect</span>
+                        </label>
+
+                        <label className="flex items-center">
+                            <input
+                                type="checkbox"
+                                checked={stakeholder.notApplicable}
+                                onChange={(e) => handleStakeholderChange(index, 'notApplicable', e.target.checked)}
+                                className="h-4 w-4 answer-input"
+                                id={`stakeholder-notApplicable-${index}`}
+                            />
+                            <span className="ml-1">Not Applicable</span>
                         </label>
                     </div>
 

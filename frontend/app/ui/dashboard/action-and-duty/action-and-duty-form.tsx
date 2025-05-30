@@ -143,6 +143,7 @@ Moral laws express things we do simply because they are the right thing to do.`
           <input
             type="text"
             placeholder="Auto fill chosen option from Seven Step Method"
+            readOnly={false}
             value={tentativeChoice}
             className="mt-2 w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-300 focus:outline-none"
           />

@@ -1,7 +1,9 @@
+import { CaseStudyOptionBox } from '@/app/ui/components/case-study-option-box';
 import ConsStakeholdersForm from '@/app/ui/dashboard/consequences/cons-stakehold-form';
 import UtilitarianFormBentham from '@/app/ui/dashboard/consequences/utilitarian-form-bentham';
 import UtilitarianFormMill from '@/app/ui/dashboard/consequences/utilitarian-form-mill';
 import { lusitana } from '@/app/ui/fonts';
+import Cookie from 'js-cookie'
 
 export default function ConsequencesPage() {
   return (
@@ -12,7 +14,7 @@ export default function ConsequencesPage() {
             Consequences
           </h1>
         </div>
-
+        <CaseStudyOptionBox assignmentID={Cookie.get('assignment_id') || ''} apiUrl={process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'}/>
         {/* Card Component with instructions */}
         <h1 id='stakeholders' className={`${lusitana.className} mb-4 text-5xl p-4 md:text:2xl text-center`}>
             Stakeholder Analysis

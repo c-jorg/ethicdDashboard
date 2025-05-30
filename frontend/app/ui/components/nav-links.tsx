@@ -103,7 +103,7 @@ export default function NavLinks(props: any) {
   const links: LinkType[] = [
   
     {
-      name: 'Describe your dilemma',
+      name: 'Choose Your Case',
       href: '/dashboard/describe-dilemma',
       icon: PencilSquareIcon,
       subLinks: [
@@ -122,7 +122,7 @@ export default function NavLinks(props: any) {
     },
     {
       name: 'Action and Duty',
-      href: '/dashboard/action-and-duty',
+      href: '/dashboard/action-and-duty/reason',
       icon: MapIcon,
       isLocked: !dilemmaSubmitted,
       subLinks: [

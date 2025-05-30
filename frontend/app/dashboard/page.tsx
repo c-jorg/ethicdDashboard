@@ -74,8 +74,11 @@ export default function Page() {
       }
       try{
         //checking to see if the logged in student is a guest or not
+        console.log("checking if user is guest");
         const userId = localStorage.getItem('id');
-        const guest = await axios.get(`${apiUrl}/api/flask/guest/is-guest?student_id=${userId}`);
+        const response = await axios.get(`${apiUrl}/api/flask/guest/is-guest?student_id=${userId}`);
+        console.log("is guest api response " + response.data.guest);
+        const guest = response.data.guest;
         if(guest){
           setIsGuest(true);
           localStorage.setItem('guest', 'true');
@@ -90,7 +93,7 @@ export default function Page() {
           console.log("student is not a guest");
         }
       }catch(error){
-        console.log("Error checking if student is guest");
+        console.log("Error checking if student is guest " + error);
       }
     };
 

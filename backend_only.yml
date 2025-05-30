@@ -16,31 +16,6 @@ services:
     networks:
       - shared_network
 
-  nextapp:
-    container_name: nextapp
-    image: nextapp:1.0.0
-    build:
-      context: ./frontend
-      dockerfile: next.dockerfile
-      args:
-       NEXT_PUBLIC_API_URL: http://213.255.209.162:4000
-    ports:
-      - 3000:3000
-    volumes:
-      - .:/frontend
-      - ./frontend/node_modules:/app/node_modules
-    environment:
-    - NEXT_PUBLIC_API_URL=http://213.255.209.162:4000
-    - DEBUG=true
-    depends_on:
-      - flaskapp
-    networks:
-      - shared_network
-    # volumes: # trying this out
-    #   - ./frontend:/app
-    #   - ./frontend/node_modules:/app/node_modules
-    # command: pnpm dev
-
   # Flask backend service
   flaskapp:
     container_name: flaskapp
@@ -51,7 +26,7 @@ services:
     ports:
       - "4000:4000"
     volumes:
-      - .:/backend
+      - ./backend:/backend
     environment:
       - DATABASE_URL=postgresql://ethics_dashboard:Letmein1!@db:5432/ethics_dashboard
       - FLASK_ENV=development
@@ -59,20 +34,6 @@ services:
     command: flask run --host=0.0.0.0 --port=4000 --reload #reload is supposed to allow hot loading
     depends_on:
       - db
-    networks:
-      - shared_network
-
-  # Cron job service
-  cron:
-    container_name: cron
-    image: cron:1.0.0
-    build:
-      context: ./cron
-      dockerfile: cron.dockerfile 
-    volumes:
-      - .:/cron
-    depends_on:
-      - flaskapp
     networks:
       - shared_network
 

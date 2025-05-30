@@ -15,6 +15,8 @@ import FeedbackDisplay from '@/app/ui/components/feedback-display';
 import useFetchFeedback from '@/app/utils/feedback-fetcher';
 import ProfessorCommentBox from '@/app/ui/components/prof-comment-box';
 import DescriptionCard from "@/app/ui/components/description-card";
+import Papa from 'papaparse';
+import { string } from "zod";
 
 
 export default function VirtueEthicsForm() {
@@ -36,8 +38,10 @@ export default function VirtueEthicsForm() {
     const [feedback, setFeedback] = useState<{ [key: string]: string }>({});
     const [questionsInitialized, setQuestionsInitialized] = useState(false); //set to true once critical qs have been fetched from DB
 
-    const apiKey = "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";
+    const apiKey = "";
     const openai = new OpenAI({apiKey, dangerouslyAllowBrowser: true});
+
+    const [domainToLabels, setDomainLabels] = useState<{ domain: string; deficiency: string; virtue: string; excess: string }[]>([]);
 
     /*
         | Sphere of Action (Domain)        | Vice of Deficiency           | Virtue (Mean)            | Vice of Excess             |
@@ -66,32 +70,51 @@ export default function VirtueEthicsForm() {
         | Ethical Consumption              | Indifference to Ethics       | Ethical Consumerism      | Moral Elitism              |
         | Diversity and Inclusion          | Exclusion                    | Inclusivity              | Tokenism                   |
     */
-    const domainToLabels = [
-        {domain: 'Facing Danger', deficiency: 'Cowardice', virtue: 'Courage', excess: 'Recklessness'},
-        {domain: 'Enjoying Life’s Pleasures', deficiency: 'Self-Denial', virtue: 'Moderation', excess: 'Indulgence'},
-        {domain: 'Managing Wealth', deficiency: 'Stinginess', virtue: 'Generosity', excess: 'Extravagance'},
-        {domain: 'Pursuit of Goals', deficiency: 'Lack of Ambition', virtue: 'Ambition', excess: 'Ruthlessness'},
-        {domain: 'Self-Worth', deficiency: 'Undervaluing Yourself', virtue: 'Confidence', excess: 'Arrogance'},
-        {domain: 'Managing Emotions', deficiency: 'Apathy', virtue: 'Patience', excess: 'Anger (Short-Tempered)'},
-        {domain: 'Expressing Truth', deficiency: 'Deceit (Dishonesty)', virtue: 'Honesty', excess: 'Bluntness (Tactlessness)'},
-        {domain: 'Humor & Conversation', deficiency: 'Humorlessness', virtue: 'Wit', excess: 'Foolishness'},
-        {domain: 'Social Interactions', deficiency: 'Coldness (Aloofness)', virtue: 'Friendliness', excess: 'Excessive Friendliness'},
-        {domain: 'Sense of Shame', deficiency: 'Shamelessness', virtue: 'Humility', excess: 'Over-Sensitivity'},
-        {domain: 'Social Media Use', deficiency: 'Disconnection', virtue: 'Mindful Engagement', excess: 'Addiction (Overuse)'},
-        {domain: 'Environmental Responsibility', deficiency: 'Neglect', virtue: 'Sustainability', excess: 'Eco-Fanaticism (Zealotry)'},
-        {domain: 'Work-Life Balance', deficiency: 'Apathy', virtue: 'Work-Life Balance', excess: 'Workaholism'},
-        {domain: 'Financial Management', deficiency: 'Frugality (Stinginess)', virtue: 'Financial Prudence', excess: 'Consumerism (Over-Spending)'},
-        {domain: 'Digital Communication', deficiency: 'Aloofness (Non-response)', virtue: 'Digital Civility', excess: 'Oversharing'},
-        {domain: 'Personal Health', deficiency: 'Neglect (Laziness)', virtue: 'Wellness', excess: 'Obsession (Health Fixation)'},
-        {domain: 'Data Privacy', deficiency: 'Carelessness', virtue: 'Cautiousness', excess: 'Paranoia'},
-        {domain: 'Cultural Sensitivity', deficiency: 'Cultural Ignorance', virtue: 'Open-mindedness', excess: 'Cultural Appropriation'},
-        {domain: 'Assertiveness', deficiency: 'Passivity', virtue: 'Assertiveness', excess: 'Aggressiveness'},
-        {domain: 'Compassion and Empathy', deficiency: 'Indifference', virtue: 'Compassion', excess: 'Over-Identifying (Self-sacrifice)'},
-        {domain: 'Technology Adoption', deficiency: 'Resistance (Luddism)', virtue: 'Adaptability', excess: 'Tech Dependence'},
-        {domain: 'Ethical Consumption', deficiency: 'Indifference to Ethics', virtue: 'Ethical Consumerism', excess: 'Moral Elitism'},
-        {domain: 'Diversity and Inclusion', deficiency: 'Exclusion', virtue: 'Inclusivity', excess: 'Tokenism'}
 
-    ]
+    // this is the old list of domains, replacing with csv file of them
+    // const domainToLabels = [
+    //     {domain: 'Facing Danger', deficiency: 'Cowardice', virtue: 'Courage', excess: 'Recklessness'},
+    //     {domain: 'Enjoying Life’s Pleasures', deficiency: 'Self-Denial', virtue: 'Moderation', excess: 'Indulgence'},
+    //     {domain: 'Managing Wealth', deficiency: 'Stinginess', virtue: 'Generosity', excess: 'Extravagance'},
+    //     {domain: 'Pursuit of Goals', deficiency: 'Lack of Ambition', virtue: 'Ambition', excess: 'Ruthlessness'},
+    //     {domain: 'Self-Worth', deficiency: 'Undervaluing Yourself', virtue: 'Confidence', excess: 'Arrogance'},
+    //     {domain: 'Managing Emotions', deficiency: 'Apathy', virtue: 'Patience', excess: 'Anger (Short-Tempered)'},
+    //     {domain: 'Expressing Truth', deficiency: 'Deceit (Dishonesty)', virtue: 'Honesty', excess: 'Bluntness (Tactlessness)'},
+    //     {domain: 'Humor & Conversation', deficiency: 'Humorlessness', virtue: 'Wit', excess: 'Foolishness'},
+    //     {domain: 'Social Interactions', deficiency: 'Coldness (Aloofness)', virtue: 'Friendliness', excess: 'Excessive Friendliness'},
+    //     {domain: 'Sense of Shame', deficiency: 'Shamelessness', virtue: 'Humility', excess: 'Over-Sensitivity'},
+    //     {domain: 'Social Media Use', deficiency: 'Disconnection', virtue: 'Mindful Engagement', excess: 'Addiction (Overuse)'},
+    //     {domain: 'Environmental Responsibility', deficiency: 'Neglect', virtue: 'Sustainability', excess: 'Eco-Fanaticism (Zealotry)'},
+    //     {domain: 'Work-Life Balance', deficiency: 'Apathy', virtue: 'Work-Life Balance', excess: 'Workaholism'},
+    //     {domain: 'Financial Management', deficiency: 'Frugality (Stinginess)', virtue: 'Financial Prudence', excess: 'Consumerism (Over-Spending)'},
+    //     {domain: 'Digital Communication', deficiency: 'Aloofness (Non-response)', virtue: 'Digital Civility', excess: 'Oversharing'},
+    //     {domain: 'Personal Health', deficiency: 'Neglect (Laziness)', virtue: 'Wellness', excess: 'Obsession (Health Fixation)'},
+    //     {domain: 'Data Privacy', deficiency: 'Carelessness', virtue: 'Cautiousness', excess: 'Paranoia'},
+    //     {domain: 'Cultural Sensitivity', deficiency: 'Cultural Ignorance', virtue: 'Open-mindedness', excess: 'Cultural Appropriation'},
+    //     {domain: 'Assertiveness', deficiency: 'Passivity', virtue: 'Assertiveness', excess: 'Aggressiveness'},
+    //     {domain: 'Compassion and Empathy', deficiency: 'Indifference', virtue: 'Compassion', excess: 'Over-Identifying (Self-sacrifice)'},
+    //     {domain: 'Technology Adoption', deficiency: 'Resistance (Luddism)', virtue: 'Adaptability', excess: 'Tech Dependence'},
+    //     {domain: 'Ethical Consumption', deficiency: 'Indifference to Ethics', virtue: 'Ethical Consumerism', excess: 'Moral Elitism'},
+    //     {domain: 'Diversity and Inclusion', deficiency: 'Exclusion', virtue: 'Inclusivity', excess: 'Tokenism'}
+
+    // ]
+
+    useEffect(() => {
+        // get csv domain labels
+        fetch('/domains.csv')
+        .then(response => response.text())
+        .then(csvText => {
+            const data = Papa.parse(csvText, { header: true});
+            const formattedData = data.data.map((row : any) => ({
+                domain: row['Sphere of Action (Domain)'],
+                deficiency: row['Vice of Deficiency'],
+                virtue: row['Virtue (Mean)'],
+                excess: row['Vice of Excess'],
+            }));
+            setDomainLabels(formattedData);
+            console.log("domains added " + JSON.stringify(formattedData,null,2));
+        });
+    }, []);
 
     const aiPrompt = `pick at least two domains from this list of domains which the word '@' is the closest synonym for, return your response as only the ` +
                       `text for the name of the domain, do not include quotations in your response, the deficiency, virtue, and excess are only there ` +
@@ -132,6 +155,11 @@ export default function VirtueEthicsForm() {
 
     const handleFocus = (domainId: number) => {
         setFocusedDomainId(domainId);  // Track the currently focused input
+        const currentDomain = domains.find(domain => domain.id === domainId)?.domain || '';
+        if(currentDomain.length === 0){
+            // if no string entered show all domains as suggestions
+            setSuggestions(domainToLabels.map(item => item.domain));
+        }
     };
     
     const handleBlur = () => {
@@ -170,38 +198,44 @@ export default function VirtueEthicsForm() {
 
             //if the user has inputted something, show suggestions
             if(value.length > 0){
-                let synonym: string | null = null;
-                //look for synonyms from chatgpt if the user has not typed in the past 3 seconds
-                if (debounceTimeout.current) {
-                    clearTimeout(debounceTimeout.current);
-                }
+                // let synonym: string | null = null;
+                // //look for synonyms from chatgpt if the user has not typed in the past 3 seconds
+                // if (debounceTimeout.current) {
+                //     clearTimeout(debounceTimeout.current);
+                // }
 
-                debounceTimeout.current = setTimeout(async () => {
-                    synonym = await getSynonym(value.toString());
-                    console.log("synonym is ", synonym);
-                    if (synonym) {
-                        const synonymSuggestions = synonym.split(',').map(s => s.trim());
-                        setSuggestions(synonymSuggestions);
-                    }
-                }, 1000);
+                // debounceTimeout.current = setTimeout(async () => {
+                //     synonym = await getSynonym(value.toString());
+                //     console.log("synonym is ", synonym);
+                //     if (synonym) {
+                //         const synonymSuggestions = synonym.split(',').map(s => s.trim());
+                //         setSuggestions(synonymSuggestions);
+                //     }
+                // }, 1000);
 
-                // const filteredSuggestions = domainToLabels.map((item) => item.domain).filter((domain) =>
-                //     domain.toLowerCase().startsWith(value.toString().toLowerCase())
-                // );
-                // setSuggestions(filteredSuggestions);
-                //console.log("suggestions are ", filteredSuggestions);
+                // // const filteredSuggestions = domainToLabels.map((item) => item.domain).filter((domain) =>
+                // //     domain.toLowerCase().startsWith(value.toString().toLowerCase())
+                // // );
+                // // setSuggestions(filteredSuggestions);
+                // //console.log("suggestions are ", filteredSuggestions);
 
-                //if the value equals a domain then populate the slider labels
+                // //if the value equals a domain then populate the slider labels
                 
-                const domainData = domainToLabels.find(
-                    (item) => item.domain.trim().toLowerCase() === value.trim().toLowerCase()
+                // const domainData = domainToLabels.find(
+                //     (item) => item.domain.trim().toLowerCase() === value.trim().toLowerCase()
+                // );
+                // //console.log("domain data is ", domainData);
+                // if(domainData) updateSliderLabels(id, value);
+                const filteredSuggestions = domainToLabels
+                    .map((item) => item.domain)
+                    .filter((domain) => 
+                        domain.toLowerCase().includes(value.toLowerCase())
                 );
-                //console.log("domain data is ", domainData);
-                if(domainData) updateSliderLabels(id, value);
+                setSuggestions(filteredSuggestions);
 
             }else{
                 //if the text field is empty, do not show any suggestions
-                setSuggestions([]);
+                setSuggestions(domainToLabels.map(item => item.domain));
             }
         
         
@@ -551,6 +585,7 @@ export default function VirtueEthicsForm() {
 
                 // Set slider labels
                 setSliderLabels(newDomains.map((domain, index) => {
+                    console.log("domains are " + domainToLabels);
 
                     //remove professor comments
                     const strippedDomain = domain.domain.replace(/<[^>]+>([\s\S]*?)<\/[^>]+>/g, "").trim().toLowerCase();
@@ -562,9 +597,9 @@ export default function VirtueEthicsForm() {
                     );
                     if (domainData) {
                         return {
-                            deficiency: domainData.deficiency,
-                            virtue: domainData.virtue,
-                            excess: domainData.excess,
+                            deficiency: String(domainData.deficiency),
+                            virtue: String(domainData.virtue),
+                            excess: String(domainData.excess),
                         };
                     }
                     return { deficiency: '', virtue: '', excess: '' };
@@ -790,7 +825,7 @@ export default function VirtueEthicsForm() {
                                     )}
 
                                     {/* Suggestions Drop Down */}
-                                    {domain.domain && suggestions.length > 0 && focusedDomainId === domain.id && (
+                                    {suggestions.length > 0 && focusedDomainId === domain.id && (
                                     <ul className="mt-2 bg-white border border-gray-300 rounded-lg shadow-lg max-h-40 overflow-y-auto">
                                     {suggestions.map((suggestion, index) => (
                                         <li

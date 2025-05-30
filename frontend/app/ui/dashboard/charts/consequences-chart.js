@@ -259,7 +259,7 @@ const ConsequencesChart = () => {
                     },
                     
                 },
-                
+                onClick: (e) => {}, //do nothing when clicked on, default behavior is to remove it from graph
             },
             title: {
                 display: window.innerWidth < 768 ? true : false,
@@ -315,42 +315,50 @@ const ConsequencesChart = () => {
                 </span>
             </div> */}
     
-    
-            {/* Chart Container */}
-            <div className="flex flex-col md:flex-row rounded-xl bg-gray-50 p-4 relative" style={{ minHeight: '500px' }}>
-              
-                 {/* Titles for Desktop */}
-                <div className="hidden md:flex md:absolute top-0 left-0 right-0 flex justify-between mb-2 p-4 z-10">
-                    <span className={`${lusitana.className} text-sm md:text-3xl text-center w-1/2`}>
-                        Unranked
-                    </span>
-                    <span className={`${lusitana.className} text-sm md:text-3xl text-left w-1/2`}>
-                        Ranked
-                    </span>
-                </div>
-
-                {/* Render the Bar chart with dynamic data */}
-                <div className="w-full" style={{ minHeight: '300px', position: 'relative' }}>
-                    {dataArr.length > 0 ? (
-                        <Bar data={data} options={options} />
-                    ) : (
-                        
-                        <div className="absolute inset-0 flex justify-center items-center"><DotsLoading /></div>
-                       
-                    )}
-                </div>
-    
-                {/* Thumbs Component */}
-                <div className="w-full md:w-1/4 flex flex-row md:flex-col gap-10 md:gap-2 justify-center items-center">
-                    <div className="text-center md:mb-4 mt-6 md:mt-0">
-                        <div className="text-xl md:text-3xl">Bentham</div>
-                        <ThumbsUpComponent ratio={ratioB} style={{ fontSize: window.innerWidth < 768 ? '24px' : '60px' }} />
-                        <span className="text-xl md:text-3xl">{ratioB}%</span>
+             {/* Scrollable Chart Area */}
+            <div
+                className="overflow-auto"
+                style={{
+                    maxHeight: '550px', // adjust as needed
+                    maxWidth: '100%',
+                }}
+            >
+                {/* Chart Container */}
+                <div className="flex flex-col md:flex-row rounded-xl bg-gray-50 p-4 relative" style={{ minHeight: '500px' }}>
+                
+                    {/* Titles for Desktop */}
+                    <div className="hidden md:flex md:absolute top-0 left-0 right-0 flex justify-between mb-2 p-4 z-10">
+                        <span className={`${lusitana.className} text-sm md:text-3xl text-center w-1/2`}>
+                            Unranked
+                        </span>
+                        <span className={`${lusitana.className} text-sm md:text-3xl text-left w-1/2`}>
+                            Ranked
+                        </span>
                     </div>
-                    <div className="text-center mt-6 md:mt-0">
-                        <div className="text-xl md:text-3xl">J.S Mill</div>
-                        <ThumbsUpComponent ratio={ratioM} style={{ fontSize: window.innerWidth < 768 ? '24px' : '60px' }} />
-                        <span className="text-xl md:text-3xl">{ratioM}%</span>
+
+                    {/* Render the Bar chart with dynamic data */}
+                    <div className="w-full" style={{ minHeight: '300px', position: 'relative' }}>
+                        {dataArr.length > 0 ? (
+                            <Bar data={data} options={options} />
+                        ) : (
+                            
+                            <div className="absolute inset-0 flex justify-center items-center"><DotsLoading /></div>
+                        
+                        )}
+                    </div>
+        
+                    {/* Thumbs Component */}
+                    <div className="w-full md:w-1/4 flex flex-row md:flex-col gap-10 md:gap-2 justify-center items-center">
+                        <div className="text-center md:mb-4 mt-6 md:mt-0">
+                            <div className="text-xl md:text-2xl">Bentham</div>
+                            <ThumbsUpComponent ratio={ratioB} style={{ fontSize: window.innerWidth < 768 ? '18px' : '36px' }} />
+                            <span className="text-xl md:text-2xl">{ratioB}%</span>
+                        </div>
+                        <div className="text-center mt-6 md:mt-0">
+                            <div className="text-xl md:text-2xl">J.S Mill</div>
+                            <ThumbsUpComponent ratio={ratioM} style={{ fontSize: window.innerWidth < 768 ? '18px' : '36px' }} />
+                            <span className="text-xl md:text-2xl">{ratioM}%</span>
+                        </div>
                     </div>
                 </div>
             </div>
