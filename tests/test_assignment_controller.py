@@ -259,6 +259,25 @@ def test_is_form_submitted_no_student_id(client, db_session):
     assert response.status_code == 400  # Ensure request returns not found
     assert "message" in response.json  # Ensure response contains error message
     
+def test_save_answers_student_option(client, db_session):
+    """
+    GIVEN PATCH api/flask/assignment/set-case-study-option
+    WHEN case_study_option is student-option
+    THEN response should contain message and 201
+    AND assignment.case_study_option_id should be null
+    """
+    response = client.patch(f"/api/flask/assignment/set-case-study-option",
+            data = json.dumps({
+                "student_id": 1,
+                "assignment_id": 1,
+                "case_study_option": "student-option"
+            }),
+            headers={"Content-Type": "application/json"}
+            )
+    option_id = Assignment.get_case_study_option_id_by_assignment_id(1)
+    assert response.status_code == 201
+    assert option_id is None
+    
 def test_get_answers(client, db_session):
     """
     Given GET api/flask/assignment/get-answers?form_name=dilemma&assignment_id=1&student_id=1
@@ -641,3 +660,5 @@ def test_get_option_id_not_set(client, setup_fixture, db_session):
     db_session.commit()
     response = client.get(f'/api/flask/assignment/option?assignment_id={assignment2.id}')
     data = response.json
+    assert response.status_code == 404
+    assert data['message'] == 'No case study option set for this assignment'

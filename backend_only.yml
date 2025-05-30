@@ -1,0 +1,45 @@
+
+services:
+
+  # PostgreSQL database service
+  db:
+    container_name: db
+    image: postgres:13
+    environment:
+      POSTGRES_USER: ethics_dashboard
+      POSTGRES_PASSWORD: Letmein1!
+      POSTGRES_DB: ethics_dashboard
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - shared_network
+
+  # Flask backend service
+  flaskapp:
+    container_name: flaskapp
+    image: flaskapp:1.0.0
+    build:
+      context: ./backend
+      dockerfile: flask.dockerfile
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./backend:/backend
+    environment:
+      - DATABASE_URL=postgresql://ethics_dashboard:Letmein1!@db:5432/ethics_dashboard
+      - FLASK_ENV=development
+      - FLASK_APP=app.py #make sure app.py is the entry point
+    command: flask run --host=0.0.0.0 --port=4000 --reload #reload is supposed to allow hot loading
+    depends_on:
+      - db
+    networks:
+      - shared_network
+
+volumes:
+  pgdata: {}
+
+networks:
+  shared_network:
+    driver: bridge

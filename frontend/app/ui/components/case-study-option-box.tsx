@@ -31,7 +31,7 @@ export function CaseStudyOptionBox({ assignmentID, apiUrl }: CaseStudyOptionBoxP
         <div className="border rounded shadow p-4 my-4 bg-white">
             <div className="flex justify-between items-center cursor-pointer" onClick={() => setExpanded(!expanded)}>
                 <h2 className="text-x1 font-semibold">{title}</h2>
-                <span className="text-lg">{expanded ? '▲' : '▼'}</span>
+                <span className="text-lg">{expanded ? 'Show less ▲' : 'Show More ▼'}</span>
             </div>
             {expanded && (
                 <div className="mt-2 text-gray-700" style={{whiteSpace: 'pre-wrap', wordBreak: 'break-word'}}>

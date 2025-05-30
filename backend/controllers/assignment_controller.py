@@ -582,6 +582,12 @@ def set_case_study_option():
     if not assignment_id or not case_study_option:
        return jsonify({'message': 'Missing data in request'}), 400
 
+    if type(case_study_option) == str and case_study_option != 'student-option':
+      return make_response(jsonify({'message': 'Invalid case study option'}), 400)
+    
+    if case_study_option == 'student-option':
+      case_study_option = None
+    
     Assignment.set_case_study_option_by_id(assignment_id,case_study_option)
 
     return jsonify({'message': 'Case study option updated successfully!'}), 201
@@ -648,7 +654,7 @@ def get_case_study_option_id():
     option_id = Assignment.get_case_study_option_id_by_assignment_id(assignment_id)
     if not option_id:
       print(f'no assignments for id {assignment_id}', flush=True)
-      return make_response(jsonify({"message":"No assignment with that id found"}), 404)
+      return make_response(jsonify({"message":"No case study option set for this assignment"}), 404)
     return make_response(jsonify({"message":"Successfully got case study option id", "option_id":option_id}), 200)
   except Exception as e:
     print(f"something went wrong {e}", flush=True)

@@ -22,9 +22,9 @@ const ThumbsUpComponent = ({ ratio: value }: ThumbsUpComponentProps) => {
         <div className="flex flex-row md:flex-col  items-center space-y-2">
             {/* Conditionally render thumbs-up or thumbs-down icon */}
             {value >= 50 ? (
-                <FaThumbsUp className={`text-7xl md:text-7xl lg:text-8xl`} style={{ color: getColor(value) }} />
+                <FaThumbsUp className={`text-5xl md:text-5xl lg:text-7xl`} style={{ color: getColor(value) }} />
             ) : (
-                <FaThumbsDown className={`text-7xl md:text-7xl lg:text-8xl`} style={{ color: getColor(value) }} />
+                <FaThumbsDown className={`text-5xl md:text-5xl lg:text-7xl`} style={{ color: getColor(value) }} />
             )}
         </div>
     );

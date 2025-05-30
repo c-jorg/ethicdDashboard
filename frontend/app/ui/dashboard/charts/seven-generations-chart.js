@@ -117,8 +117,8 @@ const SevenGenerationsChart = () => {
             lightColor = 'rgba(255, 99, 132, 0.6)'; // Light red
             darkColor = 'rgba(255, 0, 0, 0.6)'; // Dark red
         } else if (average >= 4 && average <= 6) {
-            lightColor = 'rgb(103, 103, 103)'; // Light gray
-            darkColor = 'rgb(198, 198, 198)'; // Dark gray
+            lightColor = 'rgb(255,193,7)'; // Light amber
+            darkColor = 'rgb(190,143,4)'; // Dark amber
         } else if (average >= 7 && average <= 10) {
             lightColor = 'rgba(45, 198, 83, 1)'; // Light green
             darkColor = 'rgba(150, 235, 170, 1)'; // Dark green

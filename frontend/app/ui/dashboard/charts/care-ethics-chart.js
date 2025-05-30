@@ -146,13 +146,13 @@ const CareEthicsChart = () => {
                       'rgb(255, 160, 140)']; // Red spectrum
 
          }else if (average >= 4 && average <= 6){
-            colors = ['rgba(68,68,68, 1)', 
-                      'rgb(103, 103, 103)', 
-                      'rgba(153,153,153, 1)', 
-                      'rgb(183, 182, 182)', 
-                      'rgb(198, 198, 198)', 
-                      'rgb(203, 203, 203)', 
-                      'rgba(221,221,221, 1)', ]; // Grey spectrum
+            colors = ['rgb(190,143,4)', 
+                      'rgb(222,167,5)', 
+                      'rgb(255,193,7)', 
+                      'rgb(255,200,67)', 
+                      'rgb(255,206,97)', 
+                      'rgb(255,213,121)', 
+                      'rgb(255,219,143)', ]; // amber spectrum
             
          }else if (average >= 7 && average <= 10) {
             colors = ['rgba(15, 82, 30, 1)', 

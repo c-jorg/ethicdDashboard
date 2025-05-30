@@ -9,6 +9,7 @@ import DotsLoading from '@/app/ui/components/loading';
 import FormCompletedCard from '@/app/ui/components/form-completed-card';
 import useFetchFeedback from "@/app/utils/feedback-fetcher";
 import ProfessorCommentBox from "@/app/ui/components/prof-comment-box";
+import Papa from "papaparse";
 
 export default function CategoricalImperativesForm() {
   const formRef = useRef<HTMLFormElement>(null);
@@ -31,24 +32,43 @@ export default function CategoricalImperativesForm() {
   let submitted = false;
 
   // Predefined list of virtues and vices
-  const predefinedVirtues = [
-    "Honesty",
-    "Loyalty",
-    "Kindness",
-    "Courage",
-    "Integrity",
-    "Humility",
-    "Generosity",
-    "Patience",
-    "Forgiveness",
-    "Empathy",
-    "Fairness",
-    "Compassion",
-    "Self-discipline",
-    "Respect",
-    "Justice",
-  ];
-
+  const [predefinedVirtues, setPredefinedVirtues] = useState<string[]>([]);
+  // const predefinedVirtues = [
+  //   "Honesty",
+  //   "Loyalty",
+  //   "Kindness",
+  //   "Courage",
+  //   "Integrity",
+  //   "Humility",
+  //   "Generosity",
+  //   "Patience",
+  //   "Forgiveness",
+  //   "Empathy",
+  //   "Fairness",
+  //   "Compassion",
+  //   "Self-discipline",
+  //   "Respect",
+  //   "Justice",
+  // ];
+  useEffect(() => {
+    // get the domain labels but put them all into one list and scrap the domain, only keep vurtues and vices
+    fetch('/domains.csv')
+    .then(response => response.text())
+    .then(csvText => {
+      const data = Papa.parse(csvText, { header: true });
+      const formattedData = data.data.map((row: any) => ({
+        domain: row['Sphere of Action (Domain)'],
+        deficiency: row['Vice of Deficiency'],
+        virtue: row['Virtue (Mean)'],
+        excess: row['Vice of Excess'],
+      }));
+      let merged = formattedData.map((row: any) => [row.virtue, row.deficiency, row.excess]).flat();
+      setPredefinedVirtues(merged);
+      predefinedVirtues.push('Loyalty');
+      //loyaly isnt in the csv but its used as an example in the form so I added it to this list
+      //console.log("predefined virtues are", merged);
+    });
+  }, []);
   
   /**
    * After the DOM fully loads this sets isRendered to true
@@ -65,8 +85,9 @@ export default function CategoricalImperativesForm() {
 
     const lastWord = input.split(",").pop()?.trim(); // Get the last word after a comma
     if (lastWord) {
+      //console.log("Predefined virtues while trying to make suggestion is: ", predefinedVirtues);
       const filteredSuggestions = predefinedVirtues.filter((virtue) =>
-        virtue.toLowerCase().startsWith(lastWord.toLowerCase())
+        virtue && virtue.toLowerCase().includes(lastWord.toLowerCase())
       );
       setSuggestions(filteredSuggestions);
     } else {

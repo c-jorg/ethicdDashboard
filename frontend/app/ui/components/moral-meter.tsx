@@ -420,7 +420,7 @@ const StyledWrapper = styled.div<StyledWrapperProps>`
             #FFC107 50%,
             lightgreen 65%,
             lightgreen 100%
-        ); /* Smooth gradient with blue in the middle */
+        ); /* Smooth gradient with amber in the middle */
         border-radius: 96px 96px 0 0; /* Adjusted border-radius to maintain shape */
         box-sizing: border-box;
         overflow: hidden;

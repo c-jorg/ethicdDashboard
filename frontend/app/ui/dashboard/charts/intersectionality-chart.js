@@ -154,9 +154,18 @@ const IntersectionalityChart = () => {
 
     // Function to determine bar color based on average value
     const getBarColor = () => {
-        if (average >= 0 && average <= 3) return ['rgb(211, 21, 16)', 'rgb(234, 56, 41)', 'rgb(247, 92, 70)', 'rgb(255, 124, 101)']; // Red
-        if (average >= 4 && average <= 6) return ['rgba(169, 169, 169, 0.6)', 'rgba(189, 189, 189, 0.6)', 'rgba(209, 209, 209, 0.6)', 'rgba(229, 229, 229, 0.6)'];
-        if (average >= 7 && average <= 10) return ['rgba(26, 116, 49, 1)', 'rgba(45, 198, 83, 1)', 'rgba(110, 222, 138, 1)', 'rgba(183, 239, 197, 1)']; // Green
+        if (average >= 0 && average <= 3) return ['rgb(211, 21, 16)', 
+            'rgb(234, 56, 41)', 
+            'rgb(247, 92, 70)', 
+            'rgb(255, 124, 101)']; // Red
+        if (average >= 4 && average <= 6) return ['rgb(190,143,4)', 
+            'rgb(222,167,5)', 
+            'rgb(255,193,7)', 
+            'rgb(255,200,67)'];
+        if (average >= 7 && average <= 10) return ['rgba(26, 116, 49, 1)',
+            'rgba(45, 198, 83, 1)', 
+            'rgba(110, 222, 138, 1)', 
+            'rgba(183, 239, 197, 1)']; // Green
         return 'rgba(0, 0, 0, 0.6)'; // Default color
     };
 
@@ -244,28 +253,36 @@ const IntersectionalityChart = () => {
     return (
         <div className="w-full md:col-span-4">
             <h2 className={`${lusitana.className} mb-4 text-xl md:text-4xl`}>Relations</h2>
-    
-            {/* Chart Container */}
-            <div className="flex flex-col rounded-xl bg-gray-50 p-4 gap-4 md:flex-row md:gap-0" style={{ minHeight: '500px'}}>
-                {/* Render the Intersectionality Bar chart */}
-                <div className="w-full" style={{ minHeight: '300px', position: 'relative' }}>
-                    <div>
-                        {oppressions.length > 0 && privileges.length > 0 ? (
-                            <Bar data={chartData} options={chartOptions} height={180} />
-                        ) : (
+            {/* Scrollable Chart Area */}
+            <div
+                className="overflow-auto"
+                style={{
+                    maxHeight: '550px', // adjust as needed
+                    maxWidth: '100%',
+                }}
+            >
+                {/* Chart Container */}
+                <div className="flex flex-col rounded-xl bg-gray-50 p-4 gap-4 md:flex-row md:gap-0" style={{ minHeight: '500px'}}>
+                    {/* Render the Intersectionality Bar chart */}
+                    <div className="w-full" style={{ minHeight: '300px', position: 'relative' }}>
+                        <div>
+                            {oppressions.length > 0 && privileges.length > 0 ? (
+                                <Bar data={chartData} options={chartOptions} height={180} />
+                            ) : (
+                                
+                                <div className="absolute inset-0 flex justify-center items-center"><DotsLoading /></div>
                             
-                            <div className="absolute inset-0 flex justify-center items-center"><DotsLoading /></div>
-                           
-                        )}
+                            )}
+                        </div>
+                        <div>
+                            <SevenGenerationsChart />
+                        </div>
                     </div>
-                    <div>
-                        <SevenGenerationsChart />
+        
+                    {/* Render the Care Ethics Chart */}
+                    <div className="w-full">
+                        <CareEthicsChart />
                     </div>
-                </div>
-    
-                {/* Render the Care Ethics Chart */}
-                <div className="w-full">
-                    <CareEthicsChart />
                 </div>
             </div>
         </div>

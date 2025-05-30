@@ -9,3 +9,4 @@ bcrypt
 pytz
 pytest
 ethics-dashboard-models
+watchdog

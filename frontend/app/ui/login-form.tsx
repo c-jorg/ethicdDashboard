@@ -275,6 +275,15 @@ export default function LoginForm() {
           <Button className="w-full py-3 text-lg md:text-xl" onClick={() => handleRoleSelection("TA")}>
             I'm a TA <ClipboardIcon className="ml-auto h-7 w-7 text-gray-50" />
           </Button>
+          <Button className="w-full py-3 text=lg md:text-xl" onClick={guest_login} disabled={loading}>
+            I'm a Guest <EyeIcon className="ml-auto h-7 w-7 text-gray-50" />
+          </Button>
+          <label
+            className="mb-3 mt-1 block text-sm md:text-md font-medium text-gray-900"
+            htmlFor="email"
+          >
+            Guests once logged out cannot access the same account again
+          </label>
         </div>
 
       </div>
@@ -400,18 +409,18 @@ export default function LoginForm() {
           <span>Guest Mode</span> <ArrowRightIcon className="ml-auto h-5 w-5 text-gray-50" />
         </Link> */}
 
-        <Button className="mt-2 w-full md:text-md" onClick={guest_login} disabled={loading}>
+        {/* <Button className="mt-2 w-full md:text-md" onClick={guest_login} disabled={loading}>
           Guest Mode <EyeIcon className="ml-auto h-5 w-5 text-gray-50" />
-        </Button>
+        </Button> */}
 
 
 
-        <label
+        {/* <label
           className="mb-3 mt-5 block text-sm md:text-md font-medium text-gray-900"
           htmlFor="email"
         >
           Guests once logged out cannot access the same account again
-        </label>
+        </label> */}
 
        {/* Display the error message below the last label */}
        {errorMessage && (
