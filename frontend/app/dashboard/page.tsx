@@ -22,7 +22,7 @@ const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
 const prefix = assignmentID + "-";
 
 const dilemmaLink: LinkType[] = [{
-  name: 'Decribe your dilemma',
+  name: 'Choose Your Case',
   href: '/dashboard/describe-dilemma',
   icon: PencilSquareIcon
 }];
@@ -61,7 +61,7 @@ export default function Page() {
         }else{ //if the dilemma form has not beed submitted show a message telling user to start there
           localStorage.setItem(`${prefix}dilemma-submitted`, "false");
           console.log("Dashboard says dilemma form has not been submitted");
-          setDilemmaSubmitted(false);
+          //setDilemmaSubmitted(false);
         }
       }catch(error){
         if (axios.isAxiosError(error) && error.response?.status === 404) {
@@ -84,8 +84,9 @@ export default function Page() {
           localStorage.setItem('guest', 'true');
           console.log("student is guest");
           const response = await axios.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userId}&assignment_id=${assignmentID}&form_name=dilemma`); 
-          console.log("Checked dilemma form submission")
-          if(response.data.status == 200){
+          console.log(`Checked dilemma form save ${response}`);
+          if(response.status == 200){
+            console.log("Dilemma saved");
             setDilemmaSubmitted(true);
           }
         }else{
