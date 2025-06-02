@@ -48,6 +48,16 @@ class CaseStudyOption(db.Model):
         option = db.session.query(cls).filter(cls.id == id).first()
         option.description = description
         db.session.commit()
+        
+    @classmethod
+    def get_case_study_option_id_by_title_and_case_study_id(cls, title, case_study_id):
+        print(f'case_study_option getting title {title} case study id {case_study_id}', flush=True)
+        option = db.session.query(cls).filter(cls.case_study_id == case_study_id, cls.title == title).first()
+        print(f'option {option}', flush=True)
+        #option = option.first()
+        #options = option.all()
+        #print(f'options {option}', flush=True)
+        return option.id if option else None
 
 class CaseStudyOptionSchema(ma.SQLAlchemyAutoSchema):
     class Meta:

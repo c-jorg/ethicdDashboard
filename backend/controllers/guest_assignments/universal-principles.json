@@ -1,1 +1,22 @@
-[{"key":"slider-reverence-for-life-value","value_string":"7","value_int":null}, {"key":"slider-reverence-for-life","value_string":"3","value_int":null}, {"key":"slider-interdependence-value","value_string":"7","value_int":null}, {"key":"slider-interdependence","value_string":"3","value_int":null}, {"key":"slider-society-responsibility-value","value_string":"7","value_int":null}, {"key":"slider-society-responsibility","value_string":"3","value_int":null}, {"key":"slider-global-justice-value","value_string":"10","value_int":null}, {"key":"slider-global-justice","value_string":"0","value_int":null}, {"key":"slider-environmental-stewardship-value","value_string":"2","value_int":null}, {"key":"slider-environmental-stewardship","value_string":"8","value_int":null}, {"key":"slider-reverence-for-place-value","value_string":"2","value_int":null}, {"key":"slider-reverence-for-place","value_string":"8","value_int":null}, {"key":"reflection-1-up","value_string":"yes they always are","value_int":null}, {"key":"reflection-2-up","value_string":"people are different","value_int":null}, {"key":"cumulative-score","value_string":"-3","value_int":null}]
+{
+    "form_name": "universal-principles",
+    "answers": 
+        {           
+            "cumulative-score": "3",
+            "slider-environmental-stewardship": "6",
+            "slider-environmental-stewardship-value": "4",
+            "slider-global-justice": "4",
+            "slider-global-justice-value": "6",
+            "slider-interdependence": "3",
+            "slider-interdependence-value": "7",
+            "slider-reverence-for-life": "0",
+            "slider-reverence-for-life-value": "10",
+            "slider-reverence-for-place": "5",
+            "slider-reverence-for-place-value": "5",
+            "slider-society-responsibility": "3",
+            "slider-society-responsibility-value": "7",
+            "topic-up-0": "Not all these big picture ideas apply but some of them are relevant and helpful. A good reminder of the big picture. I hadn't consider legal implications but the company could be liable, especially if they deliberately sell more risky technology to poorer nations.",
+            "topic-up-1": "These ideas are very broad, and as a result, won't always be helpful."
+        }
+    
+}

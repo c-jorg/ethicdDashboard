@@ -1,8 +1,10 @@
-from flask import Flask, request, jsonify, make_response, Blueprint
+from flask import Flask, request, jsonify, make_response, Blueprint, json, current_app
+
+from backend.controllers import assignment_controller
 from ..models import Student, Assignment, CaseStudy, Answer, Submission, Form, Professor, Class, CaseStudyOption, Enrollment
 from datetime import datetime
 import json
-import os
+import os 
 
 bp = Blueprint('guest', __name__)
 
@@ -54,10 +56,10 @@ def populate_guest_assignments(guest_id):
     try:
         print("top of try",flush=True)
         class_id = Class.get_class_id_by_class_code("guest111")
-        class2_id = Class.get_class_id_by_class_code("guest222")
-        print(f"enrolling guest in classes with class id {class_id} {class2_id}",flush=True)
+        #class2_id = Class.get_class_id_by_class_code("guest222")
+        print(f"enrolling guest in classes with class id {class_id}",flush=True)
         Enrollment.enroll_student(class_id, guest_id)
-        Enrollment.enroll_student(class2_id, guest_id)
+        #Enrollment.enroll_student(class2_id, guest_id)
         prof_id = Professor.get_professor_id_by_professor_name("guest professor")
         print("got prof_id",flush=True)
 
@@ -68,18 +70,19 @@ def populate_guest_assignments(guest_id):
         #CaseStudyOption.post_case_study_option(CaseStudy.get_case_study_by_title('Guest Case Study').id, 'Guest Case Study Option', 'Guest Case Study Option Description')
         #print("case study option made",flush=True)
         #case_study = CaseStudy.get_case_study_by_title('Guest Case Study')
-        case_study_id = CaseStudy.get_case_study_id_by_title('Guest Assignment 1')
-        case_study2_id = CaseStudy.get_case_study_id_by_title('Guest Ethical Dilemma')
-        case_study3_id = CaseStudy.get_case_study_id_by_title('Guest Moral Dilemma')
-        case_study4_id = CaseStudy.get_case_study_id_by_title('guest class 222 assignment 1')
-        case_study5_id = CaseStudy.get_case_study_id_by_title('guest 222 Final Project')
-
+        case_study_id = CaseStudy.get_case_study_id_by_title('Guest Assignment Completed')
+        case_study2_id = CaseStudy.get_case_study_id_by_title('Ethical Dilemma')
+        case_study3_id = CaseStudy.get_case_study_id_by_title('Moral Dilemma')
+        #case_study4_id = CaseStudy.get_case_study_id_by_title('guest class 222 assignment 1')
+        #case_study5_id = CaseStudy.get_case_study_id_by_title('guest 222 Final Project')
+        print(f'case study ids {case_study_id} {case_study2_id} {case_study3_id}', flush=True)
+        
         Assignment.post_assignment(guest_id, case_study_id, None)
         Assignment.post_assignment(guest_id, case_study2_id, None)
         Assignment.post_assignment(guest_id, case_study3_id, None)
-        Assignment.post_assignment(guest_id, case_study4_id, None)
-        Assignment.post_assignment(guest_id, case_study5_id, None)
-        print("Made 5 assignments",flush=True)
+        #Assignment.post_assignment(guest_id, case_study4_id, None)
+        #Assignment.post_assignment(guest_id, case_study5_id, None)
+        print("Made 3 assignments",flush=True)
         #print(F"length of assignments {Assignment.get_all_assignments_by_student(guest_id)}")
         #empty_assignment = Assignment.get_all_assignments_by_student(guest_id)[0]
         #half_assignment = Assignment.get_all_assignments_by_student(guest_id)[1]
@@ -90,167 +93,207 @@ def populate_guest_assignments(guest_id):
         half_assignment = assignments[1][0]
         done_assignment = assignments[2][0]
 
-        print(f"assignment ids : {empty_assignment.id} {half_assignment.id} {done_assignment.id}", flush=True)
+        print(f"assignment ids : {empty_assignment.id} {half_assignment.id} {done_assignment.id} setting case study option", flush=True)
+        option_id = CaseStudyOption.get_case_study_option_id_by_title_and_case_study_id("Safety Above All", case_study_id)
+        print(f'option id {option_id}',flush=True)
+        Assignment.set_case_study_option_by_id(done_assignment.id, option_id)
+        
+        form_list = [
+            'dilemma', 
+            'care-form', 
+            'categorical-imperatives', 
+            'cons-stakeholders', 
+            'cons-util-bentham',
+            'cons-util-mill',
+            'critical-questions',
+            'duties-versus-actions',
+            'generations-form',
+            'intersect-form',
+            'life-path',
+            'personal-sacrifices',
+            'universal-principles',
+            'virtue-ethics'
+            ]
 
-        print(os.getcwd(),flush=True)
-        #I have some saved answers in the guest_assignments folder
-        with open('controllers/guest_assignments/dilemma.json', 'r') as file:
-            dilemma = json.load(file)
-            print("Dilemma loaded", flush=True)
-        with open('controllers/guest_assignments/care-form.json', 'r') as file:
-            care_form = json.load(file)
-            print("care form loaded", flush=True)
-        with open('controllers/guest_assignments/categorical-imperatives.json', 'r') as file:
-            categorical_imperatives = json.load(file)
-            print("categorical impertacit loaded", flush=True)
-        with open('controllers/guest_assignments/cons-stakeholders.json', 'r') as file:
-            cons_stakeholders = json.load(file)
-            print("cons stakeholer loaded", flush=True)
-        with open('controllers/guest_assignments/cons-util-bentham.json', 'r') as file:
-            cons_util_bentham = json.load(file)
-            print("bentham loaded", flush=True)
-        with open('controllers/guest_assignments/cons-util-mill.json', 'r') as file:
-            cons_util_mill = json.load(file)
-            print("util mill loaded", flush=True)
-        with open('controllers/guest_assignments/critical-questions.json', 'r') as file:
-            critical_questions = json.load(file)
-            print("cri questions loaded", flush=True)
-        with open('controllers/guest_assignments/duties-versus-actions.json', 'r') as file:
-            duties_versus_actions = json.load(file)
-            print("duty v action loaded", flush=True)
-        with open('controllers/guest_assignments/generations-form.json', 'r') as file:
-            generations_form = json.load(file)
-            print("generations loaded", flush=True)
-        with open('controllers/guest_assignments/intersect-form.json', 'r') as file:
-            intersect_form = json.load(file)
-            print("intersect loaded", flush=True)
-        with open('controllers/guest_assignments/life-path.json', 'r') as file:
-            life_path = json.load(file)
-            print("life path loaded", flush=True)
-        with open('controllers/guest_assignments/personal-sacrifices.json', 'r') as file:
-            personal_sacrifices = json.load(file)
-            print("sacrifics loaded", flush=True)
-        with open('controllers/guest_assignments/universal-principles.json', 'r') as file:
-            universal_principles = json.load(file)
-            print("universal principles loaded", flush=True)
-        with open('controllers/guest_assignments/virtue-ethics.json', 'r') as file:
-            virtue_ethics = json.load(file)
-            print("virtue ethics loaded", flush=True)
+        for form in form_list:
+            with open(f'controllers/guest_assignments/{form}.json', 'r') as file:
+                form_data = json.load(file)
+                #print(f'{form} form loaded without crashin',flush=True)
+            form_data['student_id'] = guest_id
+            form_data['assignment_id'] = done_assignment.id
+            form_data['case_study_id'] = case_study_id
+            if form == 'dilemma':
+                form_data['answers']['dilemma-0'] = str(option_id)
+                print(f'Form was dilemma, updating the value of the selected option id {option_id}', flush=True)
+            #print(f'form loaded {form_data}', flush=True)
+            with current_app.test_client() as client:
+                #print('making post request', flush=True)
+                response = client.post('/api/flask/assignment/save-form',
+                data=json.dumps(form_data),
+                content_type='application/json'
+                )
+                #response = assignment_controller.save_form()
+                #print("saved form, response ", response.data, flush=True)
+        print('guest answers made', flush=True)
+        # print(os.getcwd(),flush=True)
+        # #I have some saved answers in the guest_assignments folder
+        # with open('controllers/guest_assignments/dilemma.json', 'r') as file:
+        #     dilemma = json.load(file)
+        #     print("Dilemma loaded", flush=True)
+        # with open('controllers/guest_assignments/care-form.json', 'r') as file:
+        #     care_form = json.load(file)
+        #     print("care form loaded", flush=True)
+        # with open('controllers/guest_assignments/categorical-imperatives.json', 'r') as file:
+        #     categorical_imperatives = json.load(file)
+        #     print("categorical impertacit loaded", flush=True)
+        # with open('controllers/guest_assignments/cons-stakeholders.json', 'r') as file:
+        #     cons_stakeholders = json.load(file)
+        #     print("cons stakeholer loaded", flush=True)
+        # with open('controllers/guest_assignments/cons-util-bentham.json', 'r') as file:
+        #     cons_util_bentham = json.load(file)
+        #     print("bentham loaded", flush=True)
+        # with open('controllers/guest_assignments/cons-util-mill.json', 'r') as file:
+        #     cons_util_mill = json.load(file)
+        #     print("util mill loaded", flush=True)
+        # with open('controllers/guest_assignments/critical-questions.json', 'r') as file:
+        #     critical_questions = json.load(file)
+        #     print("cri questions loaded", flush=True)
+        # with open('controllers/guest_assignments/duties-versus-actions.json', 'r') as file:
+        #     duties_versus_actions = json.load(file)
+        #     print("duty v action loaded", flush=True)
+        # with open('controllers/guest_assignments/generations-form.json', 'r') as file:
+        #     generations_form = json.load(file)
+        #     print("generations loaded", flush=True)
+        # with open('controllers/guest_assignments/intersect-form.json', 'r') as file:
+        #     intersect_form = json.load(file)
+        #     print("intersect loaded", flush=True)
+        # with open('controllers/guest_assignments/life-path.json', 'r') as file:
+        #     life_path = json.load(file)
+        #     print("life path loaded", flush=True)
+        # with open('controllers/guest_assignments/personal-sacrifices.json', 'r') as file:
+        #     personal_sacrifices = json.load(file)
+        #     print("sacrifics loaded", flush=True)
+        # with open('controllers/guest_assignments/universal-principles.json', 'r') as file:
+        #     universal_principles = json.load(file)
+        #     print("universal principles loaded", flush=True)
+        # with open('controllers/guest_assignments/virtue-ethics.json', 'r') as file:
+        #     virtue_ethics = json.load(file)
+        #     print("virtue ethics loaded", flush=True)
+            
+    #     #for each file add the answers to the tables
+    #     #one will have all of them
+    #     print("making dilemma answers",flush=True)
+    #     #print(dilemma,flush=True)
+    #     #print(half_assignment,flush=True)
+    #     print(done_assignment, flush=True)
+    #     for item in dilemma:
+    #         #print(item, flush=True)
+    #         key = item['key']
+    #         value_string = item['value_string']
+    #         value_int = item['value_int']
+    #         #Answer.post_answer(half_assignment.id, Form.get_form_id_by_name("dilemma"), key, value_string, value_int, datetime.now(), datetime.now())
+    #         Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("dilemma"), key, value_string, value_int, datetime.now(), datetime.now())
 
-        #for each file add the answers to the tables
-        #one will have all of them, one empty, another about half finished
-        # print("making dilemma answers",flush=True)
-        # #print(dilemma,flush=True)
-        # print(half_assignment,flush=True)
-        # print(done_assignment, flush=True)
-        # for item in dilemma:
-        #     #print(item, flush=True)
-        #     key = item['key']
-        #     value_string = item['value_string']
-        #     value_int = item['value_int']
-        #     Answer.post_answer(half_assignment.id, Form.get_form_id_by_name("dilemma"), key, value_string, value_int, datetime.now(), datetime.now())
-        #     Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("dilemma"), key, value_string, value_int, datetime.now(), datetime.now())
+    #    # Submission.post_submission(half_assignment.id, Form.get_form_id_by_name("dilemma"), datetime.now(), guest_id)
+    #    # Submission.post_submission(done_assignment.id, Form.get_form_id_by_name("dilemma"), datetime.now(), guest_id)
+    #     print("making care form",flush=True)
+    #     for item in care_form:
+    #         key = item['key']
+    #         value_string = item['value_string']
+    #         value_int = item['value_int']
+    #         Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("care-form"), key, value_string, value_int, datetime.now(), datetime.now())
 
-        # Submission.post_submission(half_assignment.id, Form.get_form_id_by_name("dilemma"), datetime.now(), guest_id)
-        # Submission.post_submission(done_assignment.id, Form.get_form_id_by_name("dilemma"), datetime.now(), guest_id)
-        # print("making care form",flush=True)
-        # for item in care_form:
-        #     key = item['key']
-        #     value_string = item['value_string']
-        #     value_int = item['value_int']
-        #     Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("care-form"), key, value_string, value_int, datetime.now(), datetime.now())
-
-        # print("Making imperatives form",flush=True)
-        # for item in categorical_imperatives:
-        #     key = item['key']
-        #     value_string = item['value_string']
-        #     value_int = item['value_int']
-        #     Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("categorical-imperatives"), key, value_string, value_int, datetime.now(), datetime.now())
-        #     Answer.post_answer(half_assignment.id, Form.get_form_id_by_name("categorical-imperatives"), key, value_string, value_int, datetime.now(), datetime.now())
-
-
-        # print("making stakeholder form",flush=True)
-        # for item in cons_stakeholders:
-        #     key = item['key']
-        #     value_string = item['value_string']
-        #     value_int = item['value_int']
-        #     Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("cons-stakeholders"), key, value_string, value_int, datetime.now(), datetime.now())
-        #     Answer.post_answer(half_assignment.id, Form.get_form_id_by_name("cons-stakeholders"), key, value_string, value_int, datetime.now(), datetime.now())
-
-
-        # print("making bentham form",flush=True)
-        # for item in cons_util_bentham:
-        #     key = item['key']
-        #     value_string = item['value_string']
-        #     value_int = item['value_int']
-        #     Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("cons-util-bentham"), key, value_string, value_int, datetime.now(), datetime.now())
-        #     Answer.post_answer(half_assignment.id, Form.get_form_id_by_name("cons-util-bentham"), key, value_string, value_int, datetime.now(), datetime.now())
-
-
-        # print("making mill form",flush=True)
-        # for item in cons_util_mill:
-        #     key = item['key']
-        #     value_string = item['value_string']
-        #     value_int = item['value_int']
-        #     Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("cons-util-mill"), key, value_string, value_int, datetime.now(), datetime.now())
-        #     Answer.post_answer(half_assignment.id, Form.get_form_id_by_name("cons-util-mill"), key, value_string, value_int, datetime.now(), datetime.now())
+    #     print("Making imperatives form",flush=True)
+    #     for item in categorical_imperatives:
+    #         key = item['key']
+    #         value_string = item['value_string']
+    #         value_int = item['value_int']
+    #         Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("categorical-imperatives"), key, value_string, value_int, datetime.now(), datetime.now())
+    #         #Answer.post_answer(half_assignment.id, Form.get_form_id_by_name("categorical-imperatives"), key, value_string, value_int, datetime.now(), datetime.now())
 
 
-        # print("making critical quesion form",flush=True)
-        # for item in critical_questions:
-        #     key = item['key']
-        #     value_string = item['value_string']
-        #     value_int = item['value_int']
-        #     Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("critical-questions"), key, value_string, value_int, datetime.now(), datetime.now())
+    #     print("making stakeholder form",flush=True)
+    #     for item in cons_stakeholders:
+    #         key = item['key']
+    #         value_string = item['value_string']
+    #         value_int = item['value_int']
+    #         Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("cons-stakeholders"), key, value_string, value_int, datetime.now(), datetime.now())
+    #         #Answer.post_answer(half_assignment.id, Form.get_form_id_by_name("cons-stakeholders"), key, value_string, value_int, datetime.now(), datetime.now())
 
-        # print("making duties actions form",flush=True)
-        # for item in duties_versus_actions:
-        #     key = item['key']
-        #     value_string = item['value_string']
-        #     value_int = item['value_int']
-        #     Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("duties-versus-actions"), key, value_string, value_int, datetime.now(), datetime.now())
 
-        # print("making generations form",flush=True)
-        # for item in generations_form:
-        #     key = item['key']
-        #     value_string = item['value_string']
-        #     value_int = item['value_int']
-        #     Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("generations-form"), key, value_string, value_int, datetime.now(), datetime.now())
+    #     print("making bentham form",flush=True)
+    #     for item in cons_util_bentham:
+    #         key = item['key']
+    #         value_string = item['value_string']
+    #         value_int = item['value_int']
+    #         Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("cons-util-bentham"), key, value_string, value_int, datetime.now(), datetime.now())
+    #         #Answer.post_answer(half_assignment.id, Form.get_form_id_by_name("cons-util-bentham"), key, value_string, value_int, datetime.now(), datetime.now())
 
-        # print("making intersect form",flush=True)
-        # for item in intersect_form:
-        #     key = item['key']
-        #     value_string = item['value_string']
-        #     value_int = item['value_int']
-        #     Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("intersect-form"), key, value_string, value_int, datetime.now(), datetime.now())
 
-        # print("making life path form",flush=True)
-        # for item in life_path:
-        #     key = item['key']
-        #     value_string = item['value_string']
-        #     value_int = item['value_int']
-        #     Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("life-path"), key, value_string, value_int, datetime.now(), datetime.now())
+    #     print("making mill form",flush=True)
+    #     for item in cons_util_mill:
+    #         key = item['key']
+    #         value_string = item['value_string']
+    #         value_int = item['value_int']
+    #         Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("cons-util-mill"), key, value_string, value_int, datetime.now(), datetime.now())
+    #        # Answer.post_answer(half_assignment.id, Form.get_form_id_by_name("cons-util-mill"), key, value_string, value_int, datetime.now(), datetime.now())
 
-        # print("making personal sacrifices form",flush=True)
-        # for item in personal_sacrifices:
-        #     key = item['key']
-        #     value_string = item['value_string']
-        #     value_int = item['value_int']
-        #     Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("personal-sacrifices"), key, value_string, value_int, datetime.now(), datetime.now())
 
-        # print("making universal principlsd form",flush=True)
-        # for item in universal_principles:
-        #     key = item['key']
-        #     value_string = item['value_string']
-        #     value_int = item['value_int']
-        #     Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("universal-principles"), key, value_string, value_int, datetime.now(), datetime.now())
+    #     print("making critical quesion form",flush=True)
+    #     for item in critical_questions:
+    #         key = item['key']
+    #         value_string = item['value_string']
+    #         value_int = item['value_int']
+    #         Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("critical-questions"), key, value_string, value_int, datetime.now(), datetime.now())
 
-        # print("making virtue ethics form",flush=True)
-        # for item in virtue_ethics:
-        #     key = item['key']
-        #     value_string = item['value_string']
-        #     value_int = item['value_int']
-        #     Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("virtue-ethics"), key, value_string, value_int, datetime.now(), datetime.now())
+    #     print("making duties actions form",flush=True)
+    #     for item in duties_versus_actions:
+    #         key = item['key']
+    #         value_string = item['value_string']
+    #         value_int = item['value_int']
+    #         Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("duties-versus-actions"), key, value_string, value_int, datetime.now(), datetime.now())
+
+    #     print("making generations form",flush=True)
+    #     for item in generations_form:
+    #         key = item['key']
+    #         value_string = item['value_string']
+    #         value_int = item['value_int']
+    #         Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("generations-form"), key, value_string, value_int, datetime.now(), datetime.now())
+
+    #     print("making intersect form",flush=True)
+    #     for item in intersect_form:
+    #         key = item['key']
+    #         value_string = item['value_string']
+    #         value_int = item['value_int']
+    #         Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("intersect-form"), key, value_string, value_int, datetime.now(), datetime.now())
+
+    #     print("making life path form",flush=True)
+    #     for item in life_path:
+    #         key = item['key']
+    #         value_string = item['value_string']
+    #         value_int = item['value_int']
+    #         Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("life-path"), key, value_string, value_int, datetime.now(), datetime.now())
+
+    #     print("making personal sacrifices form",flush=True)
+    #     for item in personal_sacrifices:
+    #         key = item['key']
+    #         value_string = item['value_string']
+    #         value_int = item['value_int']
+    #         Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("personal-sacrifices"), key, value_string, value_int, datetime.now(), datetime.now())
+
+    #     print("making universal principlsd form",flush=True)
+    #     for item in universal_principles:
+    #         key = item['key']
+    #         value_string = item['value_string']
+    #         value_int = item['value_int']
+    #         Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("universal-principles"), key, value_string, value_int, datetime.now(), datetime.now())
+
+    #     print("making virtue ethics form",flush=True)
+    #     for item in virtue_ethics:
+    #         key = item['key']
+    #         value_string = item['value_string']
+    #         value_int = item['value_int']
+    #         Answer.post_answer(done_assignment.id, Form.get_form_id_by_name("virtue-ethics"), key, value_string, value_int, datetime.now(), datetime.now())
 
         print("guest assignments populated",flush=True)
         

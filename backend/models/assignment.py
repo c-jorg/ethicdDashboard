@@ -39,7 +39,7 @@ class Assignment(db.Model):
     
     
     def __repr__(self):
-        return f"Assignment(ID: {self.id}, Student ID: {self.student_id}, Case study ID: {self.case_study_id})"
+        return f"Assignment(ID: {self.id}, Student ID: {self.student_id}, Case study ID: {self.case_study_id}, case study option id {self.case_study_option_id})"
     
     def set_last_modified(self, last_modified):
         self.last_modified = last_modified

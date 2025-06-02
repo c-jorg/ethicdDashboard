@@ -1,1 +1,24 @@
-[{"key":"mill-pain-0","value_string":"3","value_int":null}, {"key":"mill-pleasure-0","value_string":"1","value_int":null}, {"key":"mill-pain-1","value_string":"3","value_int":null}, {"key":"mill-pleasure-1","value_string":"2","value_int":null}, {"key":"mill-pain-2","value_string":"7","value_int":null}, {"key":"mill-pleasure-2","value_string":"2","value_int":null}, {"key":"mill-pain-3","value_string":"7","value_int":null}, {"key":"mill-pleasure-3","value_string":"7","value_int":null}, {"key":"mill-pleasure-4","value_string":"2","value_int":null}, {"key":"mill-pain-5","value_string":"2","value_int":null}, {"key":"mill-pain-6","value_string":"8","value_int":null}, {"key":"mill-pleasure-6","value_string":"6","value_int":null}, {"key":"reflection","value_string":"yes","value_int":null}, {"key":"mill-total-pleasure","value_string":"84","value_int":null}, {"key":"mill-total-pain","value_string":"176","value_int":null}, {"key":"mill-pleasure-pain-ratio","value_string":"32","value_int":null}, {"key":"cumulative-score","value_string":"0","value_int":null}]
+{
+    "form_name": "cons-util-mill",
+    "answers": 
+        {
+            "cumulative-score": "10",
+            "mill-pain-0": "1",
+            "mill-pain-1": "2",
+            "mill-pain-2": "3",
+            "mill-pain-3": "1",
+            "mill-pain-5": "3",
+            "mill-pain-6": "4",
+            "mill-pleasure-0": "9",
+            "mill-pleasure-1": "9",
+            "mill-pleasure-2": "9",
+            "mill-pleasure-3": "3",
+            "mill-pleasure-4": "7",
+            "mill-pleasure-6": "8",
+            "mill-pleasure-pain-ratio": "88",
+            "mill-total-pain": "40",
+            "mill-total-pleasure": "296",
+            "topic-uf-0": "They are almost the same. I think it's because to me, blowing the whistle seems like the right thing to do. The negatives--financial losses, etc. don't seem important next to death."
+        }
+    
+}

@@ -46,10 +46,16 @@ def test_guest_assignments(client):
 
     assignments_response = client.get(f'/api/flask/assignments?user_id={guest_id}')
     print(assignments_response.json)
-    #assignments_data = assignments_response.get_json()
+    assignments_data = assignments_response.get_json()
+    null_count = 0
+    for assignment in assignments_data:
+        print(f'assignment data {assignment}', flush=True)
+        if assignment['case_study_option_id'] is None:
+            null_count += 1
 
-    assert  len(assignments_response.json) == 5
+    assert  len(assignments_response.json) == 3
     assert assignments_response.status_code == 200
+    assert null_count == 2
     #assert 'token' not in response.json
 
 def test_get_guest_enrollments(client):
@@ -66,16 +72,16 @@ def test_get_guest_enrollments(client):
     response_data = response.json
     print(response_data)
     enrollment_1 = response_data['classes'][0]
-    enrollment_2 = response_data['classes'][1]
+    #enrollment_2 = response_data['classes'][1]
 
-    assert(len(response_data['classes']) == 2)
+    assert(len(response_data['classes']) == 1)
     assert(response.status_code == 200)
     assert(enrollment_1['class_name'] == 'guest class 111')
     assert(enrollment_1['professor'] == 'guest professor')
-    assert(enrollment_2['class_name'] == 'guest class 222')
-    assert(enrollment_2['professor'] == 'guest professor')
+   # assert(enrollment_2['class_name'] == 'guest class 222')
+    #assert(enrollment_2['professor'] == 'guest professor')
     assert(enrollment_1['class_id'] != None)
-    assert(enrollment_2['class_id'] != None)
+    #assert(enrollment_2['class_id'] != None)
     
 def test_delete_guests(client, db_session):
     """

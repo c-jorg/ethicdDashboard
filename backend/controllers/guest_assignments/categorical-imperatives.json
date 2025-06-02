@@ -1,1 +1,13 @@
-[{"key":"moral-virtues","value_string":"Honesty","value_int":null}, {"key":"primary-virtue-always","value_string":"be honest","value_int":null}, {"key":"primary-virtue-never","value_string":"be dishonest","value_int":null}, {"key":"universalizability-pass","value_string":"false","value_int":null}, {"key":"universalizability-fail","value_string":"fail","value_int":null}, {"key":"consistency-pass","value_string":"pass","value_int":null}, {"key":"consistency-fail","value_string":"false","value_int":null}]
+{
+    "form_name": "categorical-imperatives",
+    "answers": 
+        {
+            "consistency-fail": "fail",
+            "consistency-pass": "false",
+            "moral-virtues": "Integrity",
+            "primary-virtue-always": "Blow the whistle on wrongdoing",
+            "primary-virtue-never": "Stay quiet about wrongdoing",
+            "universalizability-fail": "fail",
+            "universalizability-pass": "false"
+        }
+}

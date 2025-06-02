@@ -1,1 +1,25 @@
-[{"key":"pain-0","value_string":"7","value_int":null}, {"key":"pleasure-0","value_string":"7","value_int":null}, {"key":"pain-1","value_string":"8","value_int":null}, {"key":"pleasure-1","value_string":"7","value_int":null}, {"key":"pain-2","value_string":"8","value_int":null}, {"key":"pleasure-2","value_string":"1","value_int":null}, {"key":"pain-3","value_string":"2","value_int":null}, {"key":"pleasure-3","value_string":"2","value_int":null}, {"key":"pleasure-4","value_string":"8","value_int":null}, {"key":"pain-5","value_string":"8","value_int":null}, {"key":"pain-6","value_string":"2","value_int":null}, {"key":"pleasure-6","value_string":"7","value_int":null}, {"key":"total-pleasure","value_string":"175","value_int":null}, {"key":"total-pain","value_string":"66","value_int":null}, {"key":"pleasure-pain-ratio","value_string":"73","value_int":null}, {"key":"cumulative-score","value_string":"10","value_int":null}]
+{
+    "form_name": "cons-util-bentham",
+    "answers": 
+        {
+
+                "cumulative-score": "10",
+                "pain-0": "3",
+                "pain-1": "3",
+                "pain-2": "9",
+                "pain-3": "7",
+                "pain-5": "7",
+                "pain-6": "2",
+                "pleasure-0": "9",
+                "pleasure-1": "7",
+                "pleasure-2": "7",
+                "pleasure-3": "8",
+                "pleasure-4": "9",
+                "pleasure-6": "9",
+                "pleasure-pain-ratio": "86",
+                "total-pain": "58",
+                "total-pleasure": "360"
+            
+        }
+    
+}
