@@ -1,1 +1,49 @@
- [{"key":"dilemma-0","value_string":"conflict_of_interest","value_int":null}, {"key":"dilemma-1","value_string":"false","value_int":null}, {"key":"dilemma-2","value_string":"false","value_int":null}, {"key":"state-the-problem","value_string":"The problem exists","value_int":null}, {"key":"gather-facts-1","value_string":"because reasons","value_int":null}, {"key":"gather-facts-2","value_string":"earth","value_int":null}, {"key":"gather-facts-3","value_string":"yesterday","value_int":null}, {"key":"stakeholder-name-0","value_string":"Bob","value_int":null}, {"key":"stakeholder-directly-0","value_string":"directly","value_int":null}, {"key":"stakeholder-indirectly-0","value_string":"false","value_int":null}, {"key":"stakeholder-name-1","value_string":"Jim","value_int":null}, {"key":"stakeholder-directly-1","value_string":"directly","value_int":null}, {"key":"stakeholder-indirectly-1","value_string":"false","value_int":null}, {"key":"stakeholder-name-2","value_string":"Cindy","value_int":null}, {"key":"stakeholder-directly-2","value_string":"false","value_int":null}, {"key":"stakeholder-indirectly-2","value_string":"indirectly","value_int":null}, {"key":"stakeholder-directly-4","value_string":"false","value_int":null}, {"key":"stakeholder-name-6","value_string":"Charles","value_int":null}, {"key":"option-title-1","value_string":"Do a little","value_int":null}, {"key":"option-description-3","value_string":"get some help","value_int":null}, {"key":"publicity-yes-0","value_string":"yes","value_int":null}, {"key":"harm-no-1","value_string":"false","value_int":null}, {"key":"harm-yes-2","value_string":"yes","value_int":null}, {"key":"reversible-no-2","value_string":"no","value_int":null}, {"key":"reversible-yes-3","value_string":"false","value_int":null}, {"key":"publicity-no-4","value_string":"false","value_int":null}, {"key":"tentative-choice-2","value_string":"false","value_int":null}, {"key":"stakeholder-name-3","value_string":"Samantha","value_int":null}, {"key":"stakeholder-indirectly-4","value_string":"indirectly","value_int":null}, {"key":"stakeholder-directly-6","value_string":"directly","value_int":null}, {"key":"option-description-1","value_string":"Do a little","value_int":null}, {"key":"option-title-4","value_string":"Pay for help","value_int":null}, {"key":"publicity-no-0","value_string":"false","value_int":null}, {"key":"publicity-yes-1","value_string":"yes","value_int":null}, {"key":"harm-no-2","value_string":"false","value_int":null}, {"key":"harm-yes-3","value_string":"false","value_int":null}, {"key":"reversible-no-3","value_string":"no","value_int":null}, {"key":"reversible-yes-4","value_string":"yes","value_int":null}, {"key":"tentative-choice-3","value_string":"Get help","value_int":null}, {"key":"stakeholder-directly-3","value_string":"directly","value_int":null}, {"key":"stakeholder-name-5","value_string":"Carol","value_int":null}, {"key":"stakeholder-indirectly-6","value_string":"false","value_int":null}, {"key":"option-title-2","value_string":"Do lots ","value_int":null}, {"key":"option-description-4","value_string":"pay for some help","value_int":null}, {"key":"reversible-yes-0","value_string":"yes","value_int":null}, {"key":"publicity-no-1","value_string":"false","value_int":null}, {"key":"publicity-yes-2","value_string":"yes","value_int":null}, {"key":"harm-no-3","value_string":"no","value_int":null}, {"key":"harm-yes-4","value_string":"false","value_int":null}, {"key":"reversible-no-4","value_string":"false","value_int":null}, {"key":"tentative-choice-4","value_string":"false","value_int":null}, {"key":"stakeholder-indirectly-3","value_string":"false","value_int":null}, {"key":"stakeholder-directly-5","value_string":"false","value_int":null}, {"key":"option-title-0","value_string":"Do nothing","value_int":null}, {"key":"option-description-2","value_string":"Do lots","value_int":null}, {"key":"harm-yes-0","value_string":"yes","value_int":null}, {"key":"reversible-no-0","value_string":"false","value_int":null}, {"key":"reversible-yes-1","value_string":"yes","value_int":null}, {"key":"publicity-no-2","value_string":"false","value_int":null}, {"key":"publicity-yes-3","value_string":"false","value_int":null}, {"key":"harm-no-4","value_string":"no","value_int":null}, {"key":"tentative-choice-0","value_string":"false","value_int":null}, {"key":"num_stakeholders","value_string":"7","value_int":null}, {"key":"stakeholder-name-4","value_string":"Jeff","value_int":null}, {"key":"stakeholder-indirectly-5","value_string":"indirectly","value_int":null}, {"key":"option-description-0","value_string":"Do nothing","value_int":null}, {"key":"option-title-3","value_string":"Get help","value_int":null}, {"key":"harm-no-0","value_string":"false","value_int":null}, {"key":"harm-yes-1","value_string":"yes","value_int":null}, {"key":"reversible-no-1","value_string":"false","value_int":null}, {"key":"reversible-yes-2","value_string":"false","value_int":null}, {"key":"publicity-no-3","value_string":"no","value_int":null}, {"key":"publicity-yes-4","value_string":"yes","value_int":null}, {"key":"tentative-choice-1","value_string":"false","value_int":null}]
+{
+    "form_name": "dilemma",
+    "answers": 
+        {
+        
+            "dilemma-0": "17",
+            "dilemma-1": "false",
+            "dilemma-2": "false",
+            "gather-facts-1": "This kind of thing happens all the time in complex systems. That's why we have so many tests. What's unusual in this situation is how far along we are the process. Going forward we will have to think about testing that could be initiated sooner to detect this type of problem. That, I'm sure I could push for, and maybe that's enough?",
+            "gather-facts-2": "Location unknown. There were several different work groups involved so it would be difficult and time consuming to trace it back. That time would be better spent fixing the bug.",
+            "gather-facts-3": "I found out today, but the problem may have been months in the making. Again, I think this has revealed some deficiencies in our testing procedures.",
+            "num_stakeholders": "8",
+            "option-description-0": "My boss and many colleagues believe that the risk of this bug resulting in a catastrophic failure is so low that it is not likely to ever happen. I can just go along with them.",
+            "option-description-1": "I can refuse to sign-off on the system which means my boss would, as he has before, fire me to go ahead. It would ease my professional conscience, but losing my job isn't going to result in a safe product.",
+            "option-description-2": "There are two ways I can go outside to stop the project from going head with this bug. I can go to a government regulator, or I can go to the press. It's the only way to ensure safety.",
+            "option-title-0": "Be loyal to my team",
+            "option-title-1": "Refuse to sign-off",
+            "option-title-2": "Blow the Whistle",
+            "stakeholder-directly-0": "directly",
+            "stakeholder-directly-1": "directly",
+            "stakeholder-directly-2": "directly",
+            "stakeholder-directly-3": "directly",
+            "stakeholder-directly-4": "directly",
+            "stakeholder-directly-5": "false",
+            "stakeholder-directly-6": "false",
+            "stakeholder-directly-7": "false",
+            "stakeholder-indirectly-0": "false",
+            "stakeholder-indirectly-1": "false",
+            "stakeholder-indirectly-2": "false",
+            "stakeholder-indirectly-3": "false",
+            "stakeholder-indirectly-4": "false",
+            "stakeholder-indirectly-5": "indirectly",
+            "stakeholder-indirectly-6": "indirectly",
+            "stakeholder-indirectly-7": "indirectly",
+            "stakeholder-name-0": "Future Passengers",
+            "stakeholder-name-1": "Me, an engineer",
+            "stakeholder-name-2": "Other Engineers in my Department",
+            "stakeholder-name-3": "Aerospace Company",
+            "stakeholder-name-4": "Senior Management",
+            "stakeholder-name-5": "Other Workers",
+            "stakeholder-name-6": "Aerospace Industry",
+            "stakeholder-name-7": "Society",
+            "state-the-problem": "I am in engineer working on a safety critical project in the aerospace industry. Testing results have revealed a bug that could cause a catastrophic failure during flight which means everyone on that flight will die. However, it is highly unlikely that this bug will be triggered, it could never be triggered. It's impossible to know. On the one hand, I owe it to everyone who relies on our product for safe flights the safest product I can produce; on the other hand, fixing the bug will result in significant financial set backs for me, owning shares means I have a conflict of interest. My professional integrity is in conflict with my financial interests--which could impact my family and everyone that relies on me personally. I have always been loyal to my colleagues and the company, but demanding this bug fix could negatively impact everyone I know and work with, not to mention it could ruin my reputation. If I refuse to sign-off I could lose my job. If word gets out about what I did, it could be hard to find another one in this industry and my skills are not easily transferable.",
+            "tentative-choice-0": "false",
+            "tentative-choice-1": "false",
+            "tentative-choice-2": "Blow the Whistle"
+        }
+    
+}

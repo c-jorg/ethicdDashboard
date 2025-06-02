@@ -1,1 +1,18 @@
-[{"key":"moral-duty-1","value_string":"be good","value_int":null}, {"key":"slider-1","value_string":"1","value_int":null}, {"key":"moral-duty-2","value_string":"be bad","value_int":null}, {"key":"slider-2","value_string":"10","value_int":null}, {"key":"moral-duty-3","value_string":"be neutral","value_int":null}, {"key":"slider-3","value_string":"5","value_int":null}, {"key":"num-sacrifices","value_string":"3","value_int":null}, {"key":"average-sacrifice","value_string":"5","value_int":null}, {"key":"cumulative-score","value_string":"5","value_int":null}]
+{
+    "form_name": "personal-sacrifices",
+    "answers": 
+        {
+            "average-sacrifice": "1",
+            "cumulative-score": "1",
+            "moral-duty-1": "A duty to protect lives",
+            "moral-duty-2": "A professional duty to my colleagues and my company",
+            "moral-duty-3": "A duty to my family as the primary breadwinner",
+            "num-sacrifices": "3",
+            "slider-1": "1",
+            "slider-2": "1",
+            "slider-3": "1",
+            "topic-ps-0": "Yes, I feel personally responsible for all of these role determined duties.",
+            "topic-ps-1": "In the case, the role determined duties are in conflict so this is highlighting how difficult this situation is for me."
+        }
+    
+}

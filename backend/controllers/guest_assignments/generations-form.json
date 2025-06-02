@@ -1,1 +1,15 @@
-[{"key":"slider-0","value_string":"2","value_int":null}, {"key":"slider-1","value_string":"2","value_int":null}, {"key":"slider-2","value_string":"2","value_int":null}, {"key":"topic-sg-0","value_string":"it just is","value_int":null}, {"key":"topic-sg-1","value_string":"kind of","value_int":null}, {"key":"topic-sg-2","value_string":"no and no","value_int":null}, {"key":"num-sliders","value_string":"3","value_int":null}, {"key":"cumulative-score","value_string":"2","value_int":null}]
+{
+    "form_name": "generations-form",
+    "answers": 
+        {
+            "cumulative-score": "4",
+            "num-sliders": "3",
+            "slider-0": "3",
+            "slider-1": "3",
+            "slider-2": "5",
+            "topic-sg-0": "Our industry is not good for the environment so in that way, we are prioritizing humans. We make money off non-renewable resources.",
+            "topic-sg-1": "That's a complicated question for our industry. We make a contribution to society and connect people who would otherwise be isolated from each other.",
+            "topic-sg-2": "Future humans will need each other, but they will also need a sustainable natural world. As an industry, we could do better. This plane will be more efficient so I guess it's a step in the right direction, but it's a small step."
+        }        
+    
+}

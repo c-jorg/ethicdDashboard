@@ -53,9 +53,9 @@ class Answer(db.Model):
     
     @classmethod
     def get_answers_by_assignment_id_and_form_id(cls, assignment_id, form_id):
-        print(f"Fetching answers for assignment_id: {assignment_id} and form_id: {form_id}")
+        #print(f"Fetching answers for assignment_id: {assignment_id} and form_id: {form_id}")
         answers = cls.query.filter(cls.assignment_id == assignment_id, cls.form_id == form_id).all()
-        print(f"Found answers: {answers}")
+        #print(f"Found answers: {answers}")
         return answers
 
     @classmethod

@@ -1,1 +1,17 @@
-[{"key":"fidelity-slider-1","value_string":"7","value_int":null}, {"key":"fidelity-slider-2","value_string":"2","value_int":null}, {"key":"reparation-slider-1","value_string":"2","value_int":null}, {"key":"reparation-slider-2","value_string":"2","value_int":null}, {"key":"gratitude-slider-1","value_string":"8","value_int":null}, {"key":"gratitude-slider-2","value_string":"7","value_int":null}, {"key":"topic-1-dva","value_string":"Not really","value_int":null}, {"key":"topic-2-dva","value_string":"more important","value_int":null}, {"key":"percentage-action-taken","value_string":"65","value_int":null}, {"key":"cumulative-score","value_string":"7","value_int":null}]
+{
+    "form_name": "duties-versus-actions",
+    "answers": 
+        {        
+            "cumulative-score": "8",
+            "fidelity-slider-1": "8",
+            "fidelity-slider-2": "5",
+            "gratitude-slider-1": "7",
+            "gratitude-slider-2": "7",
+            "percentage-action-taken": "80",
+            "reparation-slider-1": "0",
+            "reparation-slider-2": "0",
+            "topic-dva-0": "I think so, promises are hard because there is a conflict. I make a promise to people who fly in our planes-I will put your safety first; but I also make a promise to my company-I won't reveal secrets.",
+            "topic-dva-1": "They all seem important."
+        }
+    
+}

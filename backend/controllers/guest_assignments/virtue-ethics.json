@@ -1,1 +1,22 @@
-[{"key":"domain-1","value_string":"thing 1","value_int":null}, {"key":"vice-1","value_string":"17","value_int":null}, {"key":"domain-2","value_string":"thing 2","value_int":null}, {"key":"vice-2","value_string":"5","value_int":null}, {"key":"domain-3","value_string":"thing 3","value_int":null}, {"key":"vice-3","value_string":"10","value_int":null}, {"key":"domain-4","value_string":"thing 4","value_int":null}, {"key":"vice-4","value_string":"3","value_int":null}, {"key":"domain-5","value_string":"thing 5","value_int":null}, {"key":"vice-5","value_string":"17","value_int":null}, {"key":"question-ve","value_string":"yes","value_int":null}, {"key":"reflection-ve","value_string":"yes","value_int":null}, {"key":"num-domains","value_string":"5","value_int":null}, {"key":"vv-average","value_string":"5","value_int":null}, {"key":"cumulative-score","value_string":"5","value_int":null}]
+{
+    "form_name": "virtue-ethics",
+    "answers": 
+        {            
+            "cumulative-score": "8",
+            "domain-1": "Honesty",
+            "domain-2": "Integrity",
+            "domain-3": "Loyalty",
+            "domain-4": "Care for others",
+            "domain-5": "Professionalism",
+            "num-domains": "5",
+            "topic-ve-0": "Yes, I'm betraying my company and my colleagues, but I believe it's for a good reason.",
+            "topic-ve-1": "I guess it depends on what domains a person chooses.",
+            "vice-1": "13",
+            "vice-2": "9",
+            "vice-3": "6",
+            "vice-4": "13",
+            "vice-5": "12",
+            "vv-average": "8"
+        }
+    
+}

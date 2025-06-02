@@ -1,1 +1,17 @@
-[{"key":"universal-response","value_string":"not very consistent","value_int":null}, {"key":"decision-response","value_string":"yes","value_int":null}, {"key":"better-world-response","value_string":"probably","value_int":null}]
+{
+    "form_name": "critical-questions",
+    "answers": 
+        {
+            "consistency-fail": "false",
+            "consistency-pass": "pass",
+            "moral-virtues": "Integrity",
+            "primary-virtue-always": "Blow the whistle when lives are at stake.",
+            "primary-virtue-never": "Stay quiet when you can speak up and save lives.",
+            "topic-cq-0": "Yes, I think that risk of failure resulting in death makes it a situation where it is the right thing to do.",
+            "topic-cq-1": "Yes and no. On the one hand, it confirms my intuition, that it is the right thing to do. However, because the failure is unlikely, I will never know if I prevented the failure, of if just created a lot of problems for my boss and co-workers over nothing.",
+            "topic-cq-2": "Yes and no. In situations where there is not doubt about the risks it would, but there are so many situations where the potential risk not certain. It could result in over-cautiousness that stifles innovation.",
+            "universalizability-fail": "false",
+            "universalizability-pass": "pass"
+        }
+    
+}
