@@ -452,7 +452,7 @@ def get_answers():
         #print("ASSIGNMENT DAtA: ", assignment_data, flush=True)
 
         # Serialize the data into a list of dictionaries
-        return jsonify({'message': 'Form data retrieved successfully', 'data': assignment_data}), 200
+        return make_response(jsonify({'message': 'Form data retrieved successfully', 'data': assignment_data}), 200)
 
     except Exception as e:
         return make_response(jsonify({'message': 'Error retrieving form data', 'error': str(e)}), 500)
