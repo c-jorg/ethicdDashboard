@@ -37,6 +37,7 @@ export default function LoginForm() {
   console.log("profUrl is " + profUrl);
   try{
     console.log("env url is " + process.env.NEXT_PUBLIC_API_URL);
+    console.log('prod or dev ' + process.env.NODE_ENV);
   }catch(error){
     console.log("error in env url " + error);
   }

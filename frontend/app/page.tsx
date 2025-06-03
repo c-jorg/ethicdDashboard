@@ -8,11 +8,11 @@ import Image from 'next/image';
 export default function Page() {
   return (
     <>
-    <head>
+    {/*<head>
         <title>Ethics Dashboard</title>
         <meta name="description" content="Home page of Ethics Dashboard" />
     </head>
-    <body>
+    <body>*/}
     <main className="flex min-h-screen flex-col p-6">
       <div className="flex h-20 shrink-0 items-end rounded-lg bg-blue-500 p-4 md:h-52">
         { <AcmeLogo /> }
@@ -52,7 +52,7 @@ export default function Page() {
         </div>
       </div>
     </main>
-    </body>
+    {/*</body>*/}
     </>
   );
 }

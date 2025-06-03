@@ -1,6 +1,5 @@
 
 services:
-
   # PostgreSQL database service
   db:
     container_name: db
@@ -21,17 +20,20 @@ services:
     image: nextapp:1.0.0
     build:
       context: ./frontend
-      dockerfile: next.dockerfile
+      dockerfile: next.dev.dockerfile
       args:
-       NEXT_PUBLIC_API_URL: http://213.255.209.162:4000
+       NEXT_PUBLIC_API_URL: http://127.0.0.1:4000
     ports:
       - 3000:3000
     volumes:
-      - .:/frontend
+      - ./frontend:/app
       - ./frontend/node_modules:/app/node_modules
+    env_file:
+      - ./frontend/.env.development
     environment:
-    - NEXT_PUBLIC_API_URL=http://213.255.209.162:4000
+    #- NEXT_PUBLIC_API_URL=http://127.0.0.1:4000
     - DEBUG=true
+    - NODE_ENV=development
     depends_on:
       - flaskapp
     networks:
@@ -89,17 +91,8 @@ services:
       - ./certbot/www:/var/www/certbot
     depends_on:
       - nextapp
-      #- certbot
     networks:
       - shared_network
-
-  # certbot:
-  #   image: certbot/certbot
-  #   container_name: certbot
-  #   volumes:
-  #     - ./certbot/conf:/etc/letsencrypt
-  #     - ./certbot/www:/var/www/certbot 
-  #   command: certonly --webroot -w /var/www/certbot --keep-until-expiring -d 213-255-209-162.cloud-xip.com --agree-tos
 
 volumes:
   pgdata: {}
