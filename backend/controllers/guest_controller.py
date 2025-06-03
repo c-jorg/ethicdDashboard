@@ -1,6 +1,5 @@
 from flask import Flask, request, jsonify, make_response, Blueprint, json, current_app
 
-#from backend.controllers import assignment_controller
 from ..models import Student, Assignment, CaseStudy, Answer, Submission, Form, Professor, Class, CaseStudyOption, Enrollment
 from datetime import datetime
 import json
