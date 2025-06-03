@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 
 
 export async function middleware(request: NextRequest) {
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+  const apiUrl = process.env.NEXT_INTERNAL_API || 'http://flaskapp:4000'; //this is a servside file so use the internal docker network url
   //const token = request.cookies.get('access_token')?.value;
   console.log("Middleware.ts api url: " + apiUrl);
   console.log("checking in middleware");
@@ -16,10 +16,12 @@ export async function middleware(request: NextRequest) {
     console.log("error getting headers " + (e));
   } 
  
-  const cookie = request.headers.get('cookie');
-  console.log("cookies: " + cookie);
-  const token = cookie?.split(';').find(c => c.trim().startsWith('access_token='))?.split('=')[1];
-  console.log("token is: " + token);
+  //const cookie = request.headers.get('cookie');
+  //console.log("cookies: " + cookie);
+  //const token = cookie?.split(';').find(c => c.trim().startsWith('access_token='))?.split('=')[1];
+  //console.log("token is: " + token);
+  const token = request.cookies.get('access_token')?.value;
+
 
   // Function to clear the token
   const clearAuthData = () => {
@@ -33,30 +35,33 @@ export async function middleware(request: NextRequest) {
 
   // If no token, redirect to the login page
   if (!token) {
-    return NextResponse.redirect(new URL('/login', request.url));
+    return NextResponse.redirect(new URL('/login?token-expired=true', request.url));
   }
 
   try {
-    // Validate the token using Axios
-    const response = await axios.post(
-      `${apiUrl}/api/flask/auth/validate-token`,
-      { token },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
+    // Validate the token using fetch, not axios because it makes problems when doing tokens with nginx because reasons
+    const response = await fetch(
+      `${apiUrl}/api/flask/auth/validate-token`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify({ token }),
       }
     );
 
     if (response.status === 200) {
       // Token is valid, allow access
-      console.log("Token valid - Redirecting to dashboard")
+      console.log("Token valid - Redirecting to dashboard");
       return NextResponse.next(); //continue processing the request and serve the requested page without any redirection or interruption
-    } else if (response.status === 401 && response.data.message === 'Token has expired'){
-     //when the token has expired, remove it from local storage and cookies
-      clearAuthData();
-   
-      return NextResponse.redirect(new URL('/login?token-expired=true', request.url));
+    } else if (response.status === 401){
+      const data = await response.json();
+      if(data.message === 'Token has expired'){
+        console.log("token expired");
+        //when the token has expired, remove it from local storage and cookies
+        clearAuthData();
+        return NextResponse.redirect(new URL('/login?token-epired=true', request.url));
+      }
+
+      return NextResponse.redirect(new URL('/login?invalid-token=true', request.url));
 
     }else {
       console.log("1: Invalid token - Redirect to login");
@@ -82,3 +87,47 @@ export async function middleware(request: NextRequest) {
 export const config = {
     matcher: ['/dashboard/:path*', '/profile/:path*', '/assignments/:path*', '/classes/:path*'], // Apply middleware only to protected routes
 };
+
+// import { NextRequest, NextResponse } from 'next/server';
+
+// export async function middleware(request: NextRequest) {
+//   const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+
+//   // Get token from cookies (Edge API)
+//   const token = request.cookies.get('access_token')?.value;
+
+//   // If no token, redirect to login
+//   if (!token) {
+//     return NextResponse.redirect(new URL('/login?token-expired=true', request.url));
+//   }
+
+//   try {
+//     // Validate the token using fetch (Edge compatible)
+//     const response = await fetch(`${apiUrl}/api/flask/auth/validate-token`, {
+//       method: 'POST',
+//       headers: { 'Content-Type': 'application/json' },
+//       body: JSON.stringify({ token }),
+//     });
+
+//     if (response.status === 200) {
+//       // Token is valid, allow access
+//       return NextResponse.next();
+//     } else if (response.status === 401) {
+//       const data = await response.json();
+//       if (data.message === 'Token has expired') {
+//         return NextResponse.redirect(new URL('/login?token-expired=true', request.url));
+//       }
+//       return NextResponse.redirect(new URL('/login?invalid-token=true', request.url));
+//     } else {
+//       return NextResponse.redirect(new URL('/login?invalid-token=true', request.url));
+//     }
+//   } catch (error) {
+//     // On error, redirect to login with error param
+//     return NextResponse.redirect(new URL('/login?token-validation-error=true', request.url));
+//   }
+// }
+
+// // Apply middleware only to protected routes
+// export const config = {
+//   matcher: ['/dashboard/:path*', '/profile/:path*', '/assignments/:path*', '/classes/:path*'],
+// };
