@@ -393,7 +393,7 @@ export default function LoginForm() {
        
 
         <Button className="mt-4 w-full md:text-md" type="submit" disabled={loading}>
-          Log in <ArrowRightIcon className="ml-auto h-5 w-5 text-gray-50" />
+          Log in<ArrowRightIcon className="ml-auto h-5 w-5 text-gray-50" />
         </Button>
 
         <Link
