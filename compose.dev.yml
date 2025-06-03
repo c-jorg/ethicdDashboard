@@ -94,14 +94,6 @@ services:
     networks:
       - shared_network
 
-  certbot:
-    image: certbot/certbot
-    container_name: certbot
-    volumes:
-      - ./certbot/conf:/etc/letsencrypt
-      - ./certbot/www:/var/www/certbot 
-    command: certonly --webroot -w /var/www/certbot --keep-until-expiring -d localhost --agree-tos
-
 volumes:
   pgdata: {}
 
