@@ -24,11 +24,11 @@ export default function LoginPage() {
 
   return ( 
     <>
-    <head>
+   {/* <head>
         <title>Login</title>
         <meta name="description" content="Login page for the Ethics Dashboard" />
     </head>
-    <body>
+    <body>*/}
       <main className="flex items-center justify-center md:h-screen">
         <div className="relative mx-auto flex w-full max-w-[400px] md:max-w-[500px] flex-col space-y-2.5 p-4 md:-mt-32">
           
@@ -42,7 +42,7 @@ export default function LoginPage() {
 
         </div>
       </main>
-    </body>
+    {/*</body>*/}
     </>
   );
 

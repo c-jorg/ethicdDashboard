@@ -1,16 +1,5 @@
 
 services:
-
-  nginx:
-    container_name: nginx
-    restart: unless-stopped
-    image: nginx
-    ports:
-      - 80:80
-      - 443:443
-    volumes:
-    - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-
   # PostgreSQL database service
   db:
     container_name: db
@@ -31,17 +20,20 @@ services:
     image: nextapp:1.0.0
     build:
       context: ./frontend
-      dockerfile: next.dockerfile
+      dockerfile: next.dev.dockerfile
       args:
        NEXT_PUBLIC_API_URL: http://127.0.0.1:4000
     ports:
       - 3000:3000
     volumes:
-      - .:/frontend
+      - ./frontend:/app
       - ./frontend/node_modules:/app/node_modules
+    env_file:
+      - ./frontend/.env.development
     environment:
-    - NEXT_PUBLIC_API_URL=http://127.0.0.1:4000
+    #- NEXT_PUBLIC_API_URL=http://127.0.0.1:4000
     - DEBUG=true
+    - NODE_ENV=development
     depends_on:
       - flaskapp
     networks:
@@ -85,6 +77,21 @@ services:
       - flaskapp
     networks:
       - shared_network
+
+  nginx:
+    container_name: nginx
+    restart: unless-stopped
+    image: nginx
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - nextapp
+    networks:
+      - shared_network
+
 
 volumes:
   pgdata: {}

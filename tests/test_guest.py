@@ -25,7 +25,7 @@ def test_register_guest(client):
     assert 'token' in token_request.json
     assert token_request.status_code == 200
 
-def test_guest_assignments(client, guest_fixture):
+def test_guest_assignments(client, db_session, guest_fixture):
     """
     Given GET /api/flask/assignments/get-assignments?user_id=user_id
     WHEN user_id is supplied
@@ -39,6 +39,7 @@ def test_guest_assignments(client, guest_fixture):
     #client.post('/api/flask/setup/guest')
 
     guest_fixture
+    options = db_session
     response = client.post('api/flask/auth/register-guest')
     response_data = response.json
     print(response_data)
