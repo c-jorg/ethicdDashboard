@@ -38,10 +38,6 @@ services:
       - flaskapp
     networks:
       - shared_network
-    # volumes: # trying this out
-    #   - ./frontend:/app
-    #   - ./frontend/node_modules:/app/node_modules
-    # command: pnpm dev
 
   # Flask backend service
   flaskapp:

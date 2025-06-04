@@ -1,79 +1,3 @@
-# FROM node:20-alpine AS base
-
-# # Install dependencies only when needed
-# FROM base AS deps
-# # Install dependencies required by pnpm and some utilities
-# RUN apk add --no-cache libc6-compat
-
-# ARG NEXT_PUBLIC_API_URL
-# ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
-
-# WORKDIR /app
-
-# # Install pnpm globally, ensuring it's available for the build
-# RUN npm install -g pnpm
-
-# # Install dependencies based on the preferred package manager
-# COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* .npmrc* ./
-# RUN \
-#   if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
-#   elif [ -f package-lock.json ]; then npm ci --legacy-peer-deps; \
-#   elif [ -f pnpm-lock.yaml ]; then pnpm install --frozen-lockfile; \
-#   else echo "Lockfile not found." && exit 1; \
-#   fi
-
-
-# # Rebuild the source code only when needed
-# FROM base AS builder
-# WORKDIR /app
-# COPY --from=deps /app/node_modules ./node_modules
-# COPY . .
-
-# # Ensure pnpm is available in the builder stage, explicitly reinstall pnpm if necessary
-# RUN npm install -g pnpm
-
-# # Build the project using the appropriate package manager
-# RUN \
-#   if [ -f yarn.lock ]; then yarn run build; \
-#   elif [ -f package-lock.json ]; then npm run build; \
-#   elif [ -f pnpm-lock.yaml ]; then pnpm run build; \
-#   else echo "Lockfile not found." && exit 1; \
-#   fi
-
-# # Production image, copy all the files and run next
-# FROM base AS runner
-# WORKDIR /app
-
-# ENV NODE_ENV=development
-# # Uncomment the following line in case you want to disable telemetry during runtime.
-# # ENV NEXT_TELEMETRY_DISABLED=1
-
-# RUN addgroup --system --gid 1001 nodejs
-# RUN adduser --system --uid 1001 nextjs
-
-# COPY --from=builder /app/public ./public
-
-# # Set the correct permission for prerender cache
-# RUN mkdir .next
-# RUN chown nextjs:nodejs .next
-
-# # Automatically leverage output traces to reduce image size
-# # https://nextjs.org/docs/advanced-features/output-file-tracing
-# COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./ 
-# COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-
-# USER nextjs
-
-# EXPOSE 3000
-
-# ENV PORT=3000
-
-# # server.js is created by next build from the standalone output
-# # https://nextjs.org/docs/pages/api-reference/next-config-js/output
-# ENV HOSTNAME="0.0.0.0"
-# CMD ["node", "server.js"]
-
-
 FROM node:20-alpine
 
 WORKDIR /app
@@ -90,6 +14,7 @@ COPY . .
 
 ENV NODE_ENV=development
 ENV PORT=3000
+ENV HOST=0.0.0.0
 EXPOSE 3000
 
-CMD ["pnpm", "dev"]
+CMD ["pnpm", "dev", "-H", "0.0.0.0"]
