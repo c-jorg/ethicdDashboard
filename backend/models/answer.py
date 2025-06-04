@@ -60,9 +60,9 @@ class Answer(db.Model):
 
     @classmethod
     def delete_answers_by_assignment_id_and_form_id(cls, assignment_id, form_id):
-        print("deleting answers for assignment id and form id in answer model " + str(assignment_id) + " and form id " + str(form_id))
+        #print("deleting answers for assignment id and form id in answer model " + str(assignment_id) + " and form id " + str(form_id))
         answers = cls.query.filter(cls.assignment_id == assignment_id, cls.form_id == form_id).all()
-        print("answers to delete in answer model are " + str(answers))
+        #print("answers to delete in answer model are " + str(answers))
         for answer in answers:
             db.session.delete(answer)
         db.session.commit()

@@ -581,9 +581,16 @@ def set_case_study_option():
 
     if not assignment_id or not case_study_option:
        return jsonify({'message': 'Missing data in request'}), 400
+     
+    print(f"set csae option request {request}",flush=True)
 
+    print(f"option {case_study_option}", flush=True)
+    try:
+      case_study_option = int(case_study_option)
+    except Exception as e:
+      print(f"case option is not a number", flush=True)
     if type(case_study_option) == str and case_study_option != 'student-option':
-      return make_response(jsonify({'message': 'Invalid case study option'}), 400)
+      return make_response(jsonify({'message': 'Invalid case study option', "case_study_option":case_study_option}), 400)
     
     if case_study_option == 'student-option':
       case_study_option = None
