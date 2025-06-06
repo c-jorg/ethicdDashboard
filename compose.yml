@@ -89,7 +89,7 @@ services:
       - ./certbot/www:/var/www/certbot
     depends_on:
       - nextapp
-      #- certbot
+      - certbot
     networks:
       - shared_network
 
@@ -99,7 +99,7 @@ services:
     volumes:
       - ./certbot/conf:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot 
-    command: certonly --webroot -w /var/www/certbot --keep-until-expiring -d ethicsdashboard.org -d www.ethicdashboard.org --agree-tos
+    command: certonly --webroot -w /var/www/certbot  --force-renewal -d www.ethicsdashboard.org --agree-tos
 
 volumes:
   pgdata: {}
