@@ -53,6 +53,6 @@ export const getCaseStudyOptionData = async (
             }
 
         }
-        return { title: "Error getting title", description: "Error getting description" };
+        return { title: "Error getting title", description: "Error getting description", choice: "Error getting choice" };
     }
 };
