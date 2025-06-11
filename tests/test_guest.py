@@ -50,14 +50,15 @@ def test_guest_assignments(client, db_session, guest_fixture):
     print(assignments_response.json)
     assignments_data = assignments_response.get_json()
     null_count = 0
+    print(f"assignments length {len(assignments_data)}")
     for assignment in assignments_data:
         print(f'assignment data {assignment}', flush=True)
         if assignment['case_study_option_id'] is None:
             null_count += 1
 
-    assert  len(assignments_response.json) == 3
+    assert  len(assignments_data) == 2
     assert assignments_response.status_code == 200
-    assert null_count == 2
+    assert null_count == 1
     #assert 'token' not in response.json
 
 def test_get_guest_enrollments(client):
@@ -78,8 +79,8 @@ def test_get_guest_enrollments(client):
 
     assert(len(response_data['classes']) == 1)
     assert(response.status_code == 200)
-    assert(enrollment_1['class_name'] == 'guest class 111')
-    assert(enrollment_1['professor'] == 'guest professor')
+    assert(enrollment_1['class_name'] == 'Case Study')
+    assert(enrollment_1['professor'] == 'Ethics Professor')
    # assert(enrollment_2['class_name'] == 'guest class 222')
     #assert(enrollment_2['professor'] == 'guest professor')
     assert(enrollment_1['class_id'] != None)

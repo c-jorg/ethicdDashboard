@@ -29,7 +29,7 @@ export default function IntersectForm() {
     const [isRendered, setIsRendered] = useState(false);
 
     const maxStakeholders = 12;
-    const minStakeholders = 1;
+    const minStakeholders = 7;
     const maxWords = 200;
 
     const [privilegeGreater, setPrivilegeGreater] = useState<boolean>(false);

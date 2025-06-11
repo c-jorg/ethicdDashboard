@@ -34,6 +34,7 @@ export default function VirtueEthicsForm() {
     let submitted = false;
     const [lockForm, setLockForm] = useState(false); //locks form if it has been submitted
     const [isRendered, setIsRendered] = useState(false);
+    const [allSuggestions, setAllSuggestions] = useState<string[]>([]);
 
     const [feedback, setFeedback] = useState<{ [key: string]: string }>({});
     const [questionsInitialized, setQuestionsInitialized] = useState(false); //set to true once critical qs have been fetched from DB
@@ -113,6 +114,13 @@ export default function VirtueEthicsForm() {
             }));
             setDomainLabels(formattedData);
             console.log("domains added " + JSON.stringify(formattedData,null,2));
+             const allSuggestions = new Set<string>();
+            formattedData.forEach(row => {
+            Object.values(row).forEach(val => {
+                if (val && typeof val === 'string') allSuggestions.add(val);
+            });
+        });
+        setAllSuggestions(Array.from(allSuggestions));
         });
     }, []);
 
@@ -226,16 +234,19 @@ export default function VirtueEthicsForm() {
                 // );
                 // //console.log("domain data is ", domainData);
                 // if(domainData) updateSliderLabels(id, value);
-                const filteredSuggestions = domainToLabels
-                    .map((item) => item.domain)
-                    .filter((domain) => 
-                        domain.toLowerCase().includes(value.toLowerCase())
-                );
-                setSuggestions(filteredSuggestions);
-
+                // const filteredSuggestions = domainToLabels
+                //     .map((item) => item.domain)
+                //     .filter((domain) => 
+                //         domain.toLowerCase().includes(value.toLowerCase())
+                // );
+                if(value.length > 0) {
+                    const filteredSuggestions = allSuggestions.filter(suggestion => suggestion.toLowerCase().includes(value.toLowerCase()));
+                    setSuggestions(filteredSuggestions);
+                }
             }else{
                 //if the text field is empty, do not show any suggestions
-                setSuggestions(domainToLabels.map(item => item.domain));
+                //setSuggestions(domainToLabels.map(item => item.domain));
+                setSuggestions(allSuggestions);
             }
         
         
@@ -312,18 +323,66 @@ export default function VirtueEthicsForm() {
     // Handle suggestion click and update the input
     const handleSuggestionClick = (suggestion: string, id: number) => {
         console.log("Suggestion clicked: ", suggestion);
-        setDomains((prevDomains) =>
-            prevDomains.map((domain) =>
-                domain.id === id ? { ...domain, domain: suggestion } : domain
-            )
+        // setDomains((prevDomains) =>
+        //     prevDomains.map((domain) =>
+        //         domain.id === id ? { ...domain, domain: suggestion } : domain
+        //     )
+        // );
+        // localStorage.setItem(`${prefix}domain-${id}`, suggestion.toString());
+
+        // setSuggestions([]); // Clear suggestions after selection
+
+        // setFocusedDomainId(-1);  // Remove focus state after selection
+        // updateSliderLabels(id, suggestion);
+        // //console.log("slider labels are ", sliderLabels);
+        const domainData = domainToLabels.find(
+            (row) =>
+                row.domain === suggestion ||
+                row.deficiency === suggestion ||
+                row.virtue === suggestion ||
+                row.excess === suggestion
         );
+
+        // Set the domain input to the suggestion
+        // setDomains((prevDomains) =>
+        //     prevDomains.map((domain) =>
+        //         domain.id === id ? { ...domain, domain: suggestion } : domain
+        //     )
+        // );
+        if (domainData) {
+            setDomains((prevDomains) =>
+                prevDomains.map((domain) =>
+                    domain.id === id ? { ...domain, domain: domainData.domain } : domain
+                )
+            );
+            localStorage.setItem(`${prefix}domain-${id}`, domainData.domain);
+        } else {
+            // fallback: just use the suggestion
+            setDomains((prevDomains) =>
+                prevDomains.map((domain) =>
+                    domain.id === id ? { ...domain, domain: suggestion } : domain
+                )
+            );
+        }
         localStorage.setItem(`${prefix}domain-${id}`, suggestion.toString());
 
-        setSuggestions([]); // Clear suggestions after selection
+        setSuggestions([]);
+        setFocusedDomainId(-1);
 
-        setFocusedDomainId(-1);  // Remove focus state after selection
-        updateSliderLabels(id, suggestion);
-        //console.log("slider labels are ", sliderLabels);
+        // If a row was found, update the slider labels
+        if (domainData) {
+            setSliderLabels((prevLabels) =>
+                prevLabels.map((label, index) =>
+                    index === id - 1
+                        ? {
+                            deficiency: domainData.deficiency,
+                            virtue: domainData.virtue,
+                            excess: domainData.excess,
+                        }
+                        : label
+                )
+            );
+        }
     };
 
     const updateSliderLabels = (id: number, domain: string) => {
@@ -759,8 +818,7 @@ export default function VirtueEthicsForm() {
             <div className="mt-4">
                 <DescriptionCard
                     defaultDescription="Virtue ethics is a theory that focuses on the character of the decision maker. Building a virtuous character requires practicing the virtues until the moral agent knows the right thing to do in the right time, in the right place, and in the right way.
-                                        To begin, one must achieve a stable equilibrium of the soul by balancing various influences – both internal and external – that might interfere with good judgment.
-                                        Move the cursor to balance the balls."
+                                        To begin, one must achieve a stable equilibrium of the soul by balancing various influences – both internal and external – that might interfere with good judgment."
                     formName={formName}
                     assignmentID={assignmentID}
                 />

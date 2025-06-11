@@ -29,7 +29,7 @@ export default function LoginPage() {
         <meta name="description" content="Login page for the Ethics Dashboard" />
     </head>
     <body>*/}
-      <main className="flex items-center justify-center md:h-screen">
+      <main className="flex items-center justify-center md:h-screen bg-[url('/dashboard-background.png')] bg-cover bg-center">
         <div className="relative mx-auto flex w-full max-w-[400px] md:max-w-[500px] flex-col space-y-2.5 p-4 md:-mt-32">
           
           <div className="flex h-30 w-full items-end rounded-lg bg-blue-500 p-3 md:h-40">

@@ -59,7 +59,7 @@ def populate_guest_assignments(guest_id):
         print(f"enrolling guest in classes with class id {class_id}",flush=True)
         Enrollment.enroll_student(class_id, guest_id)
         #Enrollment.enroll_student(class2_id, guest_id)
-        prof_id = Professor.get_professor_id_by_professor_name("guest professor")
+        prof_id = Professor.get_professor_id_by_professor_name("Ethics Professor")
         print("got prof_id",flush=True)
 
         print("got class_id",flush=True)
@@ -69,30 +69,32 @@ def populate_guest_assignments(guest_id):
         #CaseStudyOption.post_case_study_option(CaseStudy.get_case_study_by_title('Guest Case Study').id, 'Guest Case Study Option', 'Guest Case Study Option Description')
         #print("case study option made",flush=True)
         #case_study = CaseStudy.get_case_study_by_title('Guest Case Study')
-        case_study_id = CaseStudy.get_case_study_id_by_title('Guest Assignment Completed')
-        case_study2_id = CaseStudy.get_case_study_id_by_title('Ethical Dilemma')
-        case_study3_id = CaseStudy.get_case_study_id_by_title('Moral Dilemma')
+        case_study_id = CaseStudy.get_case_study_id_by_title('Demo')
+        case_study2_id = CaseStudy.get_case_study_id_by_title('Do Your Own')
+        #case_study3_id = CaseStudy.get_case_study_id_by_title('Moral Dilemma')
         #case_study4_id = CaseStudy.get_case_study_id_by_title('guest class 222 assignment 1')
         #case_study5_id = CaseStudy.get_case_study_id_by_title('guest 222 Final Project')
-        print(f'case study ids {case_study_id} {case_study2_id} {case_study3_id}', flush=True)
+        print(f'case study ids {case_study_id} {case_study2_id} ', flush=True)
         
         Assignment.post_assignment(guest_id, case_study_id, None)
         Assignment.post_assignment(guest_id, case_study2_id, None)
-        Assignment.post_assignment(guest_id, case_study3_id, None)
+        #Assignment.post_assignment(guest_id, case_study3_id, None)
         #Assignment.post_assignment(guest_id, case_study4_id, None)
         #Assignment.post_assignment(guest_id, case_study5_id, None)
-        print("Made 3 assignments",flush=True)
+        print("Made 2 assignments",flush=True)
         #print(F"length of assignments {Assignment.get_all_assignments_by_student(guest_id)}")
         #empty_assignment = Assignment.get_all_assignments_by_student(guest_id)[0]
         #half_assignment = Assignment.get_all_assignments_by_student(guest_id)[1]
         #done_assignment = Assignment.get_all_assignments_by_student(guest_id)[2]
         assignments = Assignment.get_all_assignments_by_student(guest_id)
         print(f"from guest controller: {assignments}, assignments len: {len(assignments)}",flush=True)
+        # empty_assignment = assignments[0][0]
+        # half_assignment = assignments[1][0]
+        # done_assignment = assignments[2][0]
         empty_assignment = assignments[0][0]
-        half_assignment = assignments[1][0]
-        done_assignment = assignments[2][0]
+        done_assignment = assignments[1][0]
 
-        print(f"assignment ids : {empty_assignment.id} {half_assignment.id} {done_assignment.id} setting case study option", flush=True)
+        print(f"assignment ids : {empty_assignment.id}  {done_assignment.id} setting case study option", flush=True)
         option_id = CaseStudyOption.get_case_study_option_id_by_title_and_case_study_id("Safety Above All", case_study_id)
         print(f'option id {option_id}',flush=True)
         Assignment.set_case_study_option_by_id(done_assignment.id, option_id)

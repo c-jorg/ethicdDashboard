@@ -211,7 +211,7 @@ const CharacterVirtueChart = () => {
                     <div className="flex flex-col w-full md:w-[60%]" style={{ position: 'relative', height: '100%' }}>
                         
                         {/* CharacterVirtueChart */}
-                        <div className="w-full" style={{ height: '40%' }}>
+                        <div className="w-full" style={{ height: '100%' }}>
                             <div>
                                 {dataArr.length > 0 ? (
                                     <Pie ref={chartRef} data={data} options={options} />
@@ -224,9 +224,9 @@ const CharacterVirtueChart = () => {
                         </div>
 
                         {/* LifePathChart */}
-                        <div className="w-full" style={{ height: '60%' }}>
+                        {/*<div className="w-full" style={{ height: '60%' }}>
                             <LifePathChart />
-                        </div>
+                        </div>*/}
                     </div>
 
                     {/* Right Side: UniversalPrinciplesChart */}

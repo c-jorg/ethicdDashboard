@@ -60,7 +60,6 @@ export default function IntersectionalityPage() {
                                   Many of us belong to groups that statistically are much more likely to experience discrimination.  
                                   Even though not all members of the group will have the same experience, an intersectional analysis is a helpful way to assess how others will see your choice.  
                                   For each stakeholder, select from list of privileges/oppressions according to which they are most likely to experience as a result of your choice.  
-                                  (If you see neither or a balance, set slider to the middle point).
                                 </p>
                                 <p class='text-sm md:text-lg mt-2'>
                                   <strong>Note:</strong> Some stakeholder groups may be too socially and politically diverse for this type of analysis.
