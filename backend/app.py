@@ -1,9 +1,10 @@
-from flask import Flask, request, jsonify, make_response
+import secrets
+from flask import Flask, request, jsonify, make_response, session
 #from flask_sqlalchemy import SQLAlchemy
 #from flask_marshmallow import Marshmallow
 from flask_cors import CORS
 from os import environ
-from flask_jwt_extended import JWTManager
+from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity, verify_jwt_in_request, exceptions as jwt_exception
 from .models.db import db, ma
 from .models import *
 from .controllers import student_controller, assignment_controller, auth, question_controller, guest_controller, feedback_controller, grade_controller, enrollment_controller, form_description_controller, case_study_controller, slider_question_controller, setup_controller, case_study_option_controller
@@ -30,6 +31,7 @@ def create_app():
   #     )
   app.secret_key = 'dev'
   app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Disable modification tracking
+  app.config['JWT_TOKEN_LOCATION'] = ['headers']
   #app.config('FLASK_ENV') = environ.get('FLASK_ENV')
     # Configure SQLAlchemy connection pool
   # app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
@@ -65,6 +67,25 @@ def create_app():
 
   with app.app_context():
       db.create_all()
+  #list of endpoints that will skip the jwt auth
+  EXEMPT_ENDPOINTS = [
+    'auth.login-student',
+    'auth.register-student',
+    'auth.register-guest',
+    'auth.ping',
+    'auth.validate-token'
+  ]
+  @app.before_request
+  def require_jwt_for_all_except():
+    if request.endpoint in EXEMPT_ENDPOINTS:
+      return
+    #skip OPTIONS
+    if request.method == 'OPTIONS':
+      return 
+    try:
+      verify_jwt_in_request()
+    except jwt_exception.NoAuthroizationError:
+      return make_response(jsonify({"message": "Invalid or missing JWT token"}), 401)
 
   return app
 
@@ -72,3 +93,4 @@ if __name__ == "__main__":
     app = create_app()
     app.run(debug=True, host ='0.0.0.0', port=4000)
 
+    

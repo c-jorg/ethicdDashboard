@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { string } from 'zod';
+import { url } from 'inspector';
 
 
 export async function middleware(request: NextRequest) {
@@ -21,7 +23,6 @@ export async function middleware(request: NextRequest) {
   //const token = cookie?.split(';').find(c => c.trim().startsWith('access_token='))?.split('=')[1];
   //console.log("token is: " + token);
   const token = request.cookies.get('access_token')?.value;
-
 
   // Function to clear the token
   const clearAuthData = () => {
@@ -83,51 +84,10 @@ export async function middleware(request: NextRequest) {
   }
 }
 
+
+
 // Apply middleware only to protected routes
 export const config = {
     matcher: ['/dashboard/:path*', '/profile/:path*', '/assignments/:path*', '/classes/:path*'], // Apply middleware only to protected routes
 };
 
-// import { NextRequest, NextResponse } from 'next/server';
-
-// export async function middleware(request: NextRequest) {
-//   const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
-
-//   // Get token from cookies (Edge API)
-//   const token = request.cookies.get('access_token')?.value;
-
-//   // If no token, redirect to login
-//   if (!token) {
-//     return NextResponse.redirect(new URL('/login?token-expired=true', request.url));
-//   }
-
-//   try {
-//     // Validate the token using fetch (Edge compatible)
-//     const response = await fetch(`${apiUrl}/api/flask/auth/validate-token`, {
-//       method: 'POST',
-//       headers: { 'Content-Type': 'application/json' },
-//       body: JSON.stringify({ token }),
-//     });
-
-//     if (response.status === 200) {
-//       // Token is valid, allow access
-//       return NextResponse.next();
-//     } else if (response.status === 401) {
-//       const data = await response.json();
-//       if (data.message === 'Token has expired') {
-//         return NextResponse.redirect(new URL('/login?token-expired=true', request.url));
-//       }
-//       return NextResponse.redirect(new URL('/login?invalid-token=true', request.url));
-//     } else {
-//       return NextResponse.redirect(new URL('/login?invalid-token=true', request.url));
-//     }
-//   } catch (error) {
-//     // On error, redirect to login with error param
-//     return NextResponse.redirect(new URL('/login?token-validation-error=true', request.url));
-//   }
-// }
-
-// // Apply middleware only to protected routes
-// export const config = {
-//   matcher: ['/dashboard/:path*', '/profile/:path*', '/assignments/:path*', '/classes/:path*'],
-// };

@@ -13,6 +13,7 @@ import axios from 'axios';
 import Cookie from 'js-cookie';
 import Link from 'next/link';
 import { link } from 'fs';
+import api from '../utils/api-auth';
 
 const HIDE_MESSAGE_KEY = 'hideMessageTimestamp';
 const HIDE_MESSAGE_DURATION = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
