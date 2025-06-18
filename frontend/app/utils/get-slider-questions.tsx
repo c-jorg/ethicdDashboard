@@ -1,4 +1,5 @@
 import axios from 'axios';
+import api from './api-auth'; //applies the auth headers 
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
 
@@ -21,7 +22,7 @@ export const fetchSliderQuestions = async ({ formName, caseStudyId, sliderQuesti
     try {
         let data;
         try {
-            const response = await axios.get(`${apiUrl}/api/flask/slider-questions?case_study_id=${caseStudyId}&form_name=${formName}`);
+            const response = await api.get(`${apiUrl}/api/flask/slider-questions?case_study_id=${caseStudyId}&form_name=${formName}`);
             data = response.data;
         } catch (error) {
             if (axios.isAxiosError(error) && error.response?.status === 404) {

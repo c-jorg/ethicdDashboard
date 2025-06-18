@@ -15,6 +15,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import api from '../utils/api-auth'; //applies the auth headers 
 
 export default function LoginForm() {
   // Form state to hold the values of email and password
@@ -53,7 +54,7 @@ export default function LoginForm() {
     setErrorMessage('');
   
     try {
-      const response = await axios.post(`${apiUrl}/api/flask/auth/register-guest`, {
+      const response = await api.post(`${apiUrl}/api/flask/auth/register-guest`, {
         headers: {
           'Content-Type': 'application/json'
         }
@@ -112,7 +113,7 @@ export default function LoginForm() {
    
     try {
       if (role == 'Student'){
-        const response = await axios.post(`${apiUrl}/api/flask/auth/login-student`, data, {
+        const response = await api.post(`${apiUrl}/api/flask/auth/login-student`, data, {
           headers: {
             'Content-Type': 'application/json'
           }
@@ -292,6 +293,7 @@ export default function LoginForm() {
   }
 
   return (
+
     <form className="space-y-3" onSubmit={login}>
       <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8">
         
@@ -389,11 +391,11 @@ export default function LoginForm() {
           
         </div>
         
-         
-       
+        
+      
 
         <Button className="mt-4 w-full md:text-md" type="submit" disabled={loading}>
-          Log in <ArrowRightIcon className="ml-auto h-5 w-5 text-gray-50" />
+          Log in<ArrowRightIcon className="ml-auto h-5 w-5 text-gray-50" />
         </Button>
 
         <Link
@@ -423,8 +425,8 @@ export default function LoginForm() {
           Guests once logged out cannot access the same account again
         </label> */}
 
-       {/* Display the error message below the last label */}
-       {errorMessage && (
+      {/* Display the error message below the last label */}
+      {errorMessage && (
           <div className="mt-3 flex items-center text-sm text-red-500">
             <ExclamationCircleIcon className="h-5 w-5 text-red-500 mr-2" />
             <p>{errorMessage}</p>
@@ -433,6 +435,6 @@ export default function LoginForm() {
 
       </div>
     </form>
-    
+
   );
 }

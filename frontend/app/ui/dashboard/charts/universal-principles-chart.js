@@ -11,6 +11,7 @@ import { Doughnut } from 'react-chartjs-2';  // Import Doughnut chart
 
 import DotsLoading from '@/app/ui/components/loading';
 import LifePathChart from '@/app/ui/dashboard/charts/life-path-chart';
+import api from '../../../utils/api-auth'; //applies the auth headers 
 
 Chart.register(annotationPlugin);
 
@@ -35,7 +36,7 @@ const UniversalPrinciplesChart = () => {
 
                 if (userId && assignmentId) {
                     try {
-                        let thisFormData = await axios.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userId}&assignment_id=${assignmentId}&form_name=universal-principles`);
+                        let thisFormData = await api.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userId}&assignment_id=${assignmentId}&form_name=universal-principles`);
                         let data = thisFormData.data.data;
                         if (data && data.length > 0 && data[0].answers && data[0].answers[0] && data[0].answers[0].content) {
                             const content = data[0].answers[0].content;

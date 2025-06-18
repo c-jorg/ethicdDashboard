@@ -15,6 +15,7 @@ import CategoricalImperativesForm from '../action-and-duty/categorical-imperativ
 import { useServerInsertedHTML } from 'next/navigation';
 import setDilemmaSubmitted from '@/app/ui/components/nav-links';
 import { json } from 'stream/consumers';
+import api from '../../../utils/api-auth'; //applies the auth headers 
 
 interface RadioItem {
   id: number;
@@ -43,6 +44,7 @@ export default function RadioButtonForm() {
   const [removalTriggered, setRemovalTriggered] = useState(false);
   const [lockForm, setLockForm] = useState(false);  
   const [isLoading, setIsLoading] = useState(true);
+  const [expandedOption, setExpandedOption] = useState<number | null>(null);
 
   const [showStudentInputs, setShowStudentInputs] = useState(false);
   const [studentOptionTitle, setStudentOptionTitle] = useState('');
@@ -347,7 +349,7 @@ export default function RadioButtonForm() {
     let data: HasBeenSubmittedResponse;
     try {
       const userId = localStorage.getItem('id');
-      const response = await axios.get<HasBeenSubmittedResponse>(`${apiUrl}/api/flask/assignment/is-form-submitted?student_id=${userId}&assignment_id=${assignmentID}&form_name=${formName}`);
+      const response = await api.get<HasBeenSubmittedResponse>(`${apiUrl}/api/flask/assignment/is-form-submitted?student_id=${userId}&assignment_id=${assignmentID}&form_name=${formName}`);
       data = response.data;
       //console.log("HAS BEEN SUBMITTED? " + data.message);
       if(data.message == "true"){
@@ -406,7 +408,7 @@ export default function RadioButtonForm() {
 
     try {
       console.log("inside feedback handler, assigment id is ", assignmentID, " and form name is ", formName);
-      const response = await axios.get(`${apiUrl}/api/flask/feedback?assignment_id=${assignmentID}&form_name=${encodeURIComponent(formName)}`);
+      const response = await api.get(`${apiUrl}/api/flask/feedback?assignment_id=${assignmentID}&form_name=${encodeURIComponent(formName)}`);
       const feedbackData = response.data;
       //console.log("Raw API Response: ", response.data);
 
@@ -435,7 +437,7 @@ export default function RadioButtonForm() {
   async function getNumCaseStudyOptions(): Promise<number> {
         let data;
         try {
-          const response = await axios.get(`${apiUrl}/api/flask/case-study/options?case_study_id=${Cookie.get("case_study_id")}`);
+          const response = await api.get(`${apiUrl}/api/flask/case-study/options?case_study_id=${Cookie.get("case_study_id")}`);
           data = response.data.options;
         } catch (error) {
           if (axios.isAxiosError(error) && error.response?.status === 404) {
@@ -470,7 +472,7 @@ export default function RadioButtonForm() {
       let optionContent: RadioItem[] = [];
       // fetch data from DB if available
       try {
-        const response = await axios.get(`${apiUrl}/api/flask/case-study/options?case_study_id=${caseStudyId}`);
+        const response = await api.get(`${apiUrl}/api/flask/case-study/options?case_study_id=${caseStudyId}`);
         data = response.data;
       } catch (error) {
         if (axios.isAxiosError(error) && error.response?.status === 404) {
@@ -504,7 +506,7 @@ export default function RadioButtonForm() {
         try{
           const assignmentID = Cookie.get('assignment_id'); 
           const userId = localStorage.getItem('id');
-          const response = await axios.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userId}&assignment_id=${assignmentID}&form_name=${formName}`);
+          const response = await api.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userId}&assignment_id=${assignmentID}&form_name=${formName}`);
           data = response.data.data;
         }catch(error){
           if (axios.isAxiosError(error) && error.response?.status === 404) {
@@ -766,7 +768,7 @@ export default function RadioButtonForm() {
 
         let response;
         if(!submitted){
-          response = await axios.post(`${apiUrl}/api/flask/assignment/save-form`, data, {
+          response = await api.post(`${apiUrl}/api/flask/assignment/save-form`, data, {
             headers: {
               'Content-Type': 'application/json',
             }
@@ -785,7 +787,7 @@ export default function RadioButtonForm() {
             console.log(`option response ${optionResponse}`)
           }
         }else{
-          response = await axios.post(`${apiUrl}/api/flask/assignment/submit-form`, data, {
+          response = await api.post(`${apiUrl}/api/flask/assignment/submit-form`, data, {
             headers: {
               'Content-Type': 'application/json',
             }
@@ -854,7 +856,7 @@ export default function RadioButtonForm() {
           Select one of the following case studies
         </h1>
 
-        {shuffledOptions.map((item) => (
+        {/*{shuffledOptions.map((item) => ( *
           <div
             key={`option-${item.originalIndex}`}
             className={`border border-gray-300 rounded-lg p-4 transition-all duration-300 ${selectedItem?.value === `option-${item.originalIndex}` ? 'bg-gray-50' : ''}`}
@@ -873,13 +875,50 @@ export default function RadioButtonForm() {
               />
               <label htmlFor={`${item.id}`} className="text-md font-medium text-gray-900">{item.label}</label>
             </div>
-            {/* Show description preview only when not selected */}
+            {/* Show description preview only when not selected 
             {selectedItem?.value !== `${item.id}` && (
-              <p className="mt-2 text-md text-gray-700">{getDescriptionPreview(item.description)}</p>
+              <p className="mt-2 text-md text-gray-700 whitespace-pre-line">{getDescriptionPreview(item.description)}</p>
             )}
-            {/* Show full description only when selected */}
+            {/* Show full description only when selected 
             {selectedItem?.value === `${item.id}` && (
-              <p className="mt-2 text-md text-gray-700">{item.description}</p>
+              <p className="mt-2 text-md text-gray-700 whitespace-pre-line">{item.description}</p>
+            )}
+          </div>
+        ))}*/}
+        {shuffledOptions.map((item) => (
+          <div
+            key={`option-${item.originalIndex}`}
+            className={`border border-gray-300 rounded-lg p-4 transition-all duration-300 ${selectedItem?.value === `option-${item.originalIndex}` ? 'bg-gray-50' : ''}`}
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <input
+                  type="radio"
+                  name="ethicalConsideration"
+                  id={`dilemma-${item.originalIndex}`}
+                  value={item.id}
+                  onChange={() => handleRadioChange(`${item.id}`, `dilemma-${item.originalIndex}`)}
+                  checked={selectedItem?.value === `${item.id}`}
+                  className="answer-input mr-3 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                  required
+                />
+                <label htmlFor={`${item.id}`} className="text-md font-medium text-gray-900">{item.label}</label>
+              </div>
+              <button
+                type="button"
+                className="ml-4 text-blue-600 underline"
+                onClick={() =>
+                  expandedOption === item.originalIndex
+                    ? setExpandedOption(null)
+                    : setExpandedOption(item.originalIndex)
+                }
+              >
+                {expandedOption === item.originalIndex ? 'Hide Description ▲' : 'Show Description ▼'}
+              </button>
+            </div>
+            {/* Show description only when expanded */}
+            {expandedOption === item.originalIndex && (
+              <p className="mt-2 text-md text-gray-700 whitespace-pre-line">{item.description}</p>
             )}
           </div>
         ))}

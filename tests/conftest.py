@@ -2,11 +2,13 @@ from datetime import datetime
 import functools
 from bcrypt import hashpw, gensalt
 from flask import Flask, request, jsonify, make_response
+from flask.testing import FlaskClient
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 import pytest 
 from backend.models.db import db, ma
 from backend.models import *
+from werkzeug.datastructures import Headers
 
 #from ethics_dashboard_models import Form
 #from ethics_dashboard_models import db, ma
@@ -18,6 +20,15 @@ os.environ['DATABASE_URL'] = 'sqlite:///:memory:'
 #os.environ['NEXT_PUBLIC_API_URL'] = 'http://localhost:4000'
 os.environ['NEXT_PUBLIC_API_URL'] = 'http://http://4.206.215.51/:4000'
 
+#add the token (generated from dev_token.py might have to regenerate every month) header to all requests
+class CustomClient(FlaskClient):
+    def open(self, *args, **kwargs):
+        default_headers = Headers({'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjAsImV4cCI6MTc1Mjc5MjUzNCwibmFtZSI6IkRldmVsb3BlciJ9.a1DT-nEp6cXxcwqqAxONcYhhIvUDXDRas0-juvAZCp0'})
+        headers = kwargs.pop('headers', Headers())
+        headers.extend(default_headers)
+        kwargs['headers'] = headers
+        return super().open(*args, **kwargs)
+
 #this function does initialization
 @pytest.fixture(scope = 'module')
 def app():
@@ -25,6 +36,8 @@ def app():
     app = create_app()
     app.config['TESTING'] = True
     print(F"{app.config['SQLALCHEMY_DATABASE_URI']}")
+    #app.test_client_class = CustomClient
+    
     with app.app_context():
         db.create_all()
 
@@ -54,7 +67,10 @@ def app():
 #this function return a testing app
 @pytest.fixture(scope='module')
 def client(app):
-    return app.test_client()
+    client_ = app.test_client()
+    client_.environ_base["HTTP_AUTHORIZATION"] = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwIiwiZXhwIjoxNzUyNzk0MTEwLCJuYW1lIjoiRGV2ZWxvcGVyIn0.jTSxC_Vh3JBMkYuvtzjK9rJyPmtW81Vz6-smapImQX8" 
+    #return app.test_client()
+    return client_
 
 # this returns a db.session
 @pytest.fixture(scope='module')

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import api from './api-auth'; //applies the auth headers 
 
 /**
  * Checks if the dilemma form has been submitted yet, users should not be able to access this form if it is not already submitted.
@@ -29,11 +30,11 @@ export const dilemmaFormSubmitted = async (
     var thisFormData;
     if(localStorage.getItem("guest") == 'false') {
       console.log("is-dilemma-submitted.tsx user is not a guest")
-      thisFormData = await axios.get(
+      thisFormData = await api.get(
         `${apiUrl}/api/flask/assignment/is-form-submitted?student_id=${userID}&assignment_id=${assignmentID}&form_name=dilemma`
       );
     } else {
-      thisFormData = await axios.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userID}&assignment_id=${assignmentID}&form_name=dilemma`);
+      thisFormData = await api.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userID}&assignment_id=${assignmentID}&form_name=dilemma`);
       if(thisFormData.status == 200){
         thisFormData.data.message = "true"; 
         console.log("is-dilemma-submitted.tsx Dilemma has been saved and user is a guest");

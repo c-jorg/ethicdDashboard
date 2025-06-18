@@ -7,6 +7,7 @@ import Cookie from 'js-cookie';
 import React from 'react';
 import styled from 'styled-components';
 import { usePathname } from 'next/navigation';
+import api from '../../utils/api-auth'; //applies the auth headers 
 
 interface MoralMeterProps {
     width?: number;
@@ -40,7 +41,7 @@ const MoralMeter = ({ width = 192, height = 96}) => {
 const getStakeholdersScore = async (): Promise<number> => {
     const userID = localStorage.getItem('id');
     try{
-        const consStakeholdersResponse = await axios.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userID}&assignment_id=${assignmentID}&form_name=cons-stakeholders`);
+        const consStakeholdersResponse = await api.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userID}&assignment_id=${assignmentID}&form_name=cons-stakeholders`);
         const stakeholdersData = consStakeholdersResponse.data.data;
         if (stakeholdersData && stakeholdersData.length > 0 && stakeholdersData[0].answers && stakeholdersData[0].answers[0] && stakeholdersData[0].answers[0].content) {
             let content = stakeholdersData[0].answers[0].content;
@@ -62,7 +63,7 @@ const getStakeholdersScore = async (): Promise<number> => {
 const getBenthamScore = async (): Promise<number> => {
     const userID = localStorage.getItem('id');
     try{
-        const consUtilBenthamResponse = await axios.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userID}&assignment_id=${assignmentID}&form_name=cons-util-bentham`);
+        const consUtilBenthamResponse = await api.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userID}&assignment_id=${assignmentID}&form_name=cons-util-bentham`);
         const benthamData = consUtilBenthamResponse.data.data;
         if (benthamData && benthamData.length > 0 && benthamData[0].answers && benthamData[0].answers[0] && benthamData[0].answers[0].content){
             let content = benthamData[0].answers[0].content;
@@ -83,7 +84,7 @@ const getBenthamScore = async (): Promise<number> => {
 const getMillScore = async (): Promise<number> => {
     const userID = localStorage.getItem('id');
     try{
-        const consUtilMillResponse = await axios.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userID}&assignment_id=${assignmentID}&form_name=cons-util-mill`);
+        const consUtilMillResponse = await api.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userID}&assignment_id=${assignmentID}&form_name=cons-util-mill`);
         const millData = consUtilMillResponse.data.data;
         if (millData && millData.length > 0 && millData[0].answers && millData[0].answers[0] && millData[0].answers[0].content){
             let content = millData[0].answers[0].content;
@@ -125,7 +126,7 @@ const getMillScore = async (): Promise<number> => {
   const getPersonalSacrificesScore = async (): Promise<number> => {
     const userID = localStorage.getItem('id');
     try{
-        const personalSacrificeResponse = await axios.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userID}&assignment_id=${assignmentID}&form_name=personal-sacrifices`);
+        const personalSacrificeResponse = await api.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userID}&assignment_id=${assignmentID}&form_name=personal-sacrifices`);
         const sacrificeData = personalSacrificeResponse.data.data;
          if (sacrificeData && sacrificeData.length > 0 && sacrificeData[0].answers && sacrificeData[0].answers[0] && sacrificeData[0].answers[0].content) {
             let content = sacrificeData[0].answers[0].content;
@@ -147,7 +148,7 @@ const getMillScore = async (): Promise<number> => {
   const getDutiesActionsScore = async (): Promise<number> => {
     const userID = localStorage.getItem('id');
     try{
-        const dutiesActionsResponse = await axios.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userID}&assignment_id=${assignmentID}&form_name=duties-versus-actions`);
+        const dutiesActionsResponse = await api.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userID}&assignment_id=${assignmentID}&form_name=duties-versus-actions`);
         const dvaData = dutiesActionsResponse.data.data;
         if (dvaData && dvaData.length > 0 && dvaData[0].answers && dvaData[0].answers[0] && dvaData[0].answers[0].content) {
             let content = dvaData[0].answers[0].content;
@@ -186,7 +187,7 @@ const getMillScore = async (): Promise<number> => {
   const getCareEthicsScore = async (): Promise<number> => {
     const userID = localStorage.getItem('id');
     try{
-        const careEthicsResponse = await axios.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userID}&assignment_id=${assignmentID}&form_name=care-form`);
+        const careEthicsResponse = await api.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userID}&assignment_id=${assignmentID}&form_name=care-form`);
         const careData = careEthicsResponse.data.data;
         if (careData && careData.length > 0 && careData[0].answers && careData[0].answers[0] && careData[0].answers[0].content) {
             let content = careData[0].answers[0].content;
@@ -207,7 +208,7 @@ const getMillScore = async (): Promise<number> => {
   const getIntersectionalityScore = async (): Promise<number> => {
     const userID = localStorage.getItem('id');
     try{
-        const intersectionalityResponse = await axios.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userID}&assignment_id=${assignmentID}&form_name=intersect-form`);
+        const intersectionalityResponse = await api.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userID}&assignment_id=${assignmentID}&form_name=intersect-form`);
         const intersectData = intersectionalityResponse.data.data;
         if (intersectData && intersectData.length > 0 && intersectData[0].answers && intersectData[0].answers[0] && intersectData[0].answers[0].content) {
             let content = intersectData[0].answers[0].content;
@@ -227,7 +228,7 @@ const getMillScore = async (): Promise<number> => {
   const getSevenGenerationsScore = async (): Promise<number> => {
     const userID = localStorage.getItem('id');
     try{
-        const sevenGenerationsResponse = await axios.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userID}&assignment_id=${assignmentID}&form_name=generations-form`);
+        const sevenGenerationsResponse = await api.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userID}&assignment_id=${assignmentID}&form_name=generations-form`);
         const generationsData = sevenGenerationsResponse.data.data;
         if (generationsData && generationsData.length > 0 && generationsData[0].answers && generationsData[0].answers[0] && generationsData[0].answers[0].content) {
             let content = generationsData[0].answers[0].content;
@@ -266,7 +267,7 @@ const getMillScore = async (): Promise<number> => {
   const getLifePathScore = async (): Promise<number> => {
     const userID = localStorage.getItem('id');
     try {
-        const lifePathResponse = await axios.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userID}&assignment_id=${assignmentID}&form_name=life-path`);
+        const lifePathResponse = await api.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userID}&assignment_id=${assignmentID}&form_name=life-path`);
         const pathData = lifePathResponse.data.data;
         if (pathData && pathData.length > 0 && pathData[0].answers && pathData[0].answers[0] && pathData[0].answers[0].content) {
             let content = pathData[0].answers[0].content;
@@ -287,7 +288,7 @@ const getMillScore = async (): Promise<number> => {
     const userID = localStorage.getItem('id');
     //</number>const userID = localStorage.getItem('id');
     try {
-        const virtueResponse = await axios.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userID}&assignment_id=${assignmentID}&form_name=virtue-ethics`);
+        const virtueResponse = await api.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userID}&assignment_id=${assignmentID}&form_name=virtue-ethics`);
         const virtueData = virtueResponse.data.data;
         if (virtueData && virtueData.length > 0 && virtueData[0].answers && virtueData[0].answers[0] && virtueData[0].answers[0].content) {
             let content = virtueData[0].answers[0].content;
@@ -308,7 +309,7 @@ const getMillScore = async (): Promise<number> => {
     const getUniversalPrinciplesScore = async (): Promise<number> => {
         const userID = localStorage.getItem('id');
         try{
-            const universalPrinciplesResponse = await axios.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userID}&assignment_id=${assignmentID}&form_name=universal-principles`);
+            const universalPrinciplesResponse = await api.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userID}&assignment_id=${assignmentID}&form_name=universal-principles`);
             const universalData = universalPrinciplesResponse.data.data;
             if (universalData && universalData.length > 0 && universalData[0].answers && universalData[0].answers[0] && universalData[0].answers[0].content) {
                 let content = universalData[0].answers[0].content;

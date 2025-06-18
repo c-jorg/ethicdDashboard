@@ -8,6 +8,7 @@ import { lusitana } from '@/app/ui/fonts';
 import DotsLoading from '@/app/ui/components/loading';
 
 import annotationPlugin from 'chartjs-plugin-annotation';
+import api from '../../../utils/api-auth'; //applies the auth headers 
 
 Chart.register(annotationPlugin);
 
@@ -33,7 +34,7 @@ const SevenGenerationsChart = () => {
 
                 if (userId && assignmentId) {
                     try {
-                        let thisFormData = await axios.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userId}&assignment_id=${assignmentId}&form_name=generations-form`);
+                        let thisFormData = await api.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userId}&assignment_id=${assignmentId}&form_name=generations-form`);
                         let data = thisFormData.data.data;
                         if (data && data.length > 0 && data[0].answers && data[0].answers[0] && data[0].answers[0].content) {
                             const content = data[0].answers[0].content;

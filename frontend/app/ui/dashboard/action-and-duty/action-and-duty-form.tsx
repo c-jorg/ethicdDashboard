@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import axios from 'axios';
 import Cookie from 'js-cookie';
 import DescriptionCard from '@/app/ui/components/description-card';
+import api from '../../../utils/api-auth'; //applies the auth headers 
 
 export default function ActionAndDutyForm() {
   const [selectedMotivations, setSelectedMotivations] = useState<string[]>([]);
@@ -76,7 +77,7 @@ Moral laws express things we do simply because they are the right thing to do.`
     try {
       const userId = localStorage.getItem('id');
       const assignmentId = Cookie.get('assignment_id');
-      const response = await axios.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userId}&assignment_id=${assignmentId}&form_name=dilemma`);
+      const response = await api.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userId}&assignment_id=${assignmentId}&form_name=dilemma`);
       const data = response.data.data;
 
       if (data && data.length > 0) {

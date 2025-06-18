@@ -13,6 +13,7 @@ import axios from 'axios';
 import Cookie from 'js-cookie';
 import Link from 'next/link';
 import { link } from 'fs';
+import api from '../utils/api-auth'; //applies the auth headers 
 
 const HIDE_MESSAGE_KEY = 'hideMessageTimestamp';
 const HIDE_MESSAGE_DURATION = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
@@ -52,7 +53,7 @@ export default function Page() {
       //let dilemmaSubmitted;
       try{
         const userId = localStorage.getItem('id');
-        const response = await axios.get(`${apiUrl}/api/flask/assignment/is-form-submitted?student_id=${userId}&assignment_id=${assignmentID}&form_name=dilemma`);
+        const response = await api.get(`${apiUrl}/api/flask/assignment/is-form-submitted?student_id=${userId}&assignment_id=${assignmentID}&form_name=dilemma`);
         const dilemmaSubmitted = response.data.message;
         if(dilemmaSubmitted == "true"){
           setDilemmaSubmitted(true);
@@ -76,14 +77,14 @@ export default function Page() {
         //checking to see if the logged in student is a guest or not
         console.log("checking if user is guest");
         const userId = localStorage.getItem('id');
-        const response = await axios.get(`${apiUrl}/api/flask/guest/is-guest?student_id=${userId}`);
+        const response = await api.get(`${apiUrl}/api/flask/guest/is-guest?student_id=${userId}`);
         console.log("is guest api response " + response.data.guest);
         const guest = response.data.guest;
         if(guest){
           setIsGuest(true);
           localStorage.setItem('guest', 'true');
           console.log("student is guest");
-          const response = await axios.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userId}&assignment_id=${assignmentID}&form_name=dilemma`); 
+          const response = await api.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userId}&assignment_id=${assignmentID}&form_name=dilemma`); 
           console.log(`Checked dilemma form save ${response}`);
           if(response.status == 200){
             console.log("Dilemma saved");

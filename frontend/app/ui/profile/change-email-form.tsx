@@ -1,6 +1,7 @@
 'use client'
 import { useState, FormEvent } from 'react';
 import axios from 'axios';
+import api from '../../utils/api-auth'; //applies the auth headers 
 
 export default function ChangeEmailForm() {
   const [newEmail, setNewEmail] = useState('');
@@ -17,7 +18,7 @@ export default function ChangeEmailForm() {
 
     // Proceed with email change logic (e.g., API call)
     try {
-        const response = await axios.post(`${apiUrl}/api/flask/auth/change-student-email`, {"password": password, "new_email": newEmail, "student_id": studentID});
+        const response = await api.post(`${apiUrl}/api/flask/auth/change-student-email`, {"password": password, "new_email": newEmail, "student_id": studentID});
         
         // Handle the response from the server (e.g., success message)
         if (response.status === 200) {

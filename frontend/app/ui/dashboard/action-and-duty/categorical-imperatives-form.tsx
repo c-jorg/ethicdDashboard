@@ -9,6 +9,7 @@ import DotsLoading from '@/app/ui/components/loading';
 import FormCompletedCard from '@/app/ui/components/form-completed-card';
 import useFetchFeedback from "@/app/utils/feedback-fetcher";
 import ProfessorCommentBox from "@/app/ui/components/prof-comment-box";
+import api from '../../../utils/api-auth'; //applies the auth headers 
 import Papa from "papaparse";
 
 export default function CategoricalImperativesForm() {
@@ -175,7 +176,7 @@ export default function CategoricalImperativesForm() {
     let data: HasBeenSubmittedResponse;
     try {
       const userId = localStorage.getItem('id');
-      const response = await axios.get<HasBeenSubmittedResponse>(`${apiUrl}/api/flask/assignment/is-form-submitted?student_id=${userId}&assignment_id=${assignmentID}&form_name=${formName}`);
+      const response = await api.get<HasBeenSubmittedResponse>(`${apiUrl}/api/flask/assignment/is-form-submitted?student_id=${userId}&assignment_id=${assignmentID}&form_name=${formName}`);
       data = response.data;
       //console.log(`HAS ${formName} BEEN SUBMITTED? ` + data.message);
       if(data.message == "true"){
@@ -242,7 +243,7 @@ export default function CategoricalImperativesForm() {
 
         let dilemmaData;
         try{
-          const dilemmaResponse = await axios.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userId}&assignment_id=${assignmentId}&form_name=dilemma`);
+          const dilemmaResponse = await api.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userId}&assignment_id=${assignmentId}&form_name=dilemma`);
           dilemmaData = dilemmaResponse.data.data;
         }catch(error){
           if (axios.isAxiosError(error) && error.response?.status === 404) {
@@ -254,7 +255,7 @@ export default function CategoricalImperativesForm() {
 
         let data;
         try{
-          const response = await axios.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userId}&assignment_id=${assignmentId}&form_name=${formName}`);
+          const response = await api.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userId}&assignment_id=${assignmentId}&form_name=${formName}`);
           data = response.data.data;
         }catch(error){
           if (axios.isAxiosError(error) && error.response?.status === 404) {
@@ -401,13 +402,13 @@ export default function CategoricalImperativesForm() {
       let response;
         if(!submitted){
           //console.log("saving form");
-          response = await axios.post(`${apiUrl}/api/flask/assignment/save-form`, data, {
+          response = await api.post(`${apiUrl}/api/flask/assignment/save-form`, data, {
             headers: {
               'Content-Type': 'application/json',
             }
           });
         }else{
-          response = await axios.post(`${apiUrl}/api/flask/assignment/submit-form`, data, {
+          response = await api.post(`${apiUrl}/api/flask/assignment/submit-form`, data, {
             headers: {
               'Content-Type': 'application/json',
             }

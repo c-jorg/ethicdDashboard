@@ -8,6 +8,7 @@ import { Chart } from 'chart.js/auto';
 import { lusitana } from '@/app/ui/fonts';
 import DotsLoading from '@/app/ui/components/loading';
 import ThumbsUpComponent from '@/app/ui/components/thumbs-up-down'
+import api from '../../../utils/api-auth'; //applies the auth headers 
 
 import annotationPlugin from 'chartjs-plugin-annotation';
 
@@ -54,7 +55,7 @@ const ActionAndDutyChart = () => {
                     
                     try {
                        
-                        let thisFormData = await axios.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userId}&assignment_id=${assignmentId}&form_name=personal-sacrifices`);
+                        let thisFormData = await api.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userId}&assignment_id=${assignmentId}&form_name=personal-sacrifices`);
                     
                         let data = thisFormData.data.data;
                        
@@ -117,7 +118,7 @@ const ActionAndDutyChart = () => {
 
                     // categorical imperitaves universal law test
                     try{
-                        const thisFormData = await axios.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userId}&assignment_id=${assignmentId}&form_name=categorical-imperatives`);
+                        const thisFormData = await api.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userId}&assignment_id=${assignmentId}&form_name=categorical-imperatives`);
                         let data = thisFormData.data.data[0].answers[0].content;
                         console.log("kant data ", data);
                         if(data){
@@ -144,7 +145,7 @@ const ActionAndDutyChart = () => {
                         // console.log("userId is:", userId);
                         // console.log("assignmentId is:", assignmentId);
                         
-                        const thisFormData = await axios.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userId}&assignment_id=${assignmentId}&form_name=duties-versus-actions`);
+                        const thisFormData = await api.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userId}&assignment_id=${assignmentId}&form_name=duties-versus-actions`);
                         //console.log("done duties versus actions request");
                         let data = thisFormData.data.data;
                         if (data && data.length > 0 && data[0].answers && data[0].answers[0] && data[0].answers[0].content) {

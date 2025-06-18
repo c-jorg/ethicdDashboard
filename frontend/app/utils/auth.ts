@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import api from './api-auth'; //applies the auth headers 
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
 //const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://4.206.215.51:4000';
@@ -12,9 +13,8 @@ export const isAuthenticated = async (): Promise<boolean> => {
   }
 
   try {
-    const response = await axios.post(`${apiUrl}/api/flask/validate-token`, { token }, {
-      headers: { 'Content-Type': 'application/json' },
-    });
+    const response = await api.post(`${apiUrl}/api/flask/validate-token`, { token }, 
+    );
 
     return response.status === 200; // Token is valid
   } catch (error) {

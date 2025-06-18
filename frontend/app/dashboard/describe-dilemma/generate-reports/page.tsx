@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import GenerateReportsCards from '../../ui/dashboard/generate-reports/generate-reports-cards';
+import GenerateReportsCards from '../../../ui/dashboard/generate-reports/generate-reports-cards';
 import LockedFormCard from '@/app/ui/components/locked-form-card';
 import { dilemmaFormSubmitted } from '@/app/utils/is-dilemma-submitted';
 import Cookie from 'js-cookie';

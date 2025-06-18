@@ -6,6 +6,7 @@ import Cookie from 'js-cookie';
 import { Chart } from 'chart.js/auto';
 import { lusitana } from '@/app/ui/fonts';
 import DotsLoading from '@/app/ui/components/loading';
+import api from '../../../utils/api-auth'; //applies the auth headers 
 
 import annotationPlugin from 'chartjs-plugin-annotation';
 
@@ -41,7 +42,7 @@ const CareEthicsChart = () => {
 
                 if (userId && assignmentId) {
                     try {
-                        let thisFormData = await axios.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userId}&assignment_id=${assignmentId}&form_name=care-form`);
+                        let thisFormData = await api.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userId}&assignment_id=${assignmentId}&form_name=care-form`);
                         let data = thisFormData.data.data;
                         if (data && data.length > 0) {
                             let content;

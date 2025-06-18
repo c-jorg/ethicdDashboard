@@ -24,13 +24,13 @@ services:
       dockerfile: next.dockerfile
       args:
        NEXT_PUBLIC_API_URL: http://213.255.209.162:4000
-    ports:
-      - 3000:3000
+    # ports:
+    #   - 3000:3000
     volumes:
       - .:/frontend
       - ./frontend/node_modules:/app/node_modules
     environment:
-    - NEXT_PUBLIC_API_URL=http://213.255.209.162:4000
+    #- NEXT_PUBLIC_API_URL=http://213.255.209.162:4000
     - DEBUG=true
     depends_on:
       - flaskapp
@@ -89,17 +89,17 @@ services:
       - ./certbot/www:/var/www/certbot
     depends_on:
       - nextapp
-      #- certbot
+      - certbot
     networks:
       - shared_network
 
-  # certbot:
-  #   image: certbot/certbot
-  #   container_name: certbot
-  #   volumes:
-  #     - ./certbot/conf:/etc/letsencrypt
-  #     - ./certbot/www:/var/www/certbot 
-  #   command: certonly --webroot -w /var/www/certbot --keep-until-expiring -d 213-255-209-162.cloud-xip.com --agree-tos
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot 
+    command: certonly --webroot -w /var/www/certbot  --dry-run -d www.ethicsdashboard.org -d ethicsdashboard.org --agree-tos
 
 volumes:
   pgdata: {}

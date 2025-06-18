@@ -7,6 +7,7 @@ import 'chart.js/auto'; // Import Chart.js
 import ThumbsUpComponent from '@/app/ui/components/thumbs-up-down'
 import { lusitana } from '@/app/ui/fonts';
 import DotsLoading from '@/app/ui/components/loading';
+import api from '../../../utils/api-auth'; //applies the auth headers 
 
 
 // Dynamically import the Bar component from react-chartjs-2
@@ -42,7 +43,7 @@ const ConsequencesChart = () => {
                 if (userId && assignmentId) {
                     // Fetch data for Consequences chart
                     try {
-                        let thisFormData = await axios.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userId}&assignment_id=${assignmentId}&form_name=cons-stakeholders`);
+                        let thisFormData = await api.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userId}&assignment_id=${assignmentId}&form_name=cons-stakeholders`);
                         let data = thisFormData.data.data;
                         if (data && data.length > 0 && data[0].answers && data[0].answers[0] && data[0].answers[0].content) {
                             const content = data[0].answers[0].content;
@@ -99,7 +100,7 @@ const ConsequencesChart = () => {
                    
                     // Fetch data for Bentham's Utilitarianism
                     try {
-                        let thisFormData = await axios.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userId}&assignment_id=${assignmentId}&form_name=cons-util-bentham`);
+                        let thisFormData = await api.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userId}&assignment_id=${assignmentId}&form_name=cons-util-bentham`);
                         let data = thisFormData.data.data;
                         if (data && data.length > 0 && data[0].answers && data[0].answers[0] && data[0].answers[0].content) {
                             const content = data[0].answers[0].content;
@@ -138,7 +139,7 @@ const ConsequencesChart = () => {
                     
                     //LOAD DATA FOR UTILITARIANISM MILL
                     try {
-                        let thisFormData = await axios.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userId}&assignment_id=${assignmentId}&form_name=cons-util-mill`);
+                        let thisFormData = await api.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userId}&assignment_id=${assignmentId}&form_name=cons-util-mill`);
                         let data = thisFormData.data.data;
                         if (data && data.length > 0 && data[0].answers && data[0].answers[0] && data[0].answers[0].content) {
                             const content = data[0].answers[0].content;

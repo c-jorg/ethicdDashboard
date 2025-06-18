@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import PencilLoading from '@/app/ui/components/pencil-loading';
 import DotsLoading from '@/app/ui/components/loading';
+import api from '../../utils/api-auth'; //applies the auth headers 
 
 // Define the assignment type
 interface Class {
@@ -68,7 +69,7 @@ export default function ClassCards() {
       const user_id = localStorage.getItem('id');
       //console.log("student id is: " + user_id);
       try {
-        const response = await axios.get(`${apiUrl}/api/flask/enrollments?student_id=${user_id}`);
+        const response = await api.get(`${apiUrl}/api/flask/enrollments?student_id=${user_id}`);
         //console.log("response is ", JSON.stringify(response.data));
 
         interface ApiResponse {

@@ -13,6 +13,7 @@ import TextInput from '@/app/ui/components/text-input';
 import FeedbackDisplay from '@/app/ui/components/feedback-display';
 import useFetchFeedback from '@/app/utils/feedback-fetcher';
 import ProfessorCommentBox from '../../components/prof-comment-box';
+import api from '../../../utils/api-auth'; //applies the auth headers 
 
 export default function UtilitarianFormMill() {
     const formRef = useRef<HTMLFormElement>(null);
@@ -151,7 +152,7 @@ export default function UtilitarianFormMill() {
         let data: HasBeenSubmittedResponse;
         try {
             const userId = localStorage.getItem('id');
-            const response = await axios.get<HasBeenSubmittedResponse>(`${apiUrl}/api/flask/assignment/is-form-submitted?student_id=${userId}&assignment_id=${assignmentID}&form_name=${formName}`);
+            const response = await api.get<HasBeenSubmittedResponse>(`${apiUrl}/api/flask/assignment/is-form-submitted?student_id=${userId}&assignment_id=${assignmentID}&form_name=${formName}`);
             data = response.data;
             //console.log("MILL HAS BEEN SUBMITTED? " + data.message);
             if(data.message == "true"){
@@ -244,7 +245,7 @@ export default function UtilitarianFormMill() {
             let data;
             try{
                 const userID = localStorage.getItem('id');
-                const response = await axios.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userID}&assignment_id=${assignmentID}&form_name=${formName}`);
+                const response = await api.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userID}&assignment_id=${assignmentID}&form_name=${formName}`);
                 data = response.data.data;
             }catch(error){
                 if (axios.isAxiosError(error) && error.response?.status === 404) {
@@ -320,7 +321,7 @@ export default function UtilitarianFormMill() {
         try{
           //console.log("Mill form: gonna see if bentham form is submitted");
           const userID = localStorage.getItem('id');
-          const thisFormData = await axios.get(`${apiUrl}/api/flask/assignment/is-form-submitted?student_id=${userID}&assignment_id=${assignmentID}&form_name=cons-util-bentham`);
+          const thisFormData = await api.get(`${apiUrl}/api/flask/assignment/is-form-submitted?student_id=${userID}&assignment_id=${assignmentID}&form_name=cons-util-bentham`);
           //console.log("done fetching bentham form data");
           data = thisFormData.data.message;
     
@@ -416,14 +417,14 @@ export default function UtilitarianFormMill() {
           let response;
             if(!submitted){
                 console.log("Mill form is using the save-form endpoint")
-                response = await axios.post(`${apiUrl}/api/flask/assignment/save-form`, data, {
+                response = await api.post(`${apiUrl}/api/flask/assignment/save-form`, data, {
                     headers: {
                     'Content-Type': 'application/json',
                     }
                 });
             }else{
                 console.log("Mill form is using the submit-form endpoint")
-                response = await axios.post(`${apiUrl}/api/flask/assignment/submit-form`, data, {
+                response = await api.post(`${apiUrl}/api/flask/assignment/submit-form`, data, {
                     headers: {
                     'Content-Type': 'application/json',
                     }

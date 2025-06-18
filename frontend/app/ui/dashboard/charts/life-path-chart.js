@@ -9,6 +9,7 @@ import { lusitana } from '@/app/ui/fonts';
 import annotationPlugin from 'chartjs-plugin-annotation';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Bar, Chart as ChartJS } from 'react-chartjs-2';  // Import Bar chart and ChartJS
+import api from '../../../utils/api-auth'; //applies the auth headers 
 
 // Dynamically import the Bar component from react-chartjs-2
 const BarChart = dynamic(() => import('react-chartjs-2').then((mod) => mod.Bar), {
@@ -36,7 +37,7 @@ const LifePathChart = () => {
 
                 if (userId && assignmentId) {
                     try {
-                        let thisFormData = await axios.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userId}&assignment_id=${assignmentId}&form_name=life-path`);
+                        let thisFormData = await api.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userId}&assignment_id=${assignmentId}&form_name=life-path`);
                         let data = thisFormData.data.data;
                         if (data && data.length > 0 && data[0].answers && data[0].answers[0] && data[0].answers[0].content) {
                             const content = data[0].answers[0].content;

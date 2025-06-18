@@ -6,6 +6,7 @@ import { useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import PencilLoading from '@/app/ui/components/pencil-loading';
 import DotsLoading from '@/app/ui/components/loading';
+import api from '../../utils/api-auth'; //applies the auth headers 
 
 interface Assignment {
   id: number;
@@ -86,7 +87,7 @@ export default function AssignmentCards() {
       const user_id = localStorage.getItem('id');
 
       try {
-        const response = await axios.get<Assignment[]>(`${apiUrl}/api/flask/assignments`, {
+        const response = await api.get<Assignment[]>(`${apiUrl}/api/flask/assignments`, {
           params: { user_id, class_id },
         });
 

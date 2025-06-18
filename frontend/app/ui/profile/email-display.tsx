@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import api from '../../utils/api-auth'; //applies the auth headers 
 
 export default function EmailDisplay() {
   const [email, setEmail] = useState('');
@@ -11,7 +12,7 @@ export default function EmailDisplay() {
     async function fetchEmail(){
         const studentID = localStorage.getItem('id');
         try {
-            const response = await axios.get(`${apiUrl}/api/flask/student/email?student_id=${studentID}`);
+            const response = await api.get(`${apiUrl}/api/flask/student/email?student_id=${studentID}`);
             
             // Handle the response from the server (e.g., success message)
             if (response.status === 200) {

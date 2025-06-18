@@ -4,7 +4,7 @@ import string
 from flask import Flask, request, jsonify, make_response, Blueprint, redirect, session, url_for, current_app
 import functools
 import bcrypt
-from flask_jwt_extended import create_access_token #will need this in the future when we create sessions
+from flask_jwt_extended import create_access_token, decode_token #will need this in the future when we create sessions
 from flask_jwt_extended import (
     JWTManager, create_access_token, jwt_required, get_jwt_identity
 )
@@ -120,11 +120,12 @@ def login_student():
            password_matches = bcrypt.checkpw(password.encode('utf-8'), encrypted_password.encode('utf-8')) #check if pw matches
           
            if  password_matches:
-             access_token = jwt.encode(
-                {'email': email, 'exp': datetime.datetime.now() + datetime.timedelta(hours=1)},
-                current_app.config['JWT_SECRET_KEY'],
-                algorithm='HS256'
-              )
+            #  access_token = jwt.encode(
+            #     {'email': email, 'exp': datetime.datetime.now() + datetime.timedelta(hours=1)},
+            #     current_app.config['JWT_SECRET_KEY'],
+            #     algorithm='HS256'
+            #   )
+             access_token = create_access_token(identity=student.id)
              #print("making the response",flush=True)
              response = jsonify({
                "message": "Login successful",
@@ -155,11 +156,15 @@ def validate_token():
         return jsonify({"message": "Missing token"}), 400
 
     try:
-        decoded = jwt.decode(token, current_app.config['JWT_SECRET_KEY'], algorithms=["HS256"])
-        return jsonify({"message": "Token is valid", "user": decoded['email']}), 200
+        #decoded = jwt.decode(token, current_app.config['JWT_SECRET_KEY'], algorithms=["HS256"])
+        decoded = decode_token(token)
+        user_id = decoded.get('sub')
+        return jsonify({"message": "Token is valid", "user_id": user_id}), 200
     except jwt.ExpiredSignatureError:
+        print("expired token", flush=True)
         return jsonify({"message": "Token has expired"}), 401
     except jwt.InvalidTokenError:
+        print("Invalid token", flush=True)
         return jsonify({"message": "Invalid token"}), 401
 
 
@@ -614,21 +619,22 @@ def login_guest(email, password):
            password_matches = bcrypt.checkpw(password.encode('utf-8'), encrypted_password.encode('utf-8')) #check if pw matches
           
            if  password_matches:
-             access_token = jwt.encode(
-                {'email': email, 'exp': datetime.datetime.now() + datetime.timedelta(hours=5)},
-                current_app.config['JWT_SECRET_KEY'],
-                algorithm='HS256'
-              )
+            #  access_token = jwt.encode(
+            #     {'email': email, 'exp': datetime.datetime.now() + datetime.timedelta(hours=5)},
+            #     current_app.config['JWT_SECRET_KEY'],
+            #     algorithm='HS256'
+            #   )
+            access_token = create_access_token(identity=student.id)
  
-             response = jsonify({
-               "message": "Login successful",
-               "token": access_token,
-               "id": student.id,
-               "name": student.name
-               })
+            response = jsonify({
+              "message": "Login successful",
+              "token": access_token,
+              "id": student.id,
+              "name": student.name
+              })
              #print(f"logging in guest, response will be {response.data}", flush=True)
-             expire_date = datetime.datetime.now() + datetime.timedelta(days=500)
-             return response, 200
+            expire_date = datetime.datetime.now() + datetime.timedelta(days=500)
+            return response, 200
            else:
               return jsonify({"msg": f"Incorrect email or password."}), 401
        else:

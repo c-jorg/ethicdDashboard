@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/app/ui/button";
 import axios from "axios";
+import api from '../../utils/api-auth'; //applies the auth headers 
 
 interface ConfirmationModalProps {
   showModal: boolean;
@@ -95,7 +96,7 @@ const DeleteAccountButton = () => {
     }
 
     try {
-      const response = await axios.delete(`${apiUrl}/api/flask/auth/student`, {
+      const response = await api.delete(`${apiUrl}/api/flask/auth/student`, {
         data: {
           password: password,
           student_id: studentID

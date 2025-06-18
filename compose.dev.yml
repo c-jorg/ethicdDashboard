@@ -23,8 +23,8 @@ services:
       dockerfile: next.dev.dockerfile
       args:
        NEXT_PUBLIC_API_URL: http://127.0.0.1:4000
-    ports:
-      - 3000:3000
+    # ports:
+    #   - 3000:3000
     volumes:
       - ./frontend:/app
       - ./frontend/node_modules:/app/node_modules
@@ -38,10 +38,6 @@ services:
       - flaskapp
     networks:
       - shared_network
-    # volumes: # trying this out
-    #   - ./frontend:/app
-    #   - ./frontend/node_modules:/app/node_modules
-    # command: pnpm dev
 
   # Flask backend service
   flaskapp:
@@ -50,8 +46,8 @@ services:
     build:
       context: ./backend
       dockerfile: flask.dockerfile
-    ports:
-      - "4000:4000"
+    # ports:
+    #   - "4000:4000"
     volumes:
       - .:/backend
     environment:
@@ -78,17 +74,16 @@ services:
     networks:
       - shared_network
 
-  nginx:
-    container_name: nginx
+  nginx-local:
+    container_name: nginx-local
     restart: unless-stopped
     image: nginx
     ports:
       - 80:80
       - 443:443
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./certbot/conf:/etc/letsencrypt
-      - ./certbot/www:/var/www/certbot
+      - ./nginx/nginx-self-signed.conf:/etc/nginx/nginx.conf
+      - ./nginx/certs:/etc/nginx/certs
     depends_on:
       - nextapp
     networks:
