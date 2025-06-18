@@ -12,7 +12,7 @@ import { useActionState } from 'react';
 import { register } from '@/app/lib/actions';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import api from '../../utils/api-auth'; //applies the auth headers 
+import api from '../utils/api-auth'; //applies the auth headers 
 
 interface User {
 id: number;
