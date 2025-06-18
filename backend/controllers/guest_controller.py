@@ -4,6 +4,8 @@ from ..models import Student, Assignment, CaseStudy, Answer, Submission, Form, P
 from datetime import datetime
 import json
 import os 
+from ..utils.dev_token import generate_dev_token
+
 
 bp = Blueprint('guest', __name__)
 
@@ -24,6 +26,7 @@ def delete_guests():
     print("delete_guests reached", flush=True)
     #return make_response(jsonify({'message':"delete_guests reached succesfully"}), 200)
     try:
+
         guest_ids = Student.get_all_guest_ids()
         print("got guest ids", flush=True)
         #for each guest delete the submissions, then answers, then assignment, then enrollment, then student
@@ -53,6 +56,7 @@ def delete_guests():
 def populate_guest_assignments(guest_id):
     print(f"populate_guest_assignments called with guest_id: {guest_id}", flush=True)
     try:
+
         print("top of try",flush=True)
         class_id = Class.get_class_id_by_class_code("guest111")
         #class2_id = Class.get_class_id_by_class_code("guest222")
@@ -116,6 +120,7 @@ def populate_guest_assignments(guest_id):
             'virtue-ethics'
             ]
 
+        dev_token = generate_dev_token()
         for form in form_list:
             with open(f'controllers/guest_assignments/{form}.json', 'r') as file:
                 form_data = json.load(file)
@@ -131,7 +136,8 @@ def populate_guest_assignments(guest_id):
                 #print('making post request', flush=True)
                 response = client.post('/api/flask/assignment/save-form',
                 data=json.dumps(form_data),
-                content_type='application/json'
+                content_type='application/json',
+                headers={'Authorization': f'Bearer {dev_token}'}
                 )
                 #response = assignment_controller.save_form()
                 #print("saved form, response ", response.data, flush=True)

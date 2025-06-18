@@ -74,7 +74,8 @@ def create_app():
     'auth.create_student',
     'auth.register_guest',
     'auth.ping',
-    'auth.validate_token'
+    'auth.validate_token',
+    'guest.delete_guests'
   ]
   @app.before_request
   def require_jwt_for_all_except():
