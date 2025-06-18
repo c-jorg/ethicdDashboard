@@ -2,6 +2,7 @@
 
 import { useState, FormEvent, useEffect } from 'react';
 import axios from 'axios';
+import api from '../../utils/api-auth'; //applies the auth headers 
 
 const UserAgreementForm = () => {
     const [consent, setConsent] = useState('');
@@ -25,7 +26,7 @@ const UserAgreementForm = () => {
                     return;
                 }
 
-                const response = await axios.get(`${apiUrl}/api/flask/student/consent?user_id=${id}`);
+                const response = await api.get(`${apiUrl}/api/flask/student/consent?user_id=${id}`);
                 data = response.data;
                 console.log("Consented? " + data.consent);
 
@@ -66,7 +67,7 @@ const UserAgreementForm = () => {
             // PATCH request to update student consent
             console.log("making patch request with consent " + consent);
 
-            const response = await axios.patch(`${apiUrl}/api/flask/student/consent`, { id, consent });
+            const response = await api.patch(`${apiUrl}/api/flask/student/consent`, { id, consent });
             
             // Handle the response from the server (e.g., success message)
             if (response.status === 200) {

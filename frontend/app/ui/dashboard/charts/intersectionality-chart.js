@@ -10,6 +10,7 @@ import annotationPlugin from 'chartjs-plugin-annotation';
 import SevenGenerationsChart from './seven-generations-chart';
 import CareEthicsChart from '@/app/ui/dashboard/charts/care-ethics-chart';
 import DotsLoading from '@/app/ui/components/loading'
+import api from '../../../utils/api-auth'; //applies the auth headers 
 
 Chart.register(annotationPlugin);
 
@@ -35,7 +36,7 @@ const IntersectionalityChart = () => {
 
                 if (userId && assignmentId) {
                     try {
-                        let thisFormData = await axios.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userId}&assignment_id=${assignmentId}&form_name=intersect-form`);
+                        let thisFormData = await api.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userId}&assignment_id=${assignmentId}&form_name=intersect-form`);
                         let data = thisFormData.data.data;
                         if (data && data.length > 0) {
                             let content;

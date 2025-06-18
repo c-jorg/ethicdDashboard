@@ -18,6 +18,7 @@ bp = Blueprint('students', __name__)
 # get all students
 @bp.route('/api/flask/students', methods=['GET'])
 def get_students():
+  print("HEADERS: ", request.headers, flush=True)
   try:
     #students = Student.query.all()
     students = Student.get_students()

@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import api from '../../utils/api-auth'; //applies the auth headers 
 
 interface DescriptionCardProps {
   defaultDescription: string;
@@ -18,7 +19,7 @@ export default function DescriptionCard({ defaultDescription, formName, assignme
     if (formName && assignmentID) {
       const fetchDescription = async () => {
         try {
-          const response = await axios.get(`${apiUrl}/api/flask/form-description?assignment_id=${assignmentID}&form_name=${formName}`);
+          const response = await api.get(`${apiUrl}/api/flask/form-description?assignment_id=${assignmentID}&form_name=${formName}`);
           console.log("Getting form description for ", formName);
 
           if (response.data.description) {

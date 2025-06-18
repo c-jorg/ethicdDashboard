@@ -14,6 +14,7 @@ import { fetchQuestions } from '@/app/utils/get-critical-questions';
 import FeedbackDisplay from '@/app/ui/components/feedback-display';
 import useFetchFeedback from '@/app/utils/feedback-fetcher';
 import ProfessorCommentBox from '@/app/ui/components/prof-comment-box';
+import api from '../../../utils/api-auth'; //applies the auth headers 
 
 export default function ConsStakeholdersForm() {
    const formRef = useRef<HTMLFormElement>(null);
@@ -276,7 +277,7 @@ export default function ConsStakeholdersForm() {
     let data: HasBeenSubmittedResponse;
     try {
       const userId = localStorage.getItem('id');
-      const response = await axios.get<HasBeenSubmittedResponse>(`${apiUrl}/api/flask/assignment/is-form-submitted?student_id=${userId}&assignment_id=${assignmentID}&form_name=${formName}`);
+      const response = await api.get<HasBeenSubmittedResponse>(`${apiUrl}/api/flask/assignment/is-form-submitted?student_id=${userId}&assignment_id=${assignmentID}&form_name=${formName}`);
       data = response.data;
       //console.log("HAS BEEN SUBMITTED? " + data.message);
       if(data.message == "true"){
@@ -330,7 +331,7 @@ export default function ConsStakeholdersForm() {
     let data;
     try{
       const userID = localStorage.getItem('id');
-      thisFormData = await axios.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userID}&assignment_id=${assignmentID}&form_name=cons-stakeholders`);
+      thisFormData = await api.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userID}&assignment_id=${assignmentID}&form_name=cons-stakeholders`);
       //const dilemmaData = await axios.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userId}&assignment_id=${assignmentId}&form_name=dilemma`);
         
       data = thisFormData.data.data;
@@ -570,13 +571,13 @@ export default function ConsStakeholdersForm() {
       
       let response;
       if(!submitted){
-        response = await axios.post(`${apiUrl}/api/flask/assignment/save-form`, data, {
+        response = await api.post(`${apiUrl}/api/flask/assignment/save-form`, data, {
           headers: {
             'Content-Type': 'application/json',
           }
         });
       }else{
-        response = await axios.post(`${apiUrl}/api/flask/assignment/submit-form`, data, {
+        response = await api.post(`${apiUrl}/api/flask/assignment/submit-form`, data, {
           headers: {
             'Content-Type': 'application/json',
           }

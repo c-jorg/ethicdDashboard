@@ -15,6 +15,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import api from '../utils/api-auth'; //applies the auth headers 
 
 export default function LoginForm() {
   // Form state to hold the values of email and password
@@ -53,7 +54,7 @@ export default function LoginForm() {
     setErrorMessage('');
   
     try {
-      const response = await axios.post(`${apiUrl}/api/flask/auth/register-guest`, {
+      const response = await api.post(`${apiUrl}/api/flask/auth/register-guest`, {
         headers: {
           'Content-Type': 'application/json'
         }
@@ -112,7 +113,7 @@ export default function LoginForm() {
    
     try {
       if (role == 'Student'){
-        const response = await axios.post(`${apiUrl}/api/flask/auth/login-student`, data, {
+        const response = await api.post(`${apiUrl}/api/flask/auth/login-student`, data, {
           headers: {
             'Content-Type': 'application/json'
           }

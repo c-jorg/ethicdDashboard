@@ -1,6 +1,7 @@
 'use client'
 import { useState, FormEvent } from 'react';
 import axios from 'axios';
+import api from '../../utils/api-auth'; //applies the auth headers 
 
 export default function ChangePasswordForm() {
   const [oldPassword, setOldPassword] = useState('');
@@ -30,7 +31,7 @@ export default function ChangePasswordForm() {
 
     // Proceed with password change logic (e.g., API call)
     try {
-        const response = await axios.post(`${apiUrl}/api/flask/auth/change-student-password`, {oldPassword, newPassword, id});
+        const response = await api.post(`${apiUrl}/api/flask/auth/change-student-password`, {oldPassword, newPassword, id});
         
         // Handle the response from the server (e.g., success message)
         if (response.status === 200) {

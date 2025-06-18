@@ -3,11 +3,12 @@ import axios from 'axios';
 const instance = axios.create();
 //list of routes that dont need jwt auth token
 const EXEMPT_PATHS = [
-'/api/flask/auth/login-student',
-'/api/flask/auth/register-student',
-'/api/flask/auth/register-guest',
-'/api/flask/ping',
-'/api/flask/auth/validate-token'
+'/api/api/flask/auth/login-student',
+'/api/api/flask/auth/register-student',
+'/api/api/flask/auth/register-guest',
+'/api/api/flask/ping',
+'/api/api/flask/auth/validate-token',
+'/api/api/flask/guest/is-guest'
 ];
 
 instance.interceptors.request.use(config => {

@@ -15,6 +15,7 @@ import CategoricalImperativesForm from '../action-and-duty/categorical-imperativ
 import { useServerInsertedHTML } from 'next/navigation';
 import setDilemmaSubmitted from '@/app/ui/components/nav-links';
 import { json } from 'stream/consumers';
+import api from '../../../utils/api-auth'; //applies the auth headers 
 
 interface RadioItem {
   id: number;
@@ -348,7 +349,7 @@ export default function RadioButtonForm() {
     let data: HasBeenSubmittedResponse;
     try {
       const userId = localStorage.getItem('id');
-      const response = await axios.get<HasBeenSubmittedResponse>(`${apiUrl}/api/flask/assignment/is-form-submitted?student_id=${userId}&assignment_id=${assignmentID}&form_name=${formName}`);
+      const response = await api.get<HasBeenSubmittedResponse>(`${apiUrl}/api/flask/assignment/is-form-submitted?student_id=${userId}&assignment_id=${assignmentID}&form_name=${formName}`);
       data = response.data;
       //console.log("HAS BEEN SUBMITTED? " + data.message);
       if(data.message == "true"){
@@ -407,7 +408,7 @@ export default function RadioButtonForm() {
 
     try {
       console.log("inside feedback handler, assigment id is ", assignmentID, " and form name is ", formName);
-      const response = await axios.get(`${apiUrl}/api/flask/feedback?assignment_id=${assignmentID}&form_name=${encodeURIComponent(formName)}`);
+      const response = await api.get(`${apiUrl}/api/flask/feedback?assignment_id=${assignmentID}&form_name=${encodeURIComponent(formName)}`);
       const feedbackData = response.data;
       //console.log("Raw API Response: ", response.data);
 
@@ -436,7 +437,7 @@ export default function RadioButtonForm() {
   async function getNumCaseStudyOptions(): Promise<number> {
         let data;
         try {
-          const response = await axios.get(`${apiUrl}/api/flask/case-study/options?case_study_id=${Cookie.get("case_study_id")}`);
+          const response = await api.get(`${apiUrl}/api/flask/case-study/options?case_study_id=${Cookie.get("case_study_id")}`);
           data = response.data.options;
         } catch (error) {
           if (axios.isAxiosError(error) && error.response?.status === 404) {
@@ -471,7 +472,7 @@ export default function RadioButtonForm() {
       let optionContent: RadioItem[] = [];
       // fetch data from DB if available
       try {
-        const response = await axios.get(`${apiUrl}/api/flask/case-study/options?case_study_id=${caseStudyId}`);
+        const response = await api.get(`${apiUrl}/api/flask/case-study/options?case_study_id=${caseStudyId}`);
         data = response.data;
       } catch (error) {
         if (axios.isAxiosError(error) && error.response?.status === 404) {
@@ -505,7 +506,7 @@ export default function RadioButtonForm() {
         try{
           const assignmentID = Cookie.get('assignment_id'); 
           const userId = localStorage.getItem('id');
-          const response = await axios.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userId}&assignment_id=${assignmentID}&form_name=${formName}`);
+          const response = await api.get(`${apiUrl}/api/flask/assignment/get-answers?user_id=${userId}&assignment_id=${assignmentID}&form_name=${formName}`);
           data = response.data.data;
         }catch(error){
           if (axios.isAxiosError(error) && error.response?.status === 404) {
@@ -767,7 +768,7 @@ export default function RadioButtonForm() {
 
         let response;
         if(!submitted){
-          response = await axios.post(`${apiUrl}/api/flask/assignment/save-form`, data, {
+          response = await api.post(`${apiUrl}/api/flask/assignment/save-form`, data, {
             headers: {
               'Content-Type': 'application/json',
             }
@@ -786,7 +787,7 @@ export default function RadioButtonForm() {
             console.log(`option response ${optionResponse}`)
           }
         }else{
-          response = await axios.post(`${apiUrl}/api/flask/assignment/submit-form`, data, {
+          response = await api.post(`${apiUrl}/api/flask/assignment/submit-form`, data, {
             headers: {
               'Content-Type': 'application/json',
             }

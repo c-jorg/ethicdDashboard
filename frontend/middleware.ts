@@ -7,7 +7,7 @@ import { url } from 'inspector';
 
 export async function middleware(request: NextRequest) {
   const apiUrl = process.env.NEXT_INTERNAL_API || 'http://flaskapp:4000'; //this is a servside file so use the internal docker network url
-  //const token = request.cookies.get('access_token')?.value;
+  const token = request.cookies.get('access_token')?.value;
   console.log("Middleware.ts api url: " + apiUrl);
   console.log("checking in middleware");
   try{
@@ -22,7 +22,7 @@ export async function middleware(request: NextRequest) {
   //console.log("cookies: " + cookie);
   //const token = cookie?.split(';').find(c => c.trim().startsWith('access_token='))?.split('=')[1];
   //console.log("token is: " + token);
-  const token = request.cookies.get('access_token')?.value;
+  //const token = request.cookies.get('access_token')?.value;
 
   // Function to clear the token
   const clearAuthData = () => {

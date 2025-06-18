@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import axios from "axios";
+import api from './api-auth'; //applies the auth headers 
 
 interface FetchFeedbackProps {
   formName: string;
@@ -20,7 +21,7 @@ const useFetchFeedback = ({ formName, assignmentId, setFeedback }: FetchFeedback
 
       try {
         //console.log("Fetching feedback for assignment ID:", assignmentId, "and form name:", formName);
-        const response = await axios.get(`${apiUrl}/api/flask/feedback?assignment_id=${assignmentId}&form_name=${formName}`);
+        const response = await api.get(`${apiUrl}/api/flask/feedback?assignment_id=${assignmentId}&form_name=${formName}`);
         const feedbackData = response.data;
         //console.log("Raw API Response:", response.data);
 

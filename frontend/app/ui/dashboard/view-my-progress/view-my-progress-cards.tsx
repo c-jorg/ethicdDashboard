@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import Card from '@/app/ui/components/card';  // Import the reusable Card component
 import axios from 'axios';
 import Cookie from 'js-cookie';
+import api from '../../../utils/api-auth'; //applies the auth headers 
 
 // Separate arrays for titles and grades
 const formTitles = [
@@ -44,7 +45,7 @@ export default function ViewMyProgressCards() {
 
                 let data;
                 try {
-                    const response = await axios.get(`${apiUrl}/api/flask/grades?assignment_id=${assignmentId}`);
+                    const response = await api.get(`${apiUrl}/api/flask/grades?assignment_id=${assignmentId}`);
                     data = response.data;
                 } catch (error) {
                     if (axios.isAxiosError(error) && error.response?.status === 404) {

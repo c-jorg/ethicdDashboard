@@ -1,6 +1,7 @@
 'use client'
 import { useState, FormEvent } from 'react';
 import axios from 'axios';
+import api from '../../utils/api-auth'; //applies the auth headers 
 
 export default function JoinClassForm() {
   const [enrollCode, setEnrollCode] = useState('');
@@ -15,7 +16,7 @@ export default function JoinClassForm() {
 
     // Proceed with password change logic (e.g., API call)
     try {
-        const response = await axios.post(`${apiUrl}/api/flask/enrollment`, {'student_id':id, 'class_id':enrollCode});
+        const response = await api.post(`${apiUrl}/api/flask/enrollment`, {'student_id':id, 'class_id':enrollCode});
         
         // Handle the response from the server (e.g., success message)
         if (response.status === 201) {

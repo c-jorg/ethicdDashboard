@@ -12,6 +12,7 @@ import { useActionState } from 'react';
 import { register } from '@/app/lib/actions';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import api from '../../utils/api-auth'; //applies the auth headers 
 
 interface User {
 id: number;
@@ -68,7 +69,7 @@ const CreateAccountForm: React.FC<UserInterfaceProps> = ({ backendName }) => {
 
         console.log('Creating student:', newStudent);
         try {
-          const response = await axios.post(`${apiUrl}/api/${backendName}/auth/register-student`, newStudent);
+          const response = await api.post(`${apiUrl}/api/${backendName}/auth/register-student`, newStudent);
           setStudents([response.data, ...students]);
           setNewStudent({ name: '', email: '', password: '', consent: '' });
           window.location.href = "http://localhost:3000/login";
